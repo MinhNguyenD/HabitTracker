@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1050879542212",
+    "project_id": "habits-09-pm",
+    "storage_bucket": "habits-09-pm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050879542212:android:677d4d653fda79776e5a91",
+        "android_client_info": {
+          "package_name": "com.example.csci4176_pmgroupproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1kh9QwM-dH0NK2W3v6GPTEBKx7BSrvwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
