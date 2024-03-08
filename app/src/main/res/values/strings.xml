@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CSCI4176_PMGroupProject</string>
+    <string name="app_name">PMGroupProject</string>
+    <string name="noteString">Note</string>
+    <string name="submitButtonString">Submit</string>
 </resources>
