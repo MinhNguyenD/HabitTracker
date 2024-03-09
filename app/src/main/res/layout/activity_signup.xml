@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editTextTextRegisterEmail"
+        android:id="@+id/registerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextRegisterPassword"
+        android:id="@+id/registerPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
@@ -44,7 +44,7 @@
         android:layout_marginTop="8dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextRegisterEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/registerEmail" />
 
     <Button
         android:id="@+id/buttonRegister"
@@ -54,6 +54,6 @@
         android:layout_marginTop="93dp"
         android:text="Register"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextRegisterPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/registerPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
