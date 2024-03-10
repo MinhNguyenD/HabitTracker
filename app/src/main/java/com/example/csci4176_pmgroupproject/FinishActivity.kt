@@ -28,6 +28,5 @@ class FinishActivity : AppCompatActivity() {
 
     fun submitForm(){
         // TODO: Save data to firebase
-
     }
 }
