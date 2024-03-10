@@ -31,6 +31,9 @@ class loginActivity : AppCompatActivity(){
                         if (task.isSuccessful)
                         {
                             val user = FirebaseAuth.getInstance().currentUser
+                            /**Temporary**/
+                            Toast.makeText(baseContext, "Login Successful!", Toast.LENGTH_LONG).show()
+                            /**Temporary**/
                             // Launch next task with this user
                         }
 
