@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/activityTitle"
+        android:id="@+id/loginActivityTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -19,7 +19,7 @@
         android:id="@+id/emailViewContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activityTitle"
+        android:layout_below="@+id/loginActivityTitle"
         android:layout_marginTop="25dp"
         android:orientation="vertical">
 
@@ -92,7 +92,7 @@
             android:layout_width="200dp"
             android:layout_height="48dp"
             android:layout_marginStart="105dp"
-            android:backgroundTint="#49A0FB"
+            android:backgroundTint="@color/system_primary"
             android:text="Login"
             android:textSize="16sp"
             app:cornerRadius="5dp" />
@@ -109,7 +109,7 @@
             android:textSize="16sp"
             app:icon="@drawable/baseline_arrow_circle_right_24"
             app:iconGravity="textEnd"
-            app:iconTint="#49A0FB" />
+            app:iconTint="@color/system_primary" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,59 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/registerEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/registerPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSignUpPassword" />
-
     <TextView
-        android:id="@+id/textViewSignUpEmail"
-        android:layout_width="wrap_content"
+        android:id="@+id/signupActivityTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="45dp"
-        android:text="Email"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        tools:text="Create Account" />
 
-    <TextView
-        android:id="@+id/textViewSignUpPassword"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
-        android:text="Password"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerEmail" />
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/signupActivityTitle"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonRegister"
-        android:layout_width="200dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="93dp"
-        android:text="Register"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerPassword" />
+        <TextView
+            android:id="@+id/textViewSignUpEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:text="Email"
+            android:textSize="20sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/registerEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="25dp"
+            android:ems="10"
+            android:hint="@string/sample_email"
+            android:inputType="textEmailAddress"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewSignUpPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:text="Password"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/registerPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="25dp"
+            android:ems="10"
+            android:hint="@string/sample_password"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewSignUpRePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:text="Verify Password"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/registerRePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="25dp"
+            android:ems="10"
+            android:hint="Re-Password"
+            android:inputType="textPassword"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="50dp"
+            android:backgroundTint="@color/system_primary"
+            android:text="Register"
+            android:textSize="20sp"
+            app:cornerRadius="5dp" />
+    </LinearLayout>
+
+
+</RelativeLayout>
