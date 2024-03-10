@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="120dp"
-        android:text="TextView"
+        android:text="Create Account"
         android:textAlignment="center"
-        android:textSize="34sp"
-        tools:text="Create Account" />
+        android:textSize="34sp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
