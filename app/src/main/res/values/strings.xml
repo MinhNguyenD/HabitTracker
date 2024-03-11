@@ -2,6 +2,8 @@
     <string name="app_name">PMGroupProject</string>
     <string name="title_login">Login</string>
     <string name="sample_email">example@email.com</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
     <string name="sample_password">Password</string>
     <string name="noteString">Note</string>
     <string name="submitButtonString">Submit</string>
