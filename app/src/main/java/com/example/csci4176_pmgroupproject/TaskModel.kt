@@ -41,7 +41,8 @@ class TimedTaskModel(title: String, var startTime: Long)
 class CountableTaskModel(title: String, var remaining:Int = 0)
     : TaskModel(title, ActivityModelEnums.COUNTABLE,
     0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, ""){
-    fun setRemaining(remaining: Int){ this.remaining = remaining }
+    // TODO: Fix issue with this function
+   // fun setRemaining(remaining: Int){ this.remaining = remaining }
     fun decrementRemaining(){ this.remaining-- }
 }
 
