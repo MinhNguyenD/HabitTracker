@@ -8,6 +8,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startActivity(Intent(this, loginActivity::class.java))//this is only for testing rn
+        startActivity(Intent(this, Habit_Categories::class.java))//this is only for testing rn
     }
 }
