@@ -8,18 +8,24 @@
         android:icon="@drawable/navbar_home_24" />
 
 
-    <item android:title="Calendar"
+    <item
+        android:title="Calendar"
+        android:id="@+id/calendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/navbar_calendar_24"/>
 
-    <item android:title="Manage"
+    <item
+        android:title="Manage"
+        android:id="@+id/manage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/navbar_add_24"/>
 
 
-    <item android:title="Friends"
+    <item
+        android:title="Friends"
+        android:id="@+id/friends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/navbar_friend_24"/>
