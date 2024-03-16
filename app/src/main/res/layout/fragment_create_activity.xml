@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".create_activity">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/system_primary"
+        android:padding="25dp"
+        android:text="@string/create_activity_title"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="542dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="80dp"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingHorizontal="15dp"
+            android:ems="10"
+            android:hint="@string/activity_title_placeholder"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/create_activity_DOWContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dow_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:paddingHorizontal="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/sunday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/dow_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:paddingHorizontal="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/monday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/dow_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/tuesday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/dow_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/wednesday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/dow_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/thursday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/dow_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/friday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/dow_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/saturday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

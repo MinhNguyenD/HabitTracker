@@ -3,4 +3,14 @@
     <string name="title_login">Login</string>
     <string name="sample_email">example@email.com</string>
     <string name="sample_password">Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="create_activity_title">Create Activity</string>
+    <string name="activity_title_placeholder">Activity Title</string>
+    <string name="sunday_placeholder">SUN</string>
+    <string name="monday_placeholder">MON</string>
+    <string name="tuesday_placeholder">TUE</string>
+    <string name="wednesday_placeholder">WED</string>
+    <string name="thursday_placeholder">THU</string>
+    <string name="friday_placeholder">FRI</string>
+    <string name="saturday_placeholder">SAT</string>
 </resources>
