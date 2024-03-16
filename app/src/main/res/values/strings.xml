@@ -22,5 +22,10 @@
     <string name="biweekly">BiWeekly</string>
     <string name="tri_weekly">Tri-Weekly</string>
     <string name="monthly">Monthly</string>
-    <string name="type">Type:</string>
+    <string name="type">Type of Activity:</string>
+    <string name="checkable">Checkable</string>
+    <string name="timed">Timed</string>
+    <string name="countable">Countable</string>
+    <string name="note_section">Note Section:</string>
+    <string name="create">Create</string>
 </resources>
