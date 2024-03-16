@@ -47,13 +47,14 @@
             android:layout_marginTop="25dp"
             android:orientation="horizontal">
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_sunday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginEnd="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:paddingHorizontal="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -61,10 +62,11 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/sunday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_monday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -72,6 +74,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:paddingHorizontal="5dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -79,10 +82,12 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/monday_placeholder"
+                android:textOn="@string/monday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_tuesday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -90,6 +95,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -97,10 +103,12 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/tuesday_placeholder"
+                android:textOn="@string/tuesday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_wednesday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -108,6 +116,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -115,10 +124,12 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/wednesday_placeholder"
+                android:textOn="@string/wednesday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_thursday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -126,6 +137,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -133,10 +145,12 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/thursday_placeholder"
+                android:textOn="@string/thursday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_friday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -144,6 +158,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -151,16 +166,19 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/friday_placeholder"
+                android:textOn="@string/friday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
 
-            <Button
+            <ToggleButton
                 android:id="@+id/dow_saturday"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
                 android:backgroundTint="#5474BBD2"
+                android:checked="false"
                 android:lineSpacingExtra="10sp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
@@ -168,8 +186,12 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
+                android:textOff="@string/saturday_placeholder"
+                android:textOn="@string/saturday_placeholder"
                 android:textSize="15sp"
                 app:cornerRadius="8dp" />
+
+
         </LinearLayout>
     </LinearLayout>
 
