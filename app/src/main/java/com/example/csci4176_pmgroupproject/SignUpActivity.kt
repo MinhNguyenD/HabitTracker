@@ -26,18 +26,22 @@ class SignUpActivity : AppCompatActivity() {
                 val pass1 = signupPassword.text.toString()
                 val pass2 = signupVerifyPassword.text.toString()
                 // Pass the email and password to firebase to make a new user
-                if (pass1 == pass2) {
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                        email, pass1
-                    ).addOnCompleteListener { task ->
+                if (email.isNotEmpty() && pass1.isNotEmpty() && pass1 == pass2) {
+                    DatabaseAPI.emailSignup(email, pass1).addOnCompleteListener { task ->
 
                         // If the user could be created
                         if (task.isSuccessful) {
-                            val user = FirebaseAuth.getInstance().currentUser
                             // Start next activity for the user
                             /**Temporary**/
-                            Toast.makeText(baseContext, "Account Created!", Toast.LENGTH_LONG).show()
+                            //Toast.makeText(baseContext, "Account Created!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
+                            DatabaseAPI.updateUser(DatabaseAPI.currentUser.uid).addOnCompleteListener {comp ->
+                                if(comp.isSuccessful){
+                                    Toast.makeText(baseContext, "User Created!", Toast.LENGTH_LONG).show()
+                                }else {
+                                    Toast.makeText(baseContext, "Error occurred when creating user!", Toast.LENGTH_LONG).show()
+                                }
+                            }
                         }
 
                         // If the user could not be created
