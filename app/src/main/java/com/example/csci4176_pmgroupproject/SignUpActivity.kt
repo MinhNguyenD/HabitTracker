@@ -16,6 +16,7 @@ class SignUpActivity : AppCompatActivity() {
 
         // Get the email and password fields from the UI
         var signupEmail: EditText = findViewById(R.id.registerEmail)
+        var signUpUsername: EditText = findViewById(R.id.registerUsername)
         var signupPassword: EditText = findViewById(R.id.registerPassword)
         var signupVerifyPassword: EditText = findViewById(R.id.registerRePassword)
 
@@ -23,10 +24,11 @@ class SignUpActivity : AppCompatActivity() {
         findViewById<Button>(R.id.buttonRegister)
             .setOnClickListener {
                 val email = signupEmail.text.toString()
+                val username = signUpUsername.text.toString()
                 val pass1 = signupPassword.text.toString()
                 val pass2 = signupVerifyPassword.text.toString()
                 // Pass the email and password to firebase to make a new user
-                if (email.isNotEmpty() && pass1.isNotEmpty() && pass1 == pass2) {
+                if (email.isNotEmpty() && username.isNotEmpty() && pass1.isNotEmpty() && pass1 == pass2) {
                     DatabaseAPI.emailSignup(email, pass1).addOnCompleteListener { task ->
 
                         // If the user could be created
@@ -35,7 +37,7 @@ class SignUpActivity : AppCompatActivity() {
                             /**Temporary**/
                             //Toast.makeText(baseContext, "Account Created!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
-                            DatabaseAPI.updateUser(DatabaseAPI.currentUser.uid).addOnCompleteListener {comp ->
+                            DatabaseAPI.updateUser(DatabaseAPI.currentUser.uid, username).addOnCompleteListener {comp ->
                                 if(comp.isSuccessful){
                                     Toast.makeText(baseContext, "User Created!", Toast.LENGTH_LONG).show()
                                 }else {

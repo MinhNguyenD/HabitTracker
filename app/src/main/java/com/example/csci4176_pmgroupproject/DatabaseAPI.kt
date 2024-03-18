@@ -60,9 +60,10 @@ object DatabaseAPI {
         return task
     }
 
-    fun updateUser(uid: String): Task<Void> {
+    fun updateUser(uid: String, username:String): Task<Void> {
         user = User(currentUser.uid)
-        return users.child(currentUser.uid).setValue(user).addOnCompleteListener { task ->
+        user.username = username
+        return users.child(uid).setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful){
                 Log.w("Sign-up", "Successfully created user")
             }else{
