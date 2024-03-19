@@ -1,20 +1,28 @@
 package com.example.csci4176_pmgroupproject
 
+import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.database.getValue
+import java.lang.Exception
 
 val database:FirebaseDatabase = Firebase.database
+val activities : DatabaseReference = database.getReference("activities")
 val users:DatabaseReference = database.getReference("users")
 val auth:FirebaseAuth = FirebaseAuth.getInstance()
 
 lateinit var currentUser: FirebaseUser
 object DatabaseAPI {
-
+    private lateinit var activityList : ArrayList<TaskModel>
     private lateinit var someUser: User;
 
     /**
@@ -62,4 +70,33 @@ object DatabaseAPI {
         return task
     }
 
+    fun getAllActivity() : List<TaskModel>{
+        activityList = ArrayList()
+        activities.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                activityList.clear()
+                for (entry in snapshot.children){
+                    val taskType = entry.child("type").value.toString()
+                    when(taskType){
+                        ActivityModelEnums.CHECKED.toString() -> activityList.add(entry.getValue(CheckedTaskModel::class.java)!!)
+                        ActivityModelEnums.COUNTABLE.toString() -> activityList.add(entry.getValue(CountableTaskModel::class.java)!!)
+                        ActivityModelEnums.TIMED.toString() -> activityList.add(entry.getValue(TimedTaskModel::class.java)!!)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+        return activityList
+    }
+
+    fun saveActivity(activity : TaskModel): Task<Void> {
+        return activities.child(activity.taskId)
+            .setValue(activity)
+    }
+
+    fun deleteActivity(activityId: String): Task<Void> {
+        return activities.child(activityId).removeValue()
+    }
 }
