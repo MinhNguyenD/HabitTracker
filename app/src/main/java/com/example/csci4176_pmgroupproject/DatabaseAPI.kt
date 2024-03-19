@@ -97,7 +97,17 @@ object DatabaseAPI {
         return activityList
     }
 
-    fun saveActivity(activity : TaskModel): Task<Void> {
+    fun createActivity(activity : TaskModel) : Task<Void> {
+        //push will auto generate ID for activity
+        val newActivityRef = activities.push()
+
+        // Set the activity ID
+        activity.taskId = newActivityRef.key!!
+
+        return newActivityRef.setValue(activity)
+    }
+
+    fun updateActivity(activity : TaskModel): Task<Void> {
         return activities.child(activity.taskId)
             .setValue(activity)
     }

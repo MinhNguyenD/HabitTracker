@@ -4,7 +4,7 @@ import com.google.android.gms.tasks.Task
 import java.util.Date
 
 /*ActivityModel Redesigned*/
-open class TaskModel (val taskId : String, val userId : String, val habitId : String, val title: String, val type: ActivityModelEnums,
+open class TaskModel (var taskId : String, val userId : String, val habitId : String, val title: String, val type: ActivityModelEnums,
                       var streak: Int, var mood: ActivityMood,
                       var energy: ActivityEnergy, var note: String){
 
