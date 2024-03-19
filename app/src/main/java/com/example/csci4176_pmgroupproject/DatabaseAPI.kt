@@ -1,7 +1,6 @@
 package com.example.csci4176_pmgroupproject
 
 import android.util.Log
-import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -12,18 +11,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import com.google.firebase.database.getValue
-import java.lang.Exception
 
 val database:FirebaseDatabase = Firebase.database
 val activities : DatabaseReference = database.getReference("activities")
 val users:DatabaseReference = database.getReference("users")
 val auth:FirebaseAuth = FirebaseAuth.getInstance()
 
-lateinit var currentUser: FirebaseUser
 object DatabaseAPI {
-    private lateinit var activityList : ArrayList<TaskModel>
+
+    lateinit var currentUser: FirebaseUser
+    lateinit var user: User // The user Object associated with the current user
     private lateinit var someUser: User;
+    private lateinit var activityList : ArrayList<TaskModel>
 
     /**
      * This function will do the Firebase work for [login in]
@@ -41,7 +40,7 @@ object DatabaseAPI {
                 currentUser = auth.currentUser!!
                 /*
                 * TODO: create basic User object
-                * TODO: push basic User object to [users]
+                * TODO: pull basic User object from [users]
                 */
             }
         }
@@ -57,19 +56,26 @@ object DatabaseAPI {
      * TODO: Add validation of strings passed
      * */
     fun emailSignup(email:String, password: String): Task<com.google.firebase.auth.AuthResult> {
-        var task: Task<com.google.firebase.auth.AuthResult> = auth.createUserWithEmailAndPassword(email, password)
+        val task: Task<com.google.firebase.auth.AuthResult> = auth.createUserWithEmailAndPassword(email, password)
         task.addOnCompleteListener {
             if (task.isSuccessful){
                 currentUser = auth.currentUser!!
-                /*
-                * TODO: create basic User object
-                * TODO: push basic User object to [users]
-                */
             }
         }
         return task
     }
 
+    fun updateUser(uid: String, username:String): Task<Void> {
+        user = User(currentUser.uid)
+        user.username = username
+        return users.child(uid).setValue(user).addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                Log.w("Sign-up", "Successfully created user")
+            }else{
+                Log.w("Sign-up: Error","An Error occurred!")
+            }
+        }
+    }
     fun getAllActivity() : List<TaskModel>{
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
