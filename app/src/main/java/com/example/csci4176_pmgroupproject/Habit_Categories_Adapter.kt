@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class Habit_Categories_Adapter (private val dataSet: Array<String>) :
     RecyclerView.Adapter<Habit_Categories_Adapter.ViewHolder>() {
-
+    private var onClickListener: OnClickListener? = null
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
@@ -40,9 +41,21 @@ class Habit_Categories_Adapter (private val dataSet: Array<String>) :
         viewHolder.textView.text = dataSet[position]
 //        TODO: when the user clicks on this set the category to the habit
 //        viewHolder.itemView.setOnClickListener()
+        viewHolder.itemView.setOnClickListener {
+            if (onClickListener != null) {
+                onClickListener!!.onClick(position)
+            }
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
+    interface OnClickListener {
+        fun onClick(position: Int)
+    }
+
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
 }

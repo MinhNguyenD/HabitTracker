@@ -44,7 +44,7 @@
         </activity>
 <!--    Habit_Categories Activity    -->
         <activity
-            android:name=".Habit_Categories"
+            android:name=".HabitCategorie"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
