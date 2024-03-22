@@ -1,8 +1,10 @@
 package com.example.csci4176_pmgroupproject
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
+import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
+import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
+import com.example.csci4176_pmgroupproject.Model.TimedActivityModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +17,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import java.time.DayOfWeek
 import java.time.LocalDate
-import java.util.Calendar
 
 val database:FirebaseDatabase = Firebase.database
 val activities : DatabaseReference = database.getReference("activities")
@@ -28,7 +29,7 @@ object DatabaseAPI {
     lateinit var currentUser: FirebaseUser
     lateinit var user: User // The user Object associated with the current user
     private lateinit var someUser: User;
-    private lateinit var activityList : ArrayList<TaskModel>
+    private lateinit var activityList : ArrayList<ActivityModel>
 
     /**
      * This function will do the Firebase work for [login in]
@@ -82,7 +83,27 @@ object DatabaseAPI {
             }
         }
     }
-    fun getAllActivity(callback: (List<TaskModel>) -> Unit){
+
+    fun getActivityById(id : String, callback: (ActivityModel) -> Unit){
+        return activities.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Retrieve the activity object from the dataSnapshot
+                val activity = dataSnapshot.getValue(ActivityModel::class.java)
+                if (activity != null) {
+                    callback(activity)
+                } else {
+                    // Activity not found
+                    Log.w("Error:", "Activity not found" )
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
+    }
+
+    fun getAllActivity(callback: (List<ActivityModel>) -> Unit){
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -90,9 +111,9 @@ object DatabaseAPI {
                 for (entry in snapshot.children){
                     val taskType = entry.child("type").value.toString()
                     when(taskType){
-                        ActivityModelEnums.CHECKED.toString() -> activityList.add(entry.getValue(CheckedTaskModel::class.java)!!)
-                        ActivityModelEnums.COUNTABLE.toString() -> activityList.add(entry.getValue(CountableTaskModel::class.java)!!)
-                        ActivityModelEnums.TIMED.toString() -> activityList.add(entry.getValue(TimedTaskModel::class.java)!!)
+                        ActivityModelEnums.CHECKED.toString() -> activityList.add(entry.getValue(CheckedActivityModel::class.java)!!)
+                        ActivityModelEnums.COUNTABLE.toString() -> activityList.add(entry.getValue(CountableActivityModel::class.java)!!)
+                        ActivityModelEnums.TIMED.toString() -> activityList.add(entry.getValue(TimedActivityModel::class.java)!!)
                     }
                 }
                 callback(activityList)
@@ -102,18 +123,18 @@ object DatabaseAPI {
         })
     }
 
-    fun getDailyActivity(callback: (List<TaskModel>) -> Unit){
+    fun getDailyActivity(callback: (List<ActivityModel>) -> Unit){
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
-                    var activity : TaskModel = CheckedTaskModel()
+                    var activity : ActivityModel = CheckedActivityModel()
                     val taskType = entry.child("type").value.toString()
                     when(taskType){
-                        ActivityModelEnums.CHECKED.toString() -> activity = entry.getValue(CheckedTaskModel::class.java)!!
-                        ActivityModelEnums.COUNTABLE.toString() -> activity = entry.getValue(CountableTaskModel::class.java)!!
-                        ActivityModelEnums.TIMED.toString() ->activity = entry.getValue(TimedTaskModel::class.java)!!
+                        ActivityModelEnums.CHECKED.toString() -> activity = entry.getValue(CheckedActivityModel::class.java)!!
+                        ActivityModelEnums.COUNTABLE.toString() -> activity = entry.getValue(CountableActivityModel::class.java)!!
+                        ActivityModelEnums.TIMED.toString() ->activity = entry.getValue(TimedActivityModel::class.java)!!
                     }
                     if(isTodayActivity(activity)){
                         activityList.add(activity)
@@ -126,7 +147,7 @@ object DatabaseAPI {
         })
     }
 
-    fun saveDailyActivities(arrayList: ArrayList<TaskModel>){
+    fun saveDailyActivities(arrayList: ArrayList<ActivityModel>){
         dailyActivity.child(LocalDate.now().toString())
             .setValue(arrayList)
     }
@@ -144,7 +165,7 @@ object DatabaseAPI {
         }
     }
 
-    private fun isTodayActivity(activity: TaskModel) : Boolean{
+    private fun isTodayActivity(activity: ActivityModel) : Boolean{
         val today = LocalDate.now()
         val startDate = LocalDate.parse(activity.startDate)
 
@@ -168,7 +189,7 @@ object DatabaseAPI {
         }
     }
 
-    fun createActivity(activity : TaskModel) : Task<Void> {
+    fun createActivity(activity : ActivityModel) : Task<Void> {
         //push will auto generate ID for activity
         val newActivityRef = activities.push()
 
@@ -178,7 +199,7 @@ object DatabaseAPI {
         return newActivityRef.setValue(activity)
     }
 
-    fun updateActivity(activity : TaskModel): Task<Void> {
+    fun updateActivity(activity : ActivityModel): Task<Void> {
         return activities.child(activity.taskId)
             .setValue(activity)
     }
