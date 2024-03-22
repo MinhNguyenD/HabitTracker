@@ -87,6 +87,10 @@ class HabitCategorie : AppCompatActivity() {
 
                 addCategoryBtn.setOnClickListener{
                     // TODO: Create a space to add a new category then use addCustomCategory() to add to db
+                    // Temporary testing values
+                    addCustomCategory("testing3")
+                    categories.add("testing3")
+                    customAdapter.notifyItemInserted(categories.size)
                 }
             }
 
