@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.math.ceil
@@ -22,7 +23,7 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
     private lateinit var todayTextView : TextView
     private lateinit var dailyActivityView : RecyclerView
     private lateinit var activityAdapter : DailyActivityAdapter
-    private lateinit var dailyActivityList : ArrayList<TaskModel>
+    private lateinit var dailyActivityList : ArrayList<ActivityModel>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -32,7 +33,7 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         progressTextView = findViewById(R.id.progressText)
         dailyActivityView = findViewById(R.id.dailyActivityList)
         dailyActivityView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        DatabaseAPI.getDailyActivity {  dailyList ->
+        DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
             activityAdapter =  DailyActivityAdapter(dailyActivityList, this)
             dailyActivityView.adapter = activityAdapter

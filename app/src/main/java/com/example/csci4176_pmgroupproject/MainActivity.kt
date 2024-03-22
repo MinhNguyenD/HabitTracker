@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        startActivity(Intent(this, loginActivity::class.java))//this is only for testing rn
+        startActivity(Intent(this, HomeActivity::class.java))//this is only for testing rn
 
 //        val navbarFragment = NavigationBar()
 //

@@ -103,7 +103,7 @@ object DatabaseAPI {
         })
     }
 
-    fun getAllActivity(callback: (List<ActivityModel>) -> Unit){
+    fun getAllActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -123,7 +123,7 @@ object DatabaseAPI {
         })
     }
 
-    fun getDailyActivity(callback: (List<ActivityModel>) -> Unit){
+    fun getDailyActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {

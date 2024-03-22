@@ -17,12 +17,6 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".BaseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
             android:name=".FinishActivity"
             android:exported="false" />
         <activity
