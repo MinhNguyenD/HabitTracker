@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">CSCI4176_PMGroupProject</string>
+    <string name="app_name">PMGroupProject</string>
     <string name="title_login">Login</string>
     <string name="sample_email">example@email.com</string>
     <string name="sample_password">Password</string>
+    <string name="noteString">Note</string>
+    <string name="submitButtonString">Submit</string>
+    <string name="progress_default">0%</string>
 </resources>
