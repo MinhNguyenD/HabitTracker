@@ -25,19 +25,15 @@ class loginActivity : AppCompatActivity(){
             .setOnClickListener {
 
                 // Check user info with DB
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                    emailField.text.toString(), passField.text.toString())
+                DatabaseAPI.emailLogin(emailField.text.toString(), passField.text.toString())
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful)
                         {
-                            val user = FirebaseAuth.getInstance().currentUser
                             /**Temporary**/
                             Toast.makeText(baseContext, "Login Successful!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
                             // Launch next task with this user
-                        }
-
-                        else
+                        } else
                         {
                             // Alert the user the credentials aren't valid
                             Toast.makeText(baseContext,
