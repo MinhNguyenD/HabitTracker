@@ -24,6 +24,7 @@ val dailyActivity : DatabaseReference = database.getReference("dailyActivities")
 val users:DatabaseReference = database.getReference("users")
 val auth:FirebaseAuth = FirebaseAuth.getInstance()
 
+
 object DatabaseAPI {
 
     lateinit var currentUser: FirebaseUser
@@ -105,7 +106,7 @@ object DatabaseAPI {
 
     fun getAllActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
-        activities.addValueEventListener(object : ValueEventListener{
+        activities.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
@@ -125,7 +126,7 @@ object DatabaseAPI {
 
     fun getDailyActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
-        activities.addValueEventListener(object : ValueEventListener{
+        activities.addListenerForSingleValueEvent (object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
@@ -136,7 +137,7 @@ object DatabaseAPI {
                         ActivityModelEnums.COUNTABLE.toString() -> activity = entry.getValue(CountableActivityModel::class.java)!!
                         ActivityModelEnums.TIMED.toString() ->activity = entry.getValue(TimedActivityModel::class.java)!!
                     }
-                    if(isTodayActivity(activity)){
+                    if(isTodayActivity(activity) && !activity.isFinished){
                         activityList.add(activity)
                     }
                 }

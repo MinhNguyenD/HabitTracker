@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +13,6 @@ import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.math.ceil
-import kotlin.math.floor
 
 class HomeActivity : AppCompatActivity(), TodoItemClickListener {
     private var progress = 0
@@ -33,6 +33,14 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         progressTextView = findViewById(R.id.progressText)
         dailyActivityView = findViewById(R.id.dailyActivityList)
         dailyActivityView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val navbarFragment = NavigationBar()
+
+        // Add navbar fragment to the activity
+        supportFragmentManager.beginTransaction()
+            .add(R.id.navbarFrame, navbarFragment)
+            .commit()
+
+        // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
             activityAdapter =  DailyActivityAdapter(dailyActivityList, this)
@@ -40,8 +48,10 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
             numActivities = activityAdapter.itemCount
             initToday()
             initProgress()
-            DatabaseAPI.saveDailyActivities(dailyList)
+            displayNoActivity()
         }
+        DatabaseAPI.saveDailyActivities(dailyActivityList)
+        AlarmScheduler.scheduleEndOfDayCheck(this)
     }
 
     private fun updateProgress(){
@@ -55,7 +65,7 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         updateProgressView()
     }
     private fun updateProgressView(){
-        progressBarView.progress = progress.toInt()
+        progressBarView.progress = progress
         progressTextView.text = "$progress%"
     }
 
@@ -74,8 +84,14 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         // Update the RecyclerView
         dailyActivityView.adapter?.notifyItemRemoved(position)
         updateProgress()
-        if(dailyActivityList.isEmpty()){
-            val noActivityView : TextView = findViewById(R.id.noActivity)
+        displayNoActivity()
+    }
+
+    private fun displayNoActivity(){
+        if(dailyActivityList.isEmpty()) {
+            progress = 100
+            updateProgressView()
+            val noActivityView: TextView = findViewById(R.id.noActivity)
             noActivityView.text = "All activities are done!"
         }
     }
