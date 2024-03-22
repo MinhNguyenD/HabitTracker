@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, private var clickListener: TodoItemClickListener) : RecyclerView.Adapter<DailyActivityAdapter.DailyActivityViewHolder>(){
+class DailyActivityAdapter (private var activities : ArrayList<TaskModel>, private var clickListener: TodoItemClickListener) : RecyclerView.Adapter<DailyActivityAdapter.DailyActivityViewHolder>(){
 
     inner class DailyActivityViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val activityTitleView : TextView = itemView.findViewById(R.id.activityTitle)
@@ -49,7 +49,6 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
     override fun onBindViewHolder(holder: DailyActivityViewHolder, position: Int) {
         // Bind city data to the views in the ViewHolder
         holder.activityTitleView.text = activities[position].title
-        holder.progress.text = activities[position].progress.toString()
         holder.streak.text = activities[position].streak.toString()
     }
 }
