@@ -19,6 +19,7 @@ import java.util.Calendar
 
 val database:FirebaseDatabase = Firebase.database
 val activities : DatabaseReference = database.getReference("activities")
+val dailyActivity : DatabaseReference = database.getReference("dailyActivities")
 val users:DatabaseReference = database.getReference("users")
 val auth:FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -123,6 +124,11 @@ object DatabaseAPI {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+    }
+
+    fun saveDailyActivities(arrayList: ArrayList<TaskModel>){
+        dailyActivity.child(LocalDate.now().toString())
+            .setValue(arrayList)
     }
 
     private fun convertDayOfWeek(calendarDay: DayOfWeek): ActivityModelDayOfWeek {

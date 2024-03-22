@@ -5,15 +5,15 @@ import java.util.Date
 
 open class TaskModel (var taskId : String, val userId : String, val habitId : String,
                       var title: String, val type: ActivityModelEnums,
-                      val startDate : String,
+                      var isFinished : Boolean, val startDate : String,
                       var frequency : ActivityModelFrequency, var dayOfWeek: ActivityModelDayOfWeek,
                       var streak: Int, var mood: ActivityMood,
                       var energy: ActivityEnergy, var note: String){
     constructor(userId : String,  habitId : String,  title: String,  type: ActivityModelEnums,
-                startDate : String, endDate : String,
+                isFinished : Boolean, startDate : String,
                 frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek,
                 streak: Int,  mood: ActivityMood,
-                energy: ActivityEnergy,  note: String) : this("", userId,habitId, title, type, startDate, frequency, dayOfWeek, streak,  mood, energy,  note)
+                energy: ActivityEnergy,  note: String) : this("", userId,habitId, title, type, isFinished, startDate, frequency, dayOfWeek, streak,  mood, energy,  note)
     fun updateStreak(){ streak++; }
 
     fun breakStreak(){ streak = 0 }
@@ -30,17 +30,17 @@ open class TaskModel (var taskId : String, val userId : String, val habitId : St
 class CheckedTaskModel(taskId : String, userId: String,
                        habitId : String, title: String,
                        frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek)
-    : TaskModel(taskId, userId, habitId, title, ActivityModelEnums.CHECKED, LocalDate.now().toString(), frequency,dayOfWeek,
+    : TaskModel(taskId, userId, habitId, title, ActivityModelEnums.CHECKED, false, LocalDate.now().toString(), frequency,dayOfWeek,
     0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, ""){
         // require by firebase
         constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY)
-        constructor(userId: String, habitId : String, title: String,frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : this("",userId,habitId, title, frequency,dayOfWeek)
+        constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : this("",userId,habitId, title, frequency,dayOfWeek)
 }
 
 class TimedTaskModel(taskId: String, userId: String,
                      habitId : String, title: String,
                      frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, var startTime: Long)
-    : TaskModel(taskId, userId, habitId,title, ActivityModelEnums.TIMED, LocalDate.now().toString(), frequency,dayOfWeek,
+    : TaskModel(taskId, userId, habitId,title, ActivityModelEnums.TIMED,false, LocalDate.now().toString(), frequency,dayOfWeek,
     0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, ""){
         // require by firebase
         constructor() : this("","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
@@ -58,7 +58,7 @@ class TimedTaskModel(taskId: String, userId: String,
 class CountableTaskModel(taskId: String, userId: String,
                          habitId : String, title: String,
                          frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, var remaining:Int = 0)
-    : TaskModel(taskId, userId, habitId,title, ActivityModelEnums.COUNTABLE, LocalDate.now().toString(), frequency, dayOfWeek,
+    : TaskModel(taskId, userId, habitId,title, ActivityModelEnums.COUNTABLE, false, LocalDate.now().toString(), frequency, dayOfWeek,
     0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, ""){
     // require by firebase
     constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
