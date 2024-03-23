@@ -24,11 +24,13 @@ val dailyActivity : DatabaseReference = database.getReference("dailyActivities")
 val users:DatabaseReference = database.getReference("users")
 val auth:FirebaseAuth = FirebaseAuth.getInstance()
 
+/**
+ * DatabaseAPI: Handles interactions with Firebase Database.
+ */
 object DatabaseAPI {
-
     lateinit var currentUser: FirebaseUser
     lateinit var user: User // The user Object associated with the current user
-    private lateinit var someUser: User;
+    private lateinit var someUser: User
     private lateinit var activityList : ArrayList<ActivityModel>
 
     /**
@@ -41,7 +43,7 @@ object DatabaseAPI {
      * TODO: Add validation of strings passed
      * */
     fun emailLogin(email:String, password:String): Task<com.google.firebase.auth.AuthResult> {
-        var task: Task<com.google.firebase.auth.AuthResult> = auth.signInWithEmailAndPassword(email, password)
+        val task: Task<com.google.firebase.auth.AuthResult> = auth.signInWithEmailAndPassword(email, password)
         task.addOnCompleteListener {
             if (task.isSuccessful){
                 currentUser = auth.currentUser!!
@@ -72,6 +74,12 @@ object DatabaseAPI {
         return task
     }
 
+    /**
+     * Updates the user information in the database.
+     * @param uid: The user ID.
+     * @param username: The username to update.
+     * @return Task<Void>: The result of the database operation.
+     */
     fun updateUser(uid: String, username:String): Task<Void> {
         user = User(currentUser.uid)
         user.username = username
@@ -84,6 +92,11 @@ object DatabaseAPI {
         }
     }
 
+    /**
+     * Retrieves an activity from the database by its ID.
+     * @param id: The ID of the activity to retrieve.
+     * @param callback: A callback function to handle the retrieved activity.
+     */
     fun getActivityById(id : String, callback: (ActivityModel) -> Unit){
         return activities.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -103,6 +116,10 @@ object DatabaseAPI {
         })
     }
 
+    /**
+     * Retrieves all activities from the database.
+     * @param callback: A callback function to handle the retrieved activities.
+     */
     fun getAllActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
@@ -123,6 +140,10 @@ object DatabaseAPI {
         })
     }
 
+    /**
+     * Retrieves today's activities from the database.
+     * @param callback: A callback function to handle today's activities.
+     */
     fun getDailyActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
         activities.addValueEventListener(object : ValueEventListener{
@@ -147,11 +168,21 @@ object DatabaseAPI {
         })
     }
 
+    /**
+     * Saves today's activities to the database.
+     * @param arrayList: The list of activities to save.
+     */
     fun saveDailyActivities(arrayList: ArrayList<ActivityModel>){
         dailyActivity.child(LocalDate.now().toString())
             .setValue(arrayList)
     }
 
+    /**
+     * Converts the Java DayOfWeek enum to the custom ActivityModelDayOfWeek enum.
+     * @param calendarDay: The Java DayOfWeek enum representing the day of the week.
+     * @return The corresponding ActivityModelDayOfWeek enum.
+     * @throws IllegalArgumentException if the day of the week is invalid.
+     */
     private fun convertDayOfWeek(calendarDay: DayOfWeek): ActivityModelDayOfWeek {
         return when (calendarDay) {
             DayOfWeek.MONDAY -> ActivityModelDayOfWeek.MONDAY
@@ -165,6 +196,11 @@ object DatabaseAPI {
         }
     }
 
+    /**
+     * Checks if an activity is scheduled for today.
+     * @param activity: The activity to check.
+     * @return True if the activity is scheduled for today, false otherwise.
+     */
     private fun isTodayActivity(activity: ActivityModel) : Boolean{
         val today = LocalDate.now()
         val startDate = LocalDate.parse(activity.startDate)
@@ -189,6 +225,11 @@ object DatabaseAPI {
         }
     }
 
+    /**
+     * Creates a new activity in the database.
+     * @param activity: The activity to create.
+     * @return Task<Void>: A task representing the completion of the operation.
+     */
     fun createActivity(activity : ActivityModel) : Task<Void> {
         //push will auto generate ID for activity
         val newActivityRef = activities.push()
@@ -199,11 +240,22 @@ object DatabaseAPI {
         return newActivityRef.setValue(activity)
     }
 
+    /**
+     * Updates an existing activity in the database.
+     * @param activity: The updated activity object.
+     * @return Task<Void>: A task representing the completion of the operation.
+     */
     fun updateActivity(activity : ActivityModel): Task<Void> {
         return activities.child(activity.taskId)
             .setValue(activity)
     }
 
+
+    /**
+     * Deletes an activity from the database.
+     * @param activityId: The ID of the activity to delete.
+     * @return Task<Void>: A task representing the completion of the operation.
+     */
     fun deleteActivity(activityId: String): Task<Void> {
         return activities.child(activityId).removeValue()
     }
