@@ -14,6 +14,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.math.ceil
 
+/**
+ * HomeActivity: Displays the home screen with a list of daily activities and progress bar.
+ */
 class HomeActivity : AppCompatActivity(), TodoItemClickListener {
     private var progress = 0
     private var numActivities = 0
@@ -54,6 +57,9 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         AlarmScheduler.scheduleEndOfDayCheck(this)
     }
 
+    /**
+     * Updates the progress bar.
+     */
     private fun updateProgress(){
         if(progress < 100){
             progress += percentageIncrease
@@ -64,21 +70,35 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         }
         updateProgressView()
     }
+
+    /**
+     * Updates the progress bar view.
+     */
     private fun updateProgressView(){
         progressBarView.progress = progress
         progressTextView.text = "$progress%"
     }
 
+    /**
+     * Initializes the progress bar.
+     */
     private fun initProgress(){
         percentageIncrease = ceil(1.0/numActivities * 100).toInt()
         updateProgressView()
     }
 
+    /**
+     * Initializes the text view for today's date.
+     */
     private fun initToday(){
         val dateFormat =  SimpleDateFormat("MMM d, y")
         todayTextView.text = dateFormat.format(Date())
     }
 
+    /**
+     * Handles the click event when a daily activity is marked as finished.
+     * @param position: The position of the clicked item in the RecyclerView.
+     */
     override fun onItemFinishClick(position: Int) {
         dailyActivityList.removeAt(position)
         // Update the RecyclerView
@@ -87,6 +107,9 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         displayNoActivity()
     }
 
+    /**
+     * Displays a message if there are no daily activities left.
+     */
     private fun displayNoActivity(){
         if(dailyActivityList.isEmpty()) {
             progress = 100
