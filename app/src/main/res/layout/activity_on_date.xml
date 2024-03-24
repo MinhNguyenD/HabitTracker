@@ -43,6 +43,28 @@
 
 
     <TextView
+        android:id="@+id/completionPercentageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="28dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Completion Rate: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numActivitiesTitle" />
+
+    <TextView
+        android:id="@+id/completionPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:text=""
+        app:layout_constraintStart_toEndOf="@+id/completionPercentageTitle"
+        app:layout_constraintTop_toBottomOf="@+id/numActivitiesTitle" />
+
+    <TextView
         android:id="@+id/averageMoodTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +73,7 @@
         android:textStyle="bold"
         android:text="Average Mood: "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numActivitiesTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/completionPercentageTitle" />
 
     <TextView
         android:id="@+id/averageMood"
@@ -62,7 +84,7 @@
         android:textSize="18sp"
         android:text=""
         app:layout_constraintStart_toEndOf="@+id/averageMoodTitle"
-        app:layout_constraintTop_toBottomOf="@+id/numActivitiesTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/completionPercentageTitle" />
 
 
 
@@ -92,9 +114,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/averageEnergyTitle">
 
