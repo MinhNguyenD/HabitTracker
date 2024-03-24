@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 
 class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, private var clickListener: TodoItemClickListener) : RecyclerView.Adapter<DailyActivityAdapter.DailyActivityViewHolder>(){
-
     inner class DailyActivityViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val activityTitleView : TextView = itemView.findViewById(R.id.activityTitle)
         val streak : TextView = itemView.findViewById(R.id.streak)
@@ -21,6 +20,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val finishIntent = Intent(itemView.context, FinishActivity::class.java)
+                    finishIntent.putExtra("selectedActivityId", activities[position].taskId)
                     itemView.context.startActivity(finishIntent)
                     clickListener.onItemFinishClick(position)
                 }
