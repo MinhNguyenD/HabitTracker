@@ -64,8 +64,7 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
             viewHolder.textView.visibility = View.VISIBLE
         }
 
-//        TODO: when the user clicks on this set the category to the habit
-//        viewHolder.itemView.setOnClickListener()
+        // Set a listener on each item and save their position
         viewHolder.itemView.setOnClickListener {
             if (itemOnClickListener != null) {
                 itemOnClickListener!!.onClickItem(position)
@@ -86,11 +85,13 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-    
+
+    // Set the "Adding category" mode to true or false
     fun setIsAddingCategory(value: Boolean){
         this.isAddingCategory = value
     }
 
+    // Set the position for the new item
     fun setNewItemPosition(value: Int){
         this.newItemPosition = value
     }

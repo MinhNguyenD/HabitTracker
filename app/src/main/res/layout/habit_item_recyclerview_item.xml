@@ -8,11 +8,12 @@
         android:id="@+id/textView_habit_item_recyclerview_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:text="editText" />
 
     <EditText
         android:id="@+id/editText_habit_item_recyclerview_item"
-        android:layout_width="298dp"
+        android:layout_width="290dp"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
@@ -20,9 +21,16 @@
         android:id="@+id/saveBtn_habit_item_recyclerview_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="310dp"
+        android:layout_marginStart="250dp"
         android:text="Save"
         android:visibility="gone"/>
+
+    <View
+        android:layout_width="400dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="49dp"
+        android:layout_gravity="center_horizontal"/>
 </FrameLayout>
 
 <!--textView_habit_item_recyclerview_item-->
