@@ -35,7 +35,7 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         dailyActivityView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this)
+            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, R.layout.acitivity_item)
             dailyActivityView.adapter = activityAdapter
             numActivities = activityAdapter.itemCount
             initToday()

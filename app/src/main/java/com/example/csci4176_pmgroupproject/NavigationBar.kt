@@ -21,12 +21,12 @@ class NavigationBar : Fragment() {
         bottomNavigationBar.setOnItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.home -> {
-                    //startActivity(Intent(this.activity, HomeActivity::class.java))//this is only for testing rn
+                    startActivity(Intent(this.activity, HomeActivity::class.java))
                     true
                 }
 
                 R.id.calendar -> {
-                    //startActivity(Intent(this.activity, CalendarActivity::class.java))//this is only for testing rn
+                    startActivity(Intent(this.activity, CalendarActivity::class.java))
                     true
                 }
 
@@ -39,6 +39,11 @@ class NavigationBar : Fragment() {
                     //startActivity(Intent(this.activity, FriendsActivity::class.java))//this is only for testing rn
                     true
                 }
+                R.id.account -> {
+//                    startActivity(Intent(this.activity, ProfileActivity::class.java))
+                    true
+                }
+
                 else -> false
             }
         }

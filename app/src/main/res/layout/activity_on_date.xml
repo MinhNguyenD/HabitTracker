@@ -7,16 +7,96 @@
     android:layout_height="match_parent"
     tools:context=".OnDateActivity">
 
+    <TextView
+        android:id="@+id/dateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Date Title"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/numActivitiesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="28dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Number of Activities: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
+
+    <TextView
+        android:id="@+id/numActivities"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:text=""
+        app:layout_constraintStart_toEndOf="@+id/numActivitiesTitle"
+        app:layout_constraintTop_toBottomOf="@+id/dateTitle" />
+
+
+    <TextView
+        android:id="@+id/averageMoodTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="28dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Average Mood: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numActivitiesTitle" />
+
+    <TextView
+        android:id="@+id/averageMood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:text=""
+        app:layout_constraintStart_toEndOf="@+id/averageMoodTitle"
+        app:layout_constraintTop_toBottomOf="@+id/numActivitiesTitle" />
+
+
+
+    <TextView
+        android:id="@+id/averageEnergyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="28dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Average Energy: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/averageMoodTitle" />
+
+    <TextView
+        android:id="@+id/averageEnergy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:text=""
+        app:layout_constraintStart_toEndOf="@+id/averageEnergyTitle"
+        app:layout_constraintTop_toBottomOf="@+id/averageMoodTitle" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="128dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/averageEnergyTitle">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dailyActivityList"

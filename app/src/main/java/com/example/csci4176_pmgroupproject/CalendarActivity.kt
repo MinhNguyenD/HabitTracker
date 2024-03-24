@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -17,7 +16,7 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
     // Variables to be used throughout the class
     lateinit var monthYearText: TextView
     lateinit var calendarRecyclerView: RecyclerView
-    var selectedDate = LocalDate.now() as LocalDate
+    var referenceDate = LocalDate.now() as LocalDate
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -30,14 +29,21 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
 
         // Set the calendar with values
         setMonthView()
+
+        val navbarFragment = NavigationBar()
+
+        // Add navbar fragment to the activity
+        supportFragmentManager.beginTransaction()
+            .add(R.id.navbarFrame, navbarFragment)
+            .commit()
     }
 
     // Method to set the current month view
     private fun setMonthView()
     {
         // Gets the amount of days in the current month
-        monthYearText.text = monthYearFromDate(selectedDate)
-        val daysInMonth = daysInMonthArray(selectedDate)
+        monthYearText.text = monthYearFromDate(referenceDate)
+        val daysInMonth = daysInMonthArray(referenceDate)
 
         // Set adapter with those days to display on the calendar with a grid layout
         val calendarAdapter = CalendarAdapter(daysInMonth, this)
@@ -55,7 +61,7 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
 
         // Get the info of the given month to help with displaying it properly
         val daysInMonth = yearMonth.lengthOfMonth()
-        val firstOfMonth = selectedDate.withDayOfMonth(1)
+        val firstOfMonth = referenceDate.withDayOfMonth(1)
         val dayOfWeek = firstOfMonth.dayOfWeek.value
 
         // Loop through the total grid size of a calendar to set elements appropriately (6x7 = 42)
@@ -84,22 +90,24 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
     // Switches view to the previous month
     fun previousMonthAction(view: View)
     {
-        selectedDate = selectedDate.minusMonths(1)
+        referenceDate = referenceDate.minusMonths(1)
         setMonthView()
     }
 
     // Switches the view to the next month
     fun nextMonthAction(view: View)
     {
-        selectedDate = selectedDate.plusMonths(1)
+        referenceDate = referenceDate.plusMonths(1)
         setMonthView()
     }
 
     // Activates the onclick when a day is selected from the calendar
     override fun onItemClick(position: Int, dayText: String) {
         if (dayText != "") {
+            val selectedDate = "${referenceDate.toString().substringBeforeLast('-')}-$dayText"
             val dailyActivityIntent = Intent(this, OnDateActivity::class.java)
-            dailyActivityIntent.putExtra("selectedDate",selectedDate.toString())
+            dailyActivityIntent.putExtra("selectedDate",selectedDate)
+            startActivity(dailyActivityIntent)
         }
     }
 }

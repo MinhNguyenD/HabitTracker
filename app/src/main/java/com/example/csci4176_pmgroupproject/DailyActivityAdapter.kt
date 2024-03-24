@@ -9,20 +9,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 
-class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, private var clickListener: TodoItemClickListener) : RecyclerView.Adapter<DailyActivityAdapter.DailyActivityViewHolder>(){
+class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, private var clickListener: TodoItemClickListener?, private var itemLayout : Int) : RecyclerView.Adapter<DailyActivityAdapter.DailyActivityViewHolder>(){
 
+    constructor(activities : ArrayList<ActivityModel>, itemLayout : Int) : this(activities, null, itemLayout)
     inner class DailyActivityViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val activityTitleView : TextView = itemView.findViewById(R.id.activityTitle)
         val streak : TextView = itemView.findViewById(R.id.streak)
         val progress : TextView = itemView.findViewById(R.id.progress)
-        val finishButton : Button = itemView.findViewById(R.id.finishButton)
+        val finishButton : Button? = itemView.findViewById(R.id.finishButton)
         init {
-            finishButton.setOnClickListener{
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val finishIntent = Intent(itemView.context, FinishActivity::class.java)
-                    itemView.context.startActivity(finishIntent)
-                    clickListener.onItemFinishClick(position)
+            if(finishButton != null){
+                finishButton.setOnClickListener{
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val finishIntent = Intent(itemView.context, FinishActivity::class.java)
+                        itemView.context.startActivity(finishIntent)
+                        if(clickListener != null){
+                            clickListener?.onItemFinishClick(position)
+                        }
+                    }
                 }
             }
         }
@@ -33,7 +38,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyActivityViewHolder {
         // Inflate the city item layout and create a new CityViewHolder
-        val activityItemView = LayoutInflater.from(parent.context).inflate(R.layout.acitivity_item, parent, false)
+        val activityItemView = LayoutInflater.from(parent.context).inflate(itemLayout, parent, false)
         return DailyActivityViewHolder(activityItemView)
     }
 
