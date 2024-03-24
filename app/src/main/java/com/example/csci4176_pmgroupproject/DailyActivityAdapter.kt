@@ -23,6 +23,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
                         val finishIntent = Intent(itemView.context, FinishActivity::class.java)
+                    	finishIntent.putExtra("selectedActivityId", activities[position].taskId)
                         itemView.context.startActivity(finishIntent)
                         if(clickListener != null){
                             clickListener?.onItemFinishClick(position)

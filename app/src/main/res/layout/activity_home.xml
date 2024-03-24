@@ -60,15 +60,16 @@
         app:layout_constraintTop_toTopOf="@+id/scrollViewLayout" />
 
     <ScrollView
-        android:id="@+id/scrollViewLayout"
-        android:layout_width="387dp"
-        android:layout_height="193dp"
+        android:id="@+id/scrollViewLayout"  
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_marginStart="10dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar">
+        app:layout_constraintTop_toBottomOf="@+id/progressBar"
+        app:layout_constraintBottom_toTopOf="@+id/navbarFrame">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dailyActivityList"
@@ -83,5 +84,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
