@@ -93,6 +93,31 @@ object DatabaseAPI {
     }
 
     /**
+     * log out current user
+     */
+    fun logOutUser(){
+        auth.signOut()
+    }
+
+
+    /**
+     * Retrieves current User from the database.
+     * @param callback: A callback function to handle the retrieved user.
+     */
+    fun getCurrentUser(callback: (User) -> Unit){
+        return users.child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Retrieve the activity object from the dataSnapshot
+                user = dataSnapshot.getValue(User::class.java)!!
+                callback(user)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
+    }
+
+    /**
      * Retrieves an activity from the database by its ID.
      * @param id: The ID of the activity to retrieve.
      * @param callback: A callback function to handle the retrieved activity.
@@ -106,7 +131,7 @@ object DatabaseAPI {
                     callback(activity)
                 } else {
                     // Activity not found
-                    Log.w("Error:", "Activity not found" )
+                    Log.e("Error:", "Activity not found" )
                 }
             }
 
