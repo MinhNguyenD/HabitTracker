@@ -1,5 +1,6 @@
 package com.example.csci4176_pmgroupproject
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -97,10 +98,8 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
     // Activates the onclick when a day is selected from the calendar
     override fun onItemClick(position: Int, dayText: String) {
         if (dayText != "") {
-
-            // To see implementation of onClick uncomment this along with associated code in CalendarAdapter
-//            val message = "Selected Date $dayText ${monthYearFromDate(selectedDate)}"
-//            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            val dailyActivityIntent = Intent(this, OnDateActivity::class.java)
+            dailyActivityIntent.putExtra("selectedDate",selectedDate.toString())
         }
     }
 }

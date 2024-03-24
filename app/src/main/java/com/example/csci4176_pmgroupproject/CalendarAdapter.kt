@@ -48,8 +48,7 @@ class CalendarViewHolder(
     // OnClick to do something when a day is selected
     override fun onClick(view: View?)
     {
-        // Example implementation of onClick, uncomment along with associated line in CalendarActivity to see
-        // onItemListener.onItemClick(adapterPosition, dayOfMonth.text.toString())
+        onItemListener.onItemClick(adapterPosition, dayOfMonth.text.toString())
     }
 
 }
