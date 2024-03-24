@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         progressTextView = findViewById(R.id.progressText)
         dailyActivityView = findViewById(R.id.dailyActivityList)
         dailyActivityView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val navbarFragment = NavigationBar()
+        val navbarFragment = NavigationBar(this)
 
         // Add navbar fragment to the activity
         supportFragmentManager.beginTransaction()

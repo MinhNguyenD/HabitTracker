@@ -1,5 +1,6 @@
 package com.example.csci4176_pmgroupproject
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class NavigationBar : Fragment() {
+class NavigationBar(context : Context) : Fragment() {
     private lateinit var bottomNavigationBar: BottomNavigationView
 
     override fun onCreateView(
@@ -18,6 +19,16 @@ class NavigationBar : Fragment() {
         // Inflate the layout for this fragment
         val navBarView = inflater.inflate(R.layout.fragment_navigation_bar, container, false)
         bottomNavigationBar = navBarView.findViewById(R.id.bottomNavbar)
+
+        // Set the selected item based on the current activity
+        when (context) {
+            is HomeActivity -> bottomNavigationBar.selectedItemId = R.id.home
+            is CalendarActivity ->  bottomNavigationBar.selectedItemId = R.id.calendar
+//            is ManageActivity -> bottomNavigationBar.selectedItemId = R.id.manage
+//            is FriendActivity -> bottomNavigationBar.selectedItemId = R.id.friends
+//            is AccountActivity -> bottomNavigationBar.selectedItemId = R.id.account
+        }
+
         bottomNavigationBar.setOnItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.home -> {
