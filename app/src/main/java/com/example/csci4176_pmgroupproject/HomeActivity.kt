@@ -49,11 +49,11 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
             activityAdapter =  DailyActivityAdapter(dailyActivityList, this, R.layout.acitivity_item)
             dailyActivityView.adapter = activityAdapter
             numActivities = activityAdapter.itemCount
+            DatabaseAPI.saveDailyActivities(dailyActivityList)
             initToday()
             initProgress()
             displayNoActivity()
         }
-        DatabaseAPI.saveDailyActivities(dailyActivityList)
         AlarmScheduler.scheduleEndOfDayCheck(this)
     }
 
