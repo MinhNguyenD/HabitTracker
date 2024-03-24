@@ -78,7 +78,7 @@ class OnDateActivity : AppCompatActivity(){
                     averageEnergy.text = "${ActivityEnergy.entries[avgEnergy]}"
                 } else {
                     // Display default values if no activities found for the selected date
-                    numActivities.text = "100%"
+                    completionPercentage.text = "0%"
                     numActivities.text = "0"
                     averageMood.text = "None"
                     averageEnergy.text = "None"
