@@ -8,7 +8,21 @@
         android:id="@+id/textView_habit_item_recyclerview_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="editText"/>
+        android:text="editText" />
+
+    <EditText
+        android:id="@+id/editText_habit_item_recyclerview_item"
+        android:layout_width="298dp"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/saveBtn_habit_item_recyclerview_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="310dp"
+        android:text="Save"
+        android:visibility="gone"/>
 </FrameLayout>
 
 <!--textView_habit_item_recyclerview_item-->

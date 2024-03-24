@@ -13,7 +13,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 
 
 class HabitCategorie : AppCompatActivity() {
@@ -32,7 +31,10 @@ class HabitCategorie : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.habit_item)
 
-        // Listen for changes in the "habit" node in the database
+        val addCategoryBtn: ImageButton = findViewById(R.id.addCategoryButton)
+        val categories = mutableListOf<String>()
+
+        // Check if the default habits exist in the database
         habitsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // If there are no children in the "habit" node, add the default categories in
@@ -53,9 +55,6 @@ class HabitCategorie : AppCompatActivity() {
             }
         })
 
-        val addCategoryBtn: ImageButton = findViewById(R.id.addCategoryButton)
-        val categories = mutableListOf<String>()
-
         // Retrieve all the habit names from the database
         habitsRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -75,8 +74,9 @@ class HabitCategorie : AppCompatActivity() {
                 val recyclerView: RecyclerView = findViewById(R.id.categoryRecyclerView)
                 connectAdapter(recyclerView, customAdapter)
 
-                customAdapter.setOnClickListener(object : Habit_Categories_Adapter.OnClickListener {
-                    override fun onClick(position: Int) {
+                // Set a listener to listen for clicks on each item in the list of the categories
+                customAdapter.setOnClickItemListener(object : Habit_Categories_Adapter.OnClickItemListener {
+                    override fun onClickItem(position: Int) {
                         //TODO: Move to the Create_Activity screen
                         Toast.makeText(
                             this@HabitCategorie, "You Selected: "+ categories[position],
@@ -85,11 +85,34 @@ class HabitCategorie : AppCompatActivity() {
                     }
                 })
 
+                // Set a listener to listen for clicks on the save button
+                customAdapter.setOnClickSaveItemListener(object : Habit_Categories_Adapter.OnClickSaveItemListener {
+                    override fun onClickSaveItem(newCategoryName: String) {
+                        // Add the new category name to the database
+                        addCustomCategory(newCategoryName)
+
+                        // Notify the adapter to leave "Adding category" mode
+                        customAdapter.setIsAddingCategory(false)
+
+                        // Refresh the page with the newly added category
+                        customAdapter.notifyItemInserted(categories.size-1)
+
+                        // Display a pop-up message to the user
+                        Toast.makeText(
+                            this@HabitCategorie, "The new category ${newCategoryName} " +
+                                    "has been added!", Toast.LENGTH_LONG
+                        ).show()
+                    }
+                })
+
+                // Set a listener to listen for clicks on the top right "Add category" button
                 addCategoryBtn.setOnClickListener{
-                    // TODO: Create a space to add a new category then use addCustomCategory() to add to db
-                    // Temporary testing values
-                    addCustomCategory("testing3")
-                    categories.add("testing3")
+                    // Notify the adapter to go to "Adding category" mode
+                    customAdapter.setIsAddingCategory(true)
+                    categories.add("")
+                    customAdapter.setNewItemPosition(categories.size-1)
+                    recyclerView.smoothScrollToPosition(categories.size - 1)
+
                     customAdapter.notifyItemInserted(categories.size)
                 }
             }
@@ -108,6 +131,7 @@ class HabitCategorie : AppCompatActivity() {
         recyclerView.adapter = customAdapter
     }
 
+    // This function adds a custom category for currently logged in user to the database
     fun addCustomCategory(habitName: String){
         // Generate a unique key for the new habit
         val habitId = habitsRef.push().key
@@ -129,6 +153,7 @@ class HabitCategorie : AppCompatActivity() {
         }
     }
 
+    // This function adds the default categories to the database ONLY if the database has no content under the "habit" node
     fun addDefaultCategories(){
         // Iterate through the list of default habits and add them to the database
         for (habitName in defaultHabits) {
