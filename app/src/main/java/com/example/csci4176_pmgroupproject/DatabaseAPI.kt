@@ -1,6 +1,7 @@
 package com.example.csci4176_pmgroupproject
 
 import android.util.Log
+import com.example.csci4176_pmgroupproject.Model.ActivityChainModel
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
 import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
@@ -258,5 +259,13 @@ object DatabaseAPI {
      */
     fun deleteActivity(activityId: String): Task<Void> {
         return activities.child(activityId).removeValue()
+    }
+
+    fun addChainActivity(chain: ActivityChainModel): Task<Void>{
+        val newActivityRef = activities.push()
+
+        chain.chainId = newActivityRef.key!!
+
+        return newActivityRef.setValue(chain)
     }
 }
