@@ -32,7 +32,7 @@ class loginActivity : AppCompatActivity(){
                             /**Temporary**/
                             Toast.makeText(baseContext, "Login Successful!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
-                            // Launch next task with this user
+                            startActivity(Intent(this, HomeActivity::class.java))
                         } else
                         {
                             // Alert the user the credentials aren't valid
