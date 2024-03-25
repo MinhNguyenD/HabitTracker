@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSCI4176_PMGroupProject"
         tools:targetApi="31">
-<!--    Main Activity-->
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" />
+        <!-- Main Activity -->
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
@@ -27,8 +30,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-<!--    Login Activity-->
+        </activity> <!-- Login Activity -->
         <activity
             android:name=".loginActivity"
             android:exported="true">
@@ -37,8 +39,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-<!--    SignUp Activity-->
+        </activity> <!-- SignUp Activity -->
         <activity
             android:name=".SignUpActivity"
             android:exported="true">
@@ -48,10 +49,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".EndOfDayReceiver" android:enabled="true" android:exported="false" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+        <receiver
+            android:name=".EndOfDayReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

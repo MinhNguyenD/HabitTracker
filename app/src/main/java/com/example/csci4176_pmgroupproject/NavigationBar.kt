@@ -39,6 +39,11 @@ class NavigationBar : Fragment() {
                     //startActivity(Intent(this.activity, FriendsActivity::class.java))//this is only for testing rn
                     true
                 }
+
+                R.id.account -> {
+                    startActivity(Intent(this.activity, AccountActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }
