@@ -1,5 +1,6 @@
 package com.example.csci4176_pmgroupproject
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -57,7 +58,7 @@ class create_activity : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        repeatFrequency = ActivityModelRepeat.WEEKLY
         val activityTitleView = view.findViewById<EditText>(R.id.new_activity_title)
         val activityNoteSection = view.findViewById<EditText>(R.id.new_activity_note)
         val activityCreateButton = view.findViewById<Button>(R.id.create_activity_button)
@@ -107,7 +108,15 @@ class create_activity : Fragment() {
         activityCreateButton.setOnClickListener {
             val title = activityTitleView.text.toString()
             val note = activityNoteSection.text.toString()
-            Log.w("Activity Create", "All Values: Title: ${title}, Days of the week: ${daysOfWeek}," +
+            var days = "["
+            for (i in 0..<daysOfWeek.size){
+                if (i != daysOfWeek.size - 1) {
+                    days += daysOfWeek[i].toString() + ", "
+                }else {
+                    days += daysOfWeek[i].toString() + "]"
+                }
+            }
+            Log.w("Activity Create", "All Values: Title: ${title}, Days of the week: ${days}," +
                     " Repeat Frequency: ${repeatFrequency.toString()}, Activity Type: ${activityType.toString()}," +
                     "Note: $note")
         }
@@ -136,8 +145,15 @@ class create_activity : Fragment() {
 
 
     private fun REPSwitchListener(toggle: ToggleButton, index: Int){
+        if (index == 1){
+            // Default on:
+            REPtoggles[index].isChecked = true
+            REPtoggles[index].backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
+            repeatFrequency = REPEnums[index]
+        }
         toggle.setOnCheckedChangeListener { button, checked ->
             if (checked){
+                button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
                 if (index == 0){
                     for (toggle in DOWtoggles){
                         toggle.isChecked = true;
@@ -146,9 +162,18 @@ class create_activity : Fragment() {
                 for (toggle in REPtoggles){
                     if (toggle != button){
                         toggle.isChecked = false;
+                        toggle.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
                     }
                 }
                 repeatFrequency = REPEnums[index]
+            } else if (index == 0){
+                button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
+                REPtoggles[1].isChecked = true
+                REPtoggles[1].backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
+                repeatFrequency = REPEnums[1]
+                for (toggle in DOWtoggles){
+                    toggle.isChecked = false;
+                }
             }
         }
     }
@@ -156,6 +181,11 @@ class create_activity : Fragment() {
     private fun DOWSwitchListener(toggle: ToggleButton, index:Int){
        toggle.setOnCheckedChangeListener { button, checked ->
            daysOfWeek[index] = checked
+           if (checked){
+               button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
+           }else {
+               button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
+           }
        }
     }
 }
