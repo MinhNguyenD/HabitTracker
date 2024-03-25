@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.RadioGroup
 import android.widget.ToggleButton
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,9 +31,11 @@ class create_activity : Fragment() {
         ActivityModelRepeat.TRI_WEEKLY,
         ActivityModelRepeat.MONTHLY
         )
-    private lateinit var repeatFrequency: ActivityModelRepeat;
     private lateinit var DOWtoggles: Array<ToggleButton>;
     private lateinit var REPtoggles: Array<ToggleButton>;
+
+    private lateinit var repeatFrequency: ActivityModelRepeat;
+    private lateinit var activityType: ActivityModelEnums;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +82,22 @@ class create_activity : Fragment() {
         )
         for (i in 0..<REPtoggles.size){
             REPSwitchListener(REPtoggles[i], i)
+        }
+
+        /* Activity Type Selection */
+        val radioGroup = view.findViewById<RadioGroup>(R.id.activity_type)
+        radioGroup.setOnCheckedChangeListener { group, i ->
+            when (group.checkedRadioButtonId){
+                R.id.checkable_radio -> {
+                    activityType = ActivityModelEnums.CHECKED
+                }
+                R.id.timed_radio -> {
+                    activityType = ActivityModelEnums.TIMED
+                }
+                R.id.countable_radio -> {
+                    activityType = ActivityModelEnums.COUNTABLE
+                }
+            }
         }
 
     }
