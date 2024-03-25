@@ -56,7 +56,7 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
     private fun daysInMonthArray(date: LocalDate): ArrayList<String>
     {
         // Initialize the array to return and use the given date to get the YearMonth date-time object
-        val daysInMonthArray = ArrayList<String>()
+        var daysInMonthArray = ArrayList<String>()
         val yearMonth = YearMonth.from(date)
 
         // Get the info of the given month to help with displaying it properly
@@ -74,6 +74,17 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
             // If it should be added format it appropriately and add it to the array
             else
             { daysInMonthArray.add((i - dayOfWeek).toString()) }
+        }
+
+        // Take the first 7 elements of the array and check to see if they're all empty
+        var first7 = daysInMonthArray.take(7)
+        if (first7.all { it == ""})
+        {
+            // If so swap them to the end of the array so the calendar starts in the top row
+            daysInMonthArray = daysInMonthArray.drop(7) as ArrayList<String>
+
+            repeat(7)
+            { daysInMonthArray.add("") }
         }
 
         // Return the array containing the days in the month properly padded
