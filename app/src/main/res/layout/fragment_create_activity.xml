@@ -235,8 +235,8 @@
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
-                android:textOff="@string/custom"
-                android:textOn="@string/daily"
+                android:textOff="@string/daily"
+                android:textOn="@string/custom"
                 android:textSize="8sp"
                 app:cornerRadius="8dp" />
 
