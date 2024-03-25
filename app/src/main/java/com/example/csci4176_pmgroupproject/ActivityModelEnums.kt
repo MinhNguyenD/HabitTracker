@@ -2,7 +2,7 @@ package com.example.csci4176_pmgroupproject
 
 enum class ActivityModelEnums { CHECKED, TIMED, COUNTABLE }
 
-enum class ActivityModelRepeat { NEVER, DAILY, WEEKLY, BI_WEEKLY, TRI_WEEKLY, MONTHLY, CUSTOM }
+enum class ActivityModelRepeat { DAILY, WEEKLY, BI_WEEKLY, TRI_WEEKLY, MONTHLY }
 
 enum class ActivityModelDays { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY }
 

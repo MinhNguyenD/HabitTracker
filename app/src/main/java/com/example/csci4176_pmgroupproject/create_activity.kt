@@ -23,6 +23,16 @@ class create_activity : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var daysOfWeek = arrayOf(false, false, false, false, false, false, false)
+    private var REPEnums = arrayOf(
+        ActivityModelRepeat.DAILY,
+        ActivityModelRepeat.WEEKLY,
+        ActivityModelRepeat.BI_WEEKLY,
+        ActivityModelRepeat.TRI_WEEKLY,
+        ActivityModelRepeat.MONTHLY
+        )
+    private lateinit var repeatFrequency: ActivityModelRepeat;
+    private lateinit var DOWtoggles: Array<ToggleButton>;
+    private lateinit var REPtoggles: Array<ToggleButton>;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +55,8 @@ class create_activity : Fragment() {
 
         val activityTitleView = view.findViewById<EditText>(R.id.new_activity_title)
         val activityNoteSection = view.findViewById<EditText>(R.id.new_activity_note)
-        /* Selected Days */
-        val DOWtoggles = arrayOf(view.findViewById<ToggleButton>(R.id.dow_sunday),
+        /* Selected Days get Toggles */
+        DOWtoggles = arrayOf(view.findViewById<ToggleButton>(R.id.dow_sunday),
             view.findViewById<ToggleButton>(R.id.dow_monday),
             view.findViewById<ToggleButton>(R.id.dow_tuesday),
             view.findViewById<ToggleButton>(R.id.dow_wednesday),
@@ -54,9 +64,21 @@ class create_activity : Fragment() {
             view.findViewById<ToggleButton>(R.id.dow_friday),
             view.findViewById<ToggleButton>(R.id.dow_saturday)
         )
-        /* set listen for all */
-        for (i in 0..6){
+        /* set listen for all day toggles */
+        for (i in 0..<DOWtoggles.size){
             DOWSwitchListener(DOWtoggles[i], i)
+        }
+
+        /* Repeat Frequency Toggles */
+        REPtoggles = arrayOf(
+            view.findViewById<ToggleButton>(R.id.repeat_daily),
+            view.findViewById<ToggleButton>(R.id.repeat_weekly),
+            view.findViewById<ToggleButton>(R.id.repeat_biweekly),
+            view.findViewById<ToggleButton>(R.id.repeat_triweekly),
+            view.findViewById<ToggleButton>(R.id.repeat_monthly)
+        )
+        for (i in 0..<REPtoggles.size){
+            REPSwitchListener(REPtoggles[i], i)
         }
 
     }
@@ -81,6 +103,24 @@ class create_activity : Fragment() {
             }
     }
 
+
+    private fun REPSwitchListener(toggle: ToggleButton, index: Int){
+        toggle.setOnCheckedChangeListener { button, checked ->
+            if (checked){
+                if (index == 0){
+                    for (toggle in DOWtoggles){
+                        toggle.isChecked = true;
+                    }
+                }
+                for (toggle in REPtoggles){
+                    if (toggle != button){
+                        toggle.isChecked = false;
+                    }
+                }
+                repeatFrequency = REPEnums[index]
+            }
+        }
+    }
 
     private fun DOWSwitchListener(toggle: ToggleButton, index:Int){
        toggle.setOnCheckedChangeListener { button, checked ->
