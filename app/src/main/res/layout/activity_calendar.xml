@@ -25,8 +25,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/back"
-                android:textColor="@color/blue"
-                android:background="@null"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
                 android:textStyle="bold"
                 android:onClick="previousMonthAction"
                 android:textSize="20sp"/>
@@ -46,8 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/forward"
-                android:textColor="@color/blue"
-                android:background="@null"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
                 android:textStyle="bold"
                 android:onClick="nextMonthAction"
                 android:textSize="20sp"/>
