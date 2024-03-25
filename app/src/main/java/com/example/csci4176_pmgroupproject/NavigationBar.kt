@@ -43,9 +43,7 @@ class NavigationBar : Fragment() {
                 }
 
                 R.id.account -> {
-                    if (this.activity !is AccountActivity) {
-                        startActivity(Intent(this.activity, AccountActivity::class.java))
-                    }
+                    startActivity(Intent(this.activity, AccountActivity::class.java))
                     true
                 }
                 else -> false
