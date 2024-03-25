@@ -82,7 +82,7 @@ object DatabaseAPI {
      * @return Task<Void>: The result of the database operation.
      */
     fun updateUser(uid: String, username:String): Task<Void> {
-        user = User(currentUser.uid)
+        user = User(currentUser.uid, "")
         user.username = username
         return users.child(uid).setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful){
