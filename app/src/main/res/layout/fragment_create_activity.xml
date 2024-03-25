@@ -380,7 +380,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/create_activity_button"
             android:layout_width="150dp"
             android:layout_height="48dp"
             android:layout_gravity="center"

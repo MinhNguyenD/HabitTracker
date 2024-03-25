@@ -1,10 +1,12 @@
 package com.example.csci4176_pmgroupproject
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.ToggleButton
@@ -58,6 +60,8 @@ class create_activity : Fragment() {
 
         val activityTitleView = view.findViewById<EditText>(R.id.new_activity_title)
         val activityNoteSection = view.findViewById<EditText>(R.id.new_activity_note)
+        val activityCreateButton = view.findViewById<Button>(R.id.create_activity_button)
+
         /* Selected Days get Toggles */
         DOWtoggles = arrayOf(view.findViewById<ToggleButton>(R.id.dow_sunday),
             view.findViewById<ToggleButton>(R.id.dow_monday),
@@ -98,6 +102,14 @@ class create_activity : Fragment() {
                     activityType = ActivityModelEnums.COUNTABLE
                 }
             }
+        }
+
+        activityCreateButton.setOnClickListener {
+            val title = activityTitleView.text.toString()
+            val note = activityNoteSection.text.toString()
+            Log.w("Activity Create", "All Values: Title: ${title}, Days of the week: ${daysOfWeek}," +
+                    " Repeat Frequency: ${repeatFrequency.toString()}, Activity Type: ${activityType.toString()}," +
+                    "Note: $note")
         }
 
     }
