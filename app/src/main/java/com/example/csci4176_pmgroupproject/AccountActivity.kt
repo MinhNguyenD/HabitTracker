@@ -1,40 +1,34 @@
 package com.example.csci4176_pmgroupproject
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 
-class AccountActivity : AppCompatActivity() {
+class AccountActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
-        val navigationFragment = NavigationBar()
-        supportFragmentManager.beginTransaction().add(R.id.navbarFrame, navigationFragment).commit()
+        val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+        val nightMode = sharedPreferences.getBoolean("night",false)
 
         val changeThemeSwitch = findViewById<Switch>(R.id.modeSwitch)
+        changeThemeSwitch.isChecked = nightMode
 
-        // Check the current mode and update the switch position accordingly
-        val isNightMode = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-        changeThemeSwitch.isChecked = isNightMode
+        val editor = sharedPreferences.edit()
 
         changeThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            val newNightMode = if (isChecked) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
+            if (!isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                editor.putBoolean("night", false)
+                editor.apply()
 
-            if (newNightMode != AppCompatDelegate.getDefaultNightMode()) {
-                // Apply the new theme
-                try {
-                    AppCompatDelegate.setDefaultNightMode(newNightMode)
-                    recreate() // Recreate the activity to apply the new theme
-                } catch (e: Exception) {
-                    Log.e("AccountActivity", "Error changing theme: ${e.message}")
-                }
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putBoolean("night",true)
+                editor.apply()
             }
         }
     }

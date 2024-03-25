@@ -13,41 +13,34 @@
         android:theme="@style/Theme.CSCI4176_PMGroupProject"
         tools:targetApi="31">
         <activity
-            android:name=".AccountActivity"
+            android:name=".BaseActivity"
             android:exported="false" />
-        <!-- Main Activity -->
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" /> <!-- Main Activity -->
         <activity
             android:name=".HomeActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".FinishActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity> <!-- Login Activity -->
         <activity
             android:name=".loginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity> <!-- SignUp Activity -->
         <activity
             android:name=".SignUpActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
         </activity>
 
         <receiver
