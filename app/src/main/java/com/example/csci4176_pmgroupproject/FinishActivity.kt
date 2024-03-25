@@ -50,6 +50,7 @@ class FinishActivity : AppCompatActivity() {
         // Set onClickListeners for save and delete buttons
         saveButton.setOnClickListener {
             submitForm()
+            reward()
             finish()
         }
         deleteButton.setOnClickListener {
@@ -65,5 +66,12 @@ class FinishActivity : AppCompatActivity() {
         // TODO: update emotion and energy
         selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
         DatabaseAPI.updateActivity(selectedActivity)
+    }
+
+    /**
+     * When user finish a activity, give a reward
+     */
+    private fun reward(){
+        // TODO: add reward details
     }
 }
