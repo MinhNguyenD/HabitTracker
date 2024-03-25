@@ -81,7 +81,7 @@ object DatabaseAPI {
      * @return Task<Void>: The result of the database operation.
      */
     fun updateUser(uid: String, username:String): Task<Void> {
-        user = User(currentUser.uid, "")
+        user = User(currentUser.uid)
         user.username = username
         return users.child(uid).setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful){
@@ -90,6 +90,31 @@ object DatabaseAPI {
                 Log.w("Sign-up: Error","An Error occurred!")
             }
         }
+    }
+
+    /**
+     * log out current user
+     */
+    fun logOutUser(){
+        auth.signOut()
+    }
+
+
+    /**
+     * Retrieves current User from the database.
+     * @param callback: A callback function to handle the retrieved user.
+     */
+    fun getCurrentUser(callback: (User) -> Unit){
+        return users.child(currentUser.uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Retrieve the activity object from the dataSnapshot
+                user = dataSnapshot.getValue(User::class.java)!!
+                callback(user)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
     }
 
     /**
@@ -106,7 +131,7 @@ object DatabaseAPI {
                     callback(activity)
                 } else {
                     // Activity not found
-                    Log.w("Error:", "Activity not found" )
+                    Log.e("Error:", "Activity not found" )
                 }
             }
 
