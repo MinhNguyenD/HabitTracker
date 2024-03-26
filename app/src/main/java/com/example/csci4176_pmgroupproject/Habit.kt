@@ -1,5 +1,4 @@
 package com.example.csci4176_pmgroupproject
 
-class Habit(val name: String) {
-    lateinit var Activities: ArrayList<TaskModel>
-}
+// For default habit categories, the userID will be null
+data class Habit(var habitId: String, val userId: String?, val habitName: String)
