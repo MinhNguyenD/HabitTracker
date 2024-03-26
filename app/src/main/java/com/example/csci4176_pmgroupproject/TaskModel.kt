@@ -33,6 +33,9 @@ class TimedTaskModel(title: String, var startTime: Long)
          * this task/activity.
          * @return: [Current Time] - [Start Time]
          */
+        fun startActivity(){
+            this.startTime = Date().time
+        }
         fun endActivity(): Long{
             return Date().time - startTime
         }
