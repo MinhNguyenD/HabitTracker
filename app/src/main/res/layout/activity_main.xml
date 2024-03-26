@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.csci4176_pmgroupproject.create_activity"
+        android:name="com.example.csci4176_pmgroupproject.CreateActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="189dp"
