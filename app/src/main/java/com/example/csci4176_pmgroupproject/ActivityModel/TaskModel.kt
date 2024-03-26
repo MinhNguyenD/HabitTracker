@@ -1,15 +1,19 @@
 package com.example.csci4176_pmgroupproject.ActivityModel
 
 import java.util.Date
+import java.util.UUID
 
 /*ActivityModel Redesigned*/
 abstract class TaskModel (val title: String, val type: ActivityModelEnums,
                           var days: Array<ActivityModelDays>, var frequency: ActivityModelRepeat)
 {
+    private val id: UUID = UUID.randomUUID()
     private var streak: Int = 0
     private lateinit var mood: ActivityMood
     private lateinit var energy: ActivityEnergy
     private var note: String = ""
+
+    fun getActivityID(): UUID{ return id; }
     fun updateStreak(){ streak++; }
 
     fun breakStreak(){ streak = 0 }
