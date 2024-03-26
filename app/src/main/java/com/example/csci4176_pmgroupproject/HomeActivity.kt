@@ -17,7 +17,7 @@ import kotlin.math.ceil
 /**
  * HomeActivity: Displays the home screen with a list of daily activities and progress bar.
  */
-class HomeActivity : AppCompatActivity(), TodoItemClickListener {
+class HomeActivity : BaseActivity(), TodoItemClickListener {
     private var progress = 0
     private var numActivities = 0
     private var percentageIncrease = 0
@@ -36,12 +36,6 @@ class HomeActivity : AppCompatActivity(), TodoItemClickListener {
         progressTextView = findViewById(R.id.progressText)
         dailyActivityView = findViewById(R.id.dailyActivityList)
         dailyActivityView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        val navbarFragment = NavigationBar()
-
-        // Add navbar fragment to the activity
-        supportFragmentManager.beginTransaction()
-            .add(R.id.navbarFrame, navbarFragment)
-            .commit()
 
         // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
