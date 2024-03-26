@@ -91,6 +91,9 @@ class CreateActivity : Fragment() {
 
         /* Activity Type Selection */
         val radioGroup = view.findViewById<RadioGroup>(R.id.activity_type)
+        // Default checked:
+        radioGroup.check(R.id.checkable_radio)
+        /* RadioGroup checking functionality */
         radioGroup.setOnCheckedChangeListener { group, i ->
             when (group.checkedRadioButtonId){
                 R.id.checkable_radio -> {
