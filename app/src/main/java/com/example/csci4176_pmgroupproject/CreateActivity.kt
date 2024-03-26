@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.ToggleButton
+import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelEnums
+import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelRepeat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

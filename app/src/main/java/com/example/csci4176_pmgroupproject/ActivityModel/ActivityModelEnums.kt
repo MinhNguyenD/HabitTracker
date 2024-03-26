@@ -1,4 +1,4 @@
-package com.example.csci4176_pmgroupproject
+package com.example.csci4176_pmgroupproject.ActivityModel
 
 enum class ActivityModelEnums { CHECKED, TIMED, COUNTABLE }
 
