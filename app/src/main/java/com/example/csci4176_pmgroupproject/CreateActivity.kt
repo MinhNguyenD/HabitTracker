@@ -10,9 +10,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
+import android.widget.Toast
 import android.widget.ToggleButton
+import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelDays
 import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelEnums
 import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelRepeat
+import com.example.csci4176_pmgroupproject.ActivityModel.CheckedTaskModel
+import com.example.csci4176_pmgroupproject.ActivityModel.CountableTaskModel
+import com.example.csci4176_pmgroupproject.ActivityModel.TaskModel
+import com.example.csci4176_pmgroupproject.ActivityModel.TimedTaskModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,6 +48,8 @@ class CreateActivity : Fragment() {
     private lateinit var repeatFrequency: ActivityModelRepeat;
     private lateinit var activityType: ActivityModelEnums;
 
+    private lateinit var countContainer: EditText;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -64,6 +72,7 @@ class CreateActivity : Fragment() {
         val activityTitleView = view.findViewById<EditText>(R.id.new_activity_title)
         val activityNoteSection = view.findViewById<EditText>(R.id.new_activity_note)
         val activityCreateButton = view.findViewById<Button>(R.id.create_activity_button)
+        countContainer = view.findViewById(R.id.new_activity_count)
 
         /* Selected Days get Toggles */
         DOWtoggles = arrayOf(view.findViewById<ToggleButton>(R.id.dow_sunday),
@@ -93,37 +102,31 @@ class CreateActivity : Fragment() {
 
         /* Activity Type Selection */
         val radioGroup = view.findViewById<RadioGroup>(R.id.activity_type)
-        // Default checked:
-        radioGroup.check(R.id.checkable_radio)
         /* RadioGroup checking functionality */
-        radioGroup.setOnCheckedChangeListener { group, i ->
-            when (group.checkedRadioButtonId){
-                R.id.checkable_radio -> {
-                    activityType = ActivityModelEnums.CHECKED
-                }
-                R.id.timed_radio -> {
-                    activityType = ActivityModelEnums.TIMED
-                }
-                R.id.countable_radio -> {
-                    activityType = ActivityModelEnums.COUNTABLE
-                }
-            }
-        }
+        radioGroupListener(radioGroup)
+        radioGroup.check(R.id.checkable_radio)
 
         activityCreateButton.setOnClickListener {
             val title = activityTitleView.text.toString()
             val note = activityNoteSection.text.toString()
-            var days = "["
-            for (i in 0..<daysOfWeek.size){
-                if (i != daysOfWeek.size - 1) {
-                    days += daysOfWeek[i].toString() + ", "
+
+            if (title.isNotEmpty()){
+                if (repeatFrequency == ActivityModelRepeat.DAILY){
+                    // No need to store days of the week.
+                    createActivity(title, note, emptyArray())
                 }else {
-                    days += daysOfWeek[i].toString() + "]"
+                    val days:Array<ActivityModelDays> = getDaysOfWeekArray()
+                    if (days.isNotEmpty()){
+                        createActivity(title, note, days)
+                        // Complete activity creation
+                    } else{
+                        makeMsg("Please select at least 1 day!")
+                    }
                 }
+            } else {
+                makeMsg("Please give the activity a title!")
             }
-            Log.w("Activity Create", "All Values: Title: ${title}, Days of the week: ${days}," +
-                    " Repeat Frequency: ${repeatFrequency.toString()}, Activity Type: ${activityType.toString()}," +
-                    "Note: $note")
+
         }
 
     }
@@ -192,5 +195,75 @@ class CreateActivity : Fragment() {
                button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
            }
        }
+    }
+
+    private fun radioGroupListener(radioGroup: RadioGroup){
+        radioGroup.setOnCheckedChangeListener { group, i ->
+            when (group.checkedRadioButtonId){
+                R.id.checkable_radio -> {
+                    activityType = ActivityModelEnums.CHECKED
+                    countContainer.visibility = android.view.View.GONE
+                }
+                R.id.timed_radio -> {
+                    activityType = ActivityModelEnums.TIMED
+                    countContainer.visibility = android.view.View.GONE
+                }
+                R.id.countable_radio -> {
+                    activityType = ActivityModelEnums.COUNTABLE
+                    countContainer.visibility = android.view.View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun createActivity(title: String, note:String, days:Array<ActivityModelDays>){
+        // TODO: Connect to database
+        var model: TaskModel
+        when (activityType){
+            ActivityModelEnums.CHECKED -> {
+                model = CheckedTaskModel(title, days, repeatFrequency)
+            }
+            ActivityModelEnums.TIMED -> {
+                model = TimedTaskModel(title, days, repeatFrequency)
+            }
+            // TODO: Figure out how to prevent object creation
+            ActivityModelEnums.COUNTABLE -> {
+                model = CountableTaskModel(title, days, repeatFrequency)
+                val count = countContainer.text.toString()
+                if (count.isNotEmpty()) run {
+                    val cmodel: CountableTaskModel = model
+                    cmodel.setRemaining(count.toInt())
+                } else {
+                    makeMsg("Count was not set. Set a count later")
+                }
+            }
+        }
+        model.makeNote(note)
+        makeMsg("Success!")
+        Log.w("Create Activity", "Model: ${model.title} | ${model.type}" +
+                "| ${model.days.contentToString()} | ${model.frequency} |")
+    }
+
+    private fun getDaysOfWeekArray(): Array<ActivityModelDays>{
+        val days = arrayOf(
+            ActivityModelDays.SUNDAY,
+            ActivityModelDays.MONDAY,
+            ActivityModelDays.TUESDAY,
+            ActivityModelDays.WEDNESDAY,
+            ActivityModelDays.THURSDAY,
+            ActivityModelDays.FRIDAY,
+            ActivityModelDays.SATURDAY
+        )
+        var submit = ArrayList<ActivityModelDays>()
+        for (i in daysOfWeek.indices){
+            if (daysOfWeek[i]){
+                submit.add(days[i])
+            }
+        }
+        return submit.toTypedArray()
+    }
+
+    private fun makeMsg(msg: String){
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 }

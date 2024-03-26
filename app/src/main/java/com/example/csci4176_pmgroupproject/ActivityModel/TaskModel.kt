@@ -56,7 +56,7 @@ class CountableTaskModel(title: String, days: Array<ActivityModelDays>, frequenc
     private var remaining: Int = 0;
     fun getRemaining(): Int { return this.remaining }
 
-    fun setRemaining(value: Int = 0){ this.remaining = value }
+    fun setRemaining(value: Int = 1){ this.remaining = value }
     fun decrementRemaining(){ this.remaining-- }
     override fun complete() {
         TODO("Not yet implemented")
