@@ -5,4 +5,5 @@
     <color name="system_primary">#49A0FB</color>
     <color name="blue">#3C8FF5</color>
     <color name="red">#FF0000</color>
+    <color name="grey">#808080</color>
 </resources>
