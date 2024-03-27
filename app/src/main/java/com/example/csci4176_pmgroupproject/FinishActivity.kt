@@ -72,6 +72,18 @@ class FinishActivity : AppCompatActivity() {
      * When user finish a activity, give a reward
      */
     private fun reward(){
-        // TODO: add reward details
+        var reward = ""
+        when(selectedActivity.streak){
+            7 -> reward = "One Week Streak"
+            14 -> reward = "Two Week Streak"
+            30 -> reward = "One Month Streak"
+            183 -> reward = "Half a Year Streak"
+            365 -> reward = "One Year Streak"
+            730 -> reward = "Two Year Streak"
+            1825 -> reward = "Five Year Streak"
+            3650 -> reward = "One Year Streak"
+        }
+        var rewardText : TextView = findViewById(R.id.textViewFinishReward)
+        rewardText.text = reward
     }
 }
