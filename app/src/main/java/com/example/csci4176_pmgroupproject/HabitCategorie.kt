@@ -3,9 +3,12 @@ package com.example.csci4176_pmgroupproject
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -62,12 +65,56 @@ class HabitCategorie : AppCompatActivity() {
 
                     // Set a listener to listen for clicks on each item in the list of the categories
                     customAdapter.setOnClickItemListener(object : Habit_Categories_Adapter.OnClickItemListener {
+                        // Display the Create_Activity screen on this activity
                         override fun onClickItem(position: Int) {
-                            //TODO: Move to the Create_Activity screen
-                            Toast.makeText(
-                                this@HabitCategorie, "You Selected: "+ categories[position],
-                                Toast.LENGTH_LONG
-                            ).show()
+                            val selectedCategory = categories[position]
+
+                            val postListener = object : ValueEventListener {
+                                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                    for(habitSnapshot in dataSnapshot.children) {
+                                        val currHabitName = habitSnapshot.child("habitName").getValue(String::class.java)
+                                        if (currHabitName == selectedCategory) {
+                                            val selectedId = habitSnapshot.key.toString()
+
+                                            Log.e(TAG, "Selected habit ID: " + selectedId)
+
+                                            Toast.makeText(
+                                                this@HabitCategorie, "You Selected: "+ selectedCategory,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+
+                                            // Use the root container to iteratively set the visibility
+                                            // of each view to GONE so that we can display our fragment
+                                            val rootLayout : LinearLayout = findViewById(R.id.root_container)
+                                            for(i in 0..rootLayout.childCount-1){
+                                                val currView = rootLayout.getChildAt(i)
+                                                currView.visibility = View.GONE
+                                            }
+
+                                            // The create activity fragment is displayed on the same HabitCategorie activity
+                                            // to save memory usage
+                                            val createActivityFrag = CreateActivity.newInstance(selectedId, selectedCategory)
+                                            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                                            transaction.replace(R.id.root_container, createActivityFrag).commit()
+
+                                        }
+                                        else {
+                                            Toast.makeText(
+                                                this@HabitCategorie,
+                                                "OH NO ITS NULL!",
+                                                Toast.LENGTH_LONG
+                                            )
+                                        }
+                                    }
+                                }
+                                // Log database errors that may occur during this
+                                override fun onCancelled(databaseError: DatabaseError) {
+                                    // Handle error
+                                    Log.e(TAG, "Error getting habit ID from database", databaseError.toException())
+                                }
+
+                            }
+                            habitsRef.addListenerForSingleValueEvent(postListener)
                         }
                     })
 
