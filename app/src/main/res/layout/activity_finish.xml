@@ -70,11 +70,22 @@
         tools:ignore="DuplicateSpeakableTextCheck" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/saveRewardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You've earned a reward!"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/saveButton"
+        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewFinishReward"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/saveButton"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout"/>
+        app:layout_constraintTop_toBottomOf="@+id/saveRewardText"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

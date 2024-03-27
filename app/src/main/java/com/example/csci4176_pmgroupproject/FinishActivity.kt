@@ -1,5 +1,6 @@
 package com.example.csci4176_pmgroupproject
 
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
@@ -8,6 +9,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -20,6 +22,7 @@ class FinishActivity : AppCompatActivity() {
     private lateinit var saveButton : Button
     private lateinit var deleteButton : Button
     private lateinit var selectedActivity : ActivityModel
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,6 +65,7 @@ class FinishActivity : AppCompatActivity() {
     /**
      * Submits the form by updating the activity's note, energy, mood and saving it to the database.
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     fun submitForm(){
         // TODO: update emotion and energy
         selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
