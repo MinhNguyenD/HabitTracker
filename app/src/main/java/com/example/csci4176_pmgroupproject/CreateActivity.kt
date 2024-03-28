@@ -113,6 +113,7 @@ class CreateActivity : Fragment() {
         radioGroup.check(R.id.checkable_radio)
 
         activityCreateButton.setOnClickListener {
+            activityCreateButton.isActivated = false
             val title = activityTitleView.text.toString()
             val note = activityNoteSection.text.toString()
 
@@ -126,6 +127,7 @@ class CreateActivity : Fragment() {
                             createActivity(title, note, arrayListOf())
                         }else {
                             makeMsg("Please input a value greater than 0")
+                            activityCreateButton.isActivated = true
                         }
                     }else {
                         createActivity(title, note, arrayListOf())
@@ -140,16 +142,19 @@ class CreateActivity : Fragment() {
                                 createActivity(title, note, days)
                             }else {
                                 makeMsg("Please input a value greater than 0")
+                                activityCreateButton.isActivated = true
                             }
                         }else {
                             createActivity(title, note, days)
                         }
                     } else{
                         makeMsg("Please select at least 1 day!")
+                        activityCreateButton.isActivated = true
                     }
                 }
             } else {
                 makeMsg("Please give the activity a title!")
+                activityCreateButton.isActivated = true
             }
 
         }
@@ -261,6 +266,7 @@ class CreateActivity : Fragment() {
 //        Log.w("Create Activity", "Model: ${model.title} | ${model.type}" +
 //                "| ${model.days.toString()} | ${model.frequency} |")
         DatabaseAPI.createActivity(model)
+        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
     }
 
     private fun getDaysOfWeek(): ArrayList<DayOfWeek>{
