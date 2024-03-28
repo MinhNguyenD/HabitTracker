@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/system_primary"
+        android:padding="25dp"
+        android:text="@string/create_activity_title"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="50dp"
+        android:isScrollContainer="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/new_activity_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:ems="10"
+            android:hint="@string/activity_title_placeholder"
+            android:inputType="text"
+            android:paddingHorizontal="15dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/on_these_days"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:id="@+id/create_activity_DOWContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/dow_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:paddingHorizontal="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/sunday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/sunday_placeholder"
+                android:textOn="@string/sunday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/dow_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:paddingHorizontal="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/monday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/monday_placeholder"
+                android:textOn="@string/monday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/dow_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/tuesday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/tuesday_placeholder"
+                android:textOn="@string/tuesday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/dow_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/wednesday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/wednesday_placeholder"
+                android:textOn="@string/wednesday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/dow_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/thursday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/thursday_placeholder"
+                android:textOn="@string/thursday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/dow_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/friday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/friday_placeholder"
+                android:textOn="@string/friday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/dow_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/toggle_unselected"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/saturday_placeholder"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/saturday_placeholder"
+                android:textOn="@string/saturday_placeholder"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/repeat_every"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:id="@+id/repeat_selection_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/repeat_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:checked="false"
+                android:paddingHorizontal="15dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/daily_custom"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/daily"
+                android:textOn="@string/custom"
+                android:textSize="8sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/repeat_weekly"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:checked="false"
+                android:paddingHorizontal="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/weekly"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/weekly"
+                android:textOn="@string/weekly"
+                android:textSize="10sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/repeat_biweekly"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/biweekly"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/biweekly"
+                android:textOn="@string/biweekly"
+                android:textSize="10sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/repeat_triweekly"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/tri_weekly"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/tri_weekly"
+                android:textOn="@string/tri_weekly"
+                android:textSize="10sp"
+                app:cornerRadius="8dp" />
+
+            <ToggleButton
+                android:id="@+id/repeat_monthly"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:backgroundTint="#5474BBD2"
+                android:checked="false"
+                android:lineSpacingExtra="10sp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@string/monthly"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textOff="@string/monthly"
+                android:textOn="@string/monthly"
+                android:textSize="10sp"
+                app:cornerRadius="8dp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/type"
+            android:textSize="24sp" />
+
+        <RadioGroup
+            android:id="@+id/activity_type"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/checkable_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginEnd="15dp"
+                android:text="@string/checkable" />
+
+            <RadioButton
+                android:id="@+id/timed_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/timed" />
+
+            <RadioButton
+                android:id="@+id/countable_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="15dp"
+                android:text="@string/countable" />
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/new_activity_count"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="@string/count_goal"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/new_activity_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="@string/note_section"
+            android:inputType="textMultiLine"
+            android:paddingHorizontal="15dp"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/create_activity_button"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:backgroundTint="@color/submit"
+            android:text="@string/create"
+            app:cornerRadius="8dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

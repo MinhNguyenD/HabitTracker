@@ -8,9 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 
-class loginActivity : AppCompatActivity(){
+class LoginActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -25,19 +24,15 @@ class loginActivity : AppCompatActivity(){
             .setOnClickListener {
 
                 // Check user info with DB
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                    emailField.text.toString(), passField.text.toString())
+                DatabaseAPI.emailLogin(emailField.text.toString(), passField.text.toString())
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful)
                         {
-                            val user = FirebaseAuth.getInstance().currentUser
                             /**Temporary**/
                             Toast.makeText(baseContext, "Login Successful!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
-                            // Launch next task with this user
-                        }
-
-                        else
+                            startActivity(Intent(this, HomeActivity::class.java))
+                        } else
                         {
                             // Alert the user the credentials aren't valid
                             Toast.makeText(baseContext,

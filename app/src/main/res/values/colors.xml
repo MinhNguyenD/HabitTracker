@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="gray">#888</color>
+    <color name="blue">#0000FF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="system_primary">#65CDD1</color>
-    <color name="green">#92E873</color>
-    <color name="red">#FFE84C4C</color>
-    <color name="grey">#B9B1B1</color>
+    <color name="system_primary">#49A0FB</color>
+    <color name="blueOcean">#3C8FF5</color>
+    <color name="red">#FF0000</color>
+    <color name="submit">#4CAF50</color>
+    <color name="toggle_unselected">#5474BBD2</color>
+    <color name="toggle_selected">#03A9F4</color>
 </resources>

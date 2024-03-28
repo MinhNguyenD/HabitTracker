@@ -13,22 +13,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSCI4176_PMGroupProject"
         tools:targetApi="31">
-<!--    Main Activity-->
-
-
+        <activity
+            android:name=".OnDateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccountActivity"
+            android:exported="false" /> <!-- Main Activity -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".FinishActivity"
+            android:exported="false" />
+        <!-- Main Activity -->
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false" />
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
         <activity
             android:name=".FriendActivity"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-<!--    Login Activity-->
-<!--        <activity-->
-<!--            android:name=".loginActivity"-->
+            android:exported="false">
+        </activity> 
+        <!-- Login Activity -->
+<!--    <activity-->
+            android:name=".LoginActivity"
 <!--            android:exported="true">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
@@ -39,15 +54,25 @@
 <!--&lt;!&ndash;    SignUp Activity&ndash;&gt;-->
 <!--        <activity-->
 <!--            android:name=".SignUpActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+<!--            android:exported="false">-->
 <!--        </activity>-->
 
+        <!-- Login Activity -->
+        <activity
+            android:name=".ManageActivity"
+            android:exported="false">
+        </activity>
 
+        <receiver
+            android:name=".EndOfDayReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
