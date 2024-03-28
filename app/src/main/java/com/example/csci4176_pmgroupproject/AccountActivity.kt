@@ -1,19 +1,15 @@
 package com.example.csci4176_pmgroupproject
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import android.content.Intent
 import android.content.SharedPreferences
-import android.media.Image
-import android.provider.ContactsContract.Data
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 
 class AccountActivity : BaseActivity() {
 
@@ -63,7 +59,7 @@ class AccountActivity : BaseActivity() {
 
         logOutButton.setOnClickListener{
             DatabaseAPI.logOutUser()
-            startActivity(Intent(this, loginActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
