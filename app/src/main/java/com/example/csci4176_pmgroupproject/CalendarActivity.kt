@@ -11,7 +11,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
-class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
+class CalendarActivity : BaseActivity(), CalendarAdapter.OnItemListener
 {
     // Variables to be used throughout the class
     lateinit var monthYearText: TextView
@@ -29,13 +29,6 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
 
         // Set the calendar with values
         setMonthView()
-
-        val navbarFragment = NavigationBar()
-
-        // Add navbar fragment to the activity
-        supportFragmentManager.beginTransaction()
-            .add(R.id.navbarFrame, navbarFragment)
-            .commit()
     }
 
     // Method to set the current month view
