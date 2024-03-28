@@ -21,6 +21,8 @@ class CountableActivityModel(habitId : String, title: String,
 
     fun setRemaining(value: Int){ this.remaining = value }
     fun decrementRemaining(){ this.remaining-- }
+
+    fun getRemaining(): Int{ return this.remaining }
     override fun complete() {
         TODO("Not yet implemented")
     }
