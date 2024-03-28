@@ -236,11 +236,19 @@ object DatabaseAPI {
      * @return True if the activity is scheduled for today, false otherwise.
      */
     private fun isTodayActivity(activity: ActivityModel) : Boolean{
+        var matchDayOfWeek : Boolean = false
         val today = LocalDate.now()
         val startDate = LocalDate.parse(activity.startDate)
 
-        // not matching day of the week and is not daily frequency
-        if(activity.dayOfWeek != convertDayOfWeek(today.dayOfWeek) && !(activity.frequency == ActivityModelFrequency.DAILY || activity.frequency == ActivityModelFrequency.MONTHLY)){
+        for(selectDay in activity.days){
+            if(selectDay == today.dayOfWeek){
+                matchDayOfWeek = true
+                break
+            }
+        }
+
+        // not matching day of the week and is not daily frequency or monthly
+        if(!matchDayOfWeek && !(activity.frequency == ActivityModelFrequency.DAILY || activity.frequency == ActivityModelFrequency.MONTHLY)){
             return false
         }
 
@@ -250,6 +258,13 @@ object DatabaseAPI {
             ActivityModelFrequency.BIWEEKLY -> {
                 val weeksPassed = startDate.until(today, java.time.temporal.ChronoUnit.WEEKS)
                 if(weeksPassed % 2 == 0L && weeksPassed >= 0L){
+                    return true
+                }
+                return false
+            }
+            ActivityModelFrequency.TRI_WEEKLY -> {
+                val weeksPassed = startDate.until(today, java.time.temporal.ChronoUnit.WEEKS)
+                if(weeksPassed % 3 == 0L && weeksPassed >= 0L){
                     return true
                 }
                 return false

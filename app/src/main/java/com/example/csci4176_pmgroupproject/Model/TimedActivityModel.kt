@@ -5,18 +5,19 @@ import com.example.csci4176_pmgroupproject.ActivityModelDayOfWeek
 import com.example.csci4176_pmgroupproject.ActivityModelEnums
 import com.example.csci4176_pmgroupproject.ActivityModelFrequency
 import com.example.csci4176_pmgroupproject.ActivityMood
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.Date
 
 class TimedActivityModel(habitId : String, title: String,
-                         frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, var startTime: Long)
+                         frequency: ActivityModelFrequency, days: ArrayList<DayOfWeek>, var startTime: Long)
     : ActivityModel(habitId,title,
-    ActivityModelEnums.TIMED,false, LocalDate.now().toString(), frequency,dayOfWeek,
+    ActivityModelEnums.TIMED,false, LocalDate.now().toString(), frequency, days,
     0,
     ActivityMood.NEUTRAL,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
-    constructor() : this("","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
+    constructor() : this("","", ActivityModelFrequency.NEVER, arrayListOf(),0)
 
     /*
      * This will return the total time the user spent on
