@@ -30,7 +30,7 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
         // Set the calendar with values
         setMonthView()
 
-        val navbarFragment = NavigationBar(this)
+        val navbarFragment = NavigationBar()
 
         // Add navbar fragment to the activity
         supportFragmentManager.beginTransaction()
