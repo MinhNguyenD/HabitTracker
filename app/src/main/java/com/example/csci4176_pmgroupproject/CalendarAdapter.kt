@@ -11,7 +11,8 @@ import kotlin.math.roundToInt
 
 class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
-    private val onItemListener: OnItemListener
+    private val onItemListener: OnItemListener,
+    private val date: String
 ): RecyclerView.Adapter<CalendarViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder
@@ -29,8 +30,23 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int)
     {
-        holder.dayOfMonth.text = daysOfMonth[position]
-        updateCircleColour(holder, daysOfMonth[position])
+        var day = daysOfMonth[position]
+        holder.dayOfMonth.text = day
+
+        var queryDate: String
+
+        // Format the string to query the DB
+        if (day.isEmpty())
+        { queryDate = day }
+
+        else if (day.length == 1)
+        { queryDate = date.substring(0, date.length-2) + "0" + day }
+
+        else
+        { queryDate = date.substring(0, date.length-2) + day  }
+
+        // Update the circle icon for a given day
+        updateCircleColour(holder, queryDate)
     }
 
     override fun getItemCount(): Int
@@ -60,9 +76,9 @@ class CalendarAdapter(
                     { mood += activity.mood.ordinal + 1 }
 
                     val avgMood: Int = (mood / dayActivity.size - 1).roundToInt()
-
+                    System.out.println(avgMood)
                     // Based on the average mood set either red
-                    if (avgMood <= 1)
+                    if (avgMood < 1)
                     { holder.circle.drawable.setTint(Color.RED) }
 
                     // Orange (color.xml didn't work here so I used the string directly)

@@ -46,7 +46,7 @@ class CalendarActivity : AppCompatActivity(), CalendarAdapter.OnItemListener
         val daysInMonth = daysInMonthArray(referenceDate)
 
         // Set adapter with those days to display on the calendar with a grid layout
-        val calendarAdapter = CalendarAdapter(daysInMonth, this)
+        val calendarAdapter = CalendarAdapter(daysInMonth, this, referenceDate.toString())
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(applicationContext, 7)
         calendarRecyclerView.layoutManager = layoutManager
         calendarRecyclerView.adapter = calendarAdapter
