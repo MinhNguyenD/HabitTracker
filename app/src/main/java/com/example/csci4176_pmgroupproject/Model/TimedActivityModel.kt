@@ -17,8 +17,8 @@ class TimedActivityModel(taskId: String, userId: String,
     ActivityMood.NEUTRAL,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
-    constructor() : this("","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
-    constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, startTime: Long) : this("",userId,habitId, title, frequency, dayOfWeek, startTime)
+    constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
+    constructor(habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, startTime: Long) : this("","",habitId, title, frequency, dayOfWeek, startTime)
     /*
      * This will return the total time the user spent on
      * this task/activity.

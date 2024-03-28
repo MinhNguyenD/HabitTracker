@@ -18,7 +18,7 @@ class CountableActivityModel(taskId: String, userId: String,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
     constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
-    constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, remaining: Int) : this("",userId,habitId, title, frequency, dayOfWeek, remaining)
+    constructor(habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, remaining: Int) : this("","",habitId, title, frequency, dayOfWeek, remaining)
     //    fun setRemaining(remaining: Int){ this.remaining = remaining }
     fun decrementRemaining(){ this.remaining-- }
     override fun complete() {

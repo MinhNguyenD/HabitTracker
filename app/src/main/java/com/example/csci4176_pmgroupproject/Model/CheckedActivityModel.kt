@@ -18,7 +18,7 @@ class CheckedActivityModel(taskId : String, userId: String,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
     constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY)
-    constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : this("",userId,habitId, title, frequency,dayOfWeek)
+    constructor(habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : this("","",habitId, title, frequency,dayOfWeek)
 
     override fun complete() {
         isFinished = true
