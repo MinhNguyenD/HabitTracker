@@ -8,17 +8,16 @@ import com.example.csci4176_pmgroupproject.ActivityMood
 import java.time.LocalDate
 import java.util.Date
 
-class TimedActivityModel(taskId: String, userId: String,
-                         habitId : String, title: String,
+class TimedActivityModel(habitId : String, title: String,
                          frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, var startTime: Long)
-    : ActivityModel(taskId, userId, habitId,title,
+    : ActivityModel(habitId,title,
     ActivityModelEnums.TIMED,false, LocalDate.now().toString(), frequency,dayOfWeek,
     0,
     ActivityMood.NEUTRAL,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
-    constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
-    constructor(habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, startTime: Long) : this("","",habitId, title, frequency, dayOfWeek, startTime)
+    constructor() : this("","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
+
     /*
      * This will return the total time the user spent on
      * this task/activity.

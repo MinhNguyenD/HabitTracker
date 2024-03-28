@@ -7,19 +7,13 @@ import com.example.csci4176_pmgroupproject.ActivityModelFrequency
 import com.example.csci4176_pmgroupproject.ActivityMood
 import java.time.LocalDate
 
-class CheckedActivityModel(taskId : String, userId: String,
-                           habitId : String, title: String,
-                           frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek
-)
-    : ActivityModel(taskId, userId, habitId, title,
+class CheckedActivityModel(habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : ActivityModel(habitId, title,
     ActivityModelEnums.CHECKED, false, LocalDate.now().toString(), frequency,dayOfWeek,
     0,
     ActivityMood.NEUTRAL,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
-    constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY)
-    constructor(habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : this("","",habitId, title, frequency,dayOfWeek)
-
+    constructor() : this("","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY)
     override fun complete() {
         isFinished = true
     }

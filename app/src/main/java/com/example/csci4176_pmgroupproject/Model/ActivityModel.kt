@@ -20,7 +20,7 @@ abstract class ActivityModel (var taskId : String, val userId : String, val habi
                 streak: Int, mood: ActivityMood,
                 energy: ActivityEnergy, note: String) : this("", DatabaseAPI.currentUser.uid,habitId, title, type, isFinished, startDate, frequency, dayOfWeek, streak,  mood, energy,  note)
 
-    constructor() : this("","","","",ActivityModelEnums.CHECKED,false, "", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.NONE, 0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, "")
+    constructor() : this("","",ActivityModelEnums.CHECKED,false, "", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.NONE, 0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, "")
 
     fun updateStreak(){ streak++; }
 
