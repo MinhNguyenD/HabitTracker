@@ -19,4 +19,13 @@ class CheckedActivityModel(taskId : String, userId: String,
     // require by firebase
     constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY)
     constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek) : this("",userId,habitId, title, frequency,dayOfWeek)
+
+    override fun complete() {
+        isFinished = true
+    }
+
+    override fun reset() {
+        isFinished = false
+        TODO("Not yet implemented")
+    }
 }

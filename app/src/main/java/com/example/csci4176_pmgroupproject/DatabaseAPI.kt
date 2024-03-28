@@ -126,7 +126,13 @@ object DatabaseAPI {
         return activities.child(id).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Retrieve the activity object from the dataSnapshot
-                val activity = dataSnapshot.getValue(ActivityModel::class.java)
+                var activity : ActivityModel? = null
+                val taskType = dataSnapshot.child("type").value.toString()
+                when(taskType){
+                    ActivityModelEnums.CHECKED.toString() -> activity = dataSnapshot.getValue(CheckedActivityModel::class.java)!!
+                    ActivityModelEnums.COUNTABLE.toString() ->  activity = dataSnapshot.getValue(CountableActivityModel::class.java)!!
+                    ActivityModelEnums.TIMED.toString() ->  activity = dataSnapshot.getValue(TimedActivityModel::class.java)!!
+                }
                 if (activity != null) {
                     callback(activity)
                 } else {
@@ -175,14 +181,14 @@ object DatabaseAPI {
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
-                    var activity : ActivityModel = CheckedActivityModel()
+                    var activity : ActivityModel? = null
                     val taskType = entry.child("type").value.toString()
                     when(taskType){
                         ActivityModelEnums.CHECKED.toString() -> activity = entry.getValue(CheckedActivityModel::class.java)!!
                         ActivityModelEnums.COUNTABLE.toString() -> activity = entry.getValue(CountableActivityModel::class.java)!!
                         ActivityModelEnums.TIMED.toString() ->activity = entry.getValue(TimedActivityModel::class.java)!!
                     }
-                    if(isTodayActivity(activity) && !activity.isFinished){
+                    if(activity != null && isTodayActivity(activity) && !activity.isFinished){
                         activityList.add(activity)
                     }
                 }

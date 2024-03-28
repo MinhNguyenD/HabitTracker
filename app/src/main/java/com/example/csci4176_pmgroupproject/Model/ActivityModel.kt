@@ -6,7 +6,7 @@ import com.example.csci4176_pmgroupproject.ActivityModelEnums
 import com.example.csci4176_pmgroupproject.ActivityModelFrequency
 import com.example.csci4176_pmgroupproject.ActivityMood
 
-open class ActivityModel (var taskId : String, val userId : String, val habitId : String,
+abstract class ActivityModel (var taskId : String, val userId : String, val habitId : String,
                           var title: String, val type: ActivityModelEnums,
                           var isFinished : Boolean, val startDate : String,
                           var frequency : ActivityModelFrequency, var dayOfWeek: ActivityModelDayOfWeek,
@@ -32,4 +32,8 @@ open class ActivityModel (var taskId : String, val userId : String, val habitId 
     fun makeNote(note: String){ this.note = note }
 
     fun appendNote(note: String, tag: String){ this.note += "\n$tag $note"}
+
+    abstract fun complete()
+
+    abstract fun reset()
 }

@@ -21,4 +21,11 @@ class CountableActivityModel(taskId: String, userId: String,
     constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, remaining: Int) : this("",userId,habitId, title, frequency, dayOfWeek, remaining)
     //    fun setRemaining(remaining: Int){ this.remaining = remaining }
     fun decrementRemaining(){ this.remaining-- }
+    override fun complete() {
+        TODO("Not yet implemented")
+    }
+
+    override fun reset() {
+        TODO("Not yet implemented")
+    }
 }

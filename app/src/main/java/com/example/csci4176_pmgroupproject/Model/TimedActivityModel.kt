@@ -27,4 +27,12 @@ class TimedActivityModel(taskId: String, userId: String,
     fun endActivity(): Long{
         return Date().time - startTime
     }
+
+    override fun complete() {
+        TODO("Not yet implemented")
+    }
+
+    override fun reset() {
+        TODO("Not yet implemented")
+    }
 }
