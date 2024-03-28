@@ -33,7 +33,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyActivityViewHolder {
         // Inflate the city item layout and create a new CityViewHolder
-        val activityItemView = LayoutInflater.from(parent.context).inflate(R.layout.acitivity_item, parent, false)
+        val activityItemView = LayoutInflater.from(parent.context).inflate(R.layout.acitivity_item_checkable, parent, false)
         return DailyActivityViewHolder(activityItemView)
     }
 

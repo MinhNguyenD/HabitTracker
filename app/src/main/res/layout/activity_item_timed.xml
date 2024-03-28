@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="110dp"
+    android:layout_marginBottom="15dp"
     android:elevation="5dp"
     android:padding="15dp"
-    android:layout_marginBottom="15dp"
-    app:cardCornerRadius="15dp"
-    >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    app:cardCornerRadius="15dp">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,14 +17,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:text="Activity Title"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.313" />
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/progress"
@@ -34,12 +30,20 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="12dp"
-            android:textColor="@color/red"
             android:text="Not Started"
+            android:textColor="@color/red"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activityTitle" />
+            android:layout_below="@id/activityTitle" />
+
+        <Button
+            android:id="@+id/finishButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="25dp"
+            android:text="Finish"
+            app:cornerRadius="5dp" />
 
         <TextView
             android:id="@+id/streak"
@@ -48,18 +52,19 @@
             android:layout_marginEnd="12dp"
             android:text="Streak"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/finishButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_toStartOf="@id/finishButton"
+            android:layout_centerVertical="true" />
 
-        <Button
-            android:id="@+id/finishButton"
+        <TextView
+            android:id="@+id/remaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:text="Finish"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginEnd="20dp"
+            android:text="Remaining: N"
+            android:textSize="16sp"
+            android:layout_below="@id/finishButton"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
 </androidx.cardview.widget.CardView>
