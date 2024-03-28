@@ -24,6 +24,11 @@ class NavigationBar: Fragment() {
             is AccountActivity -> bottomNavigationBar.selectedItemId = R.id.account
             is ManageActivity -> bottomNavigationBar.selectedItemId = R.id.manage
         }
+//            is ManageActivity -> bottomNavigationBar.selectedItemId = R.id.manage
+//            is FriendActivity -> bottomNavigationBar.selectedItemId = R.id.friends
+//            is AccountActivity -> bottomNavigationBar.selectedItemId = R.id.account
+        }
+
         bottomNavigationBar.setOnItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.home -> {

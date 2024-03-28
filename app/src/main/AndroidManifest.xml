@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CSCI4176_PMGroupProject"
         tools:targetApi="31">
         <activity
+            android:name=".OnDateActivity"
+            android:exported="false" />
+        <activity
             android:name=".BaseActivity"
             android:exported="false" />
         <activity
@@ -27,9 +30,14 @@
             android:exported="false" />
         <!-- Main Activity -->
         <activity
+            android:name=".CalendarActivity"
+            android:exported="false" />
+        <!-- Main Activity -->
+        <activity
             android:name=".MainActivity"
             android:exported="false">
-        </activity> <!-- Login Activity -->
+        </activity> 
+        <!-- Login Activity -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -39,6 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Login Activity -->
         <activity
             android:name=".ManageActivity"
             android:exported="false">

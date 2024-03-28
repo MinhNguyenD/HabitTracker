@@ -40,9 +40,10 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
         // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this)
+            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, R.layout.acitivity_item)
             dailyActivityView.adapter = activityAdapter
             numActivities = activityAdapter.itemCount
+            DatabaseAPI.saveDailyActivities(dailyActivityList)
             initToday()
             initProgress()
             displayNoActivity()
