@@ -54,6 +54,7 @@ class CreateActivity : Fragment() {
     private lateinit var activityType: ActivityModelEnums;
 
     private lateinit var countContainer: EditText;
+    private var count: Int = 1;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,12 +119,31 @@ class CreateActivity : Fragment() {
             if (title.isNotEmpty()){
                 if (repeatFrequency == ActivityModelFrequency.DAILY){
                     // No need to store days of the week.
-                    createActivity(title, note, arrayListOf())
+                    if (activityType == ActivityModelEnums.COUNTABLE){
+                        val countText = countContainer.text.toString()
+                        if (countText.isNotEmpty() && countText.toInt() > 0){
+                            count = countText.toInt()
+                            createActivity(title, note, arrayListOf())
+                        }else {
+                            makeMsg("Please input a value greater than 0")
+                        }
+                    }else {
+                        createActivity(title, note, arrayListOf())
+                    }
                 }else {
                     val days:ArrayList<DayOfWeek> = getDaysOfWeek()
                     if (days.isNotEmpty()){
-                        createActivity(title, note, days)
-                        // Complete activity creation
+                        if (activityType == ActivityModelEnums.COUNTABLE){
+                            val countText = countContainer.text.toString()
+                            if (countText.isNotEmpty() && countText.toInt() > 0){
+                                count = countText.toInt()
+                                createActivity(title, note, days)
+                            }else {
+                                makeMsg("Please input a value greater than 0")
+                            }
+                        }else {
+                            createActivity(title, note, days)
+                        }
                     } else{
                         makeMsg("Please select at least 1 day!")
                     }
@@ -231,16 +251,9 @@ class CreateActivity : Fragment() {
             ActivityModelEnums.TIMED -> {
                 model = TimedActivityModel("",title,repeatFrequency, days, 0)
             }
-            // TODO: Figure out how to prevent object creation
+
             ActivityModelEnums.COUNTABLE -> {
-                model = CountableActivityModel("",title,repeatFrequency, days)
-                val count = countContainer.text.toString()
-                if (count.isNotEmpty()) run {
-                    val cmodel: CountableActivityModel = model
-                    cmodel.setRemaining(count.toInt())
-                } else {
-                    makeMsg("Count was not set. Set a count later")
-                }
+                model = CountableActivityModel("", title, repeatFrequency, days, count)
             }
         }
         model.makeNote(note)
