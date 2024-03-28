@@ -42,24 +42,23 @@
             android:exported="false">
         </activity> 
         <!-- Login Activity -->
-<!--    <activity-->
+        <activity
             android:name=".LoginActivity"
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-<!--&lt;!&ndash;    SignUp Activity&ndash;&gt;-->
-<!--        <activity-->
-<!--            android:name=".SignUpActivity"-->
-<!--            android:exported="false">-->
-<!--        </activity>-->
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- Login Activity -->
         <activity
             android:name=".ManageActivity"
+            android:exported="false">
+        </activity>
+        <!-- SignUp Activity -->
+        <activity
+            android:name=".SignUpActivity"
             android:exported="false">
         </activity>
 

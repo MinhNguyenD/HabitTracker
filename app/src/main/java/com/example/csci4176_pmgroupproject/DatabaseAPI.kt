@@ -1,6 +1,5 @@
 package com.example.csci4176_pmgroupproject
 
-import android.util.Log
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import android.content.ContentValues.TAG
 import android.util.Log

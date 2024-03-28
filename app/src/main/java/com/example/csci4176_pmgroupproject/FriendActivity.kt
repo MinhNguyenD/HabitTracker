@@ -16,10 +16,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 class FriendActivity : AppCompatActivity() {
     // Views from the layout
-    private lateinit var addButton: Button
-    private lateinit var deleteButton: Button
+//    private lateinit var addButton: Button
+//    private lateinit var deleteButton: Button
     private lateinit var searchView: SearchView
-    private lateinit var textView: TextView
+//    private lateinit var textView: TextView
 
     // Assuming 'DatabaseAPI' is a singleton object you can access directly
    private val databaseAPI = DatabaseAPI
@@ -29,10 +29,10 @@ class FriendActivity : AppCompatActivity() {
         setContentView(R.layout.activity_friends)
 
         // Initialize views
-        addButton = findViewById(R.id.AddButton)
-        deleteButton = findViewById(R.id.DeleteButton)
+//        addButton = findViewById(R.id.AddButton)
+//        deleteButton = findViewById(R.id.DeleteButton)
         searchView = findViewById(R.id.searchView)
-        textView = findViewById(R.id.textView3)
+//        textView = findViewById(R.id.textView3)
 
         // Set up the search view to listen for user queries
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -40,12 +40,12 @@ class FriendActivity : AppCompatActivity() {
                 query?.let {
                     databaseAPI.searchForUserByUsername(it) { user ->
                         if (user != null) {
-                            textView.text = user.username
-                            // Show add button if a user is found
-                            addButton.visibility = Button.VISIBLE
+//                            textView.text = user.username
+//                            // Show add button if a user is found
+//                            addButton.visibility = Button.VISIBLE
                         } else {
-                            textView.text = "User not found"
-                            addButton.visibility = Button.GONE
+//                            textView.text = "User not found"
+//                            addButton.visibility = Button.GONE
                         }
                     }
                 }
@@ -59,37 +59,37 @@ class FriendActivity : AppCompatActivity() {
         })
 
         // Set up the add button
-        addButton.setOnClickListener {
-            val friendUsername = searchView.query.toString()
-            databaseAPI.searchForUserByUsername(friendUsername) { user ->
-                user?.let {
-                    databaseAPI.addFriend(databaseAPI.currentUser.uid, it.uid)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                textView.text = "Added ${it.username} as a friend"
-                            } else {
-                                textView.text = "Failed to add friend"
-                            }
-                        }
-                }
-            }
-        }
+//        addButton.setOnClickListener {
+//            val friendUsername = searchView.query.toString()
+//            databaseAPI.searchForUserByUsername(friendUsername) { user ->
+//                user?.let {
+//                    databaseAPI.addFriend(databaseAPI.currentUser.uid, it.uid)
+//                        .addOnCompleteListener { task ->
+//                            if (task.isSuccessful) {
+//                                textView.text = "Added ${it.username} as a friend"
+//                            } else {
+//                                textView.text = "Failed to add friend"
+//                            }
+//                        }
+//                }
+//            }
+//        }
 
         // Set up the delete button
-        deleteButton.setOnClickListener {
-            val friendUsername = searchView.query.toString()
-            databaseAPI.searchForUserByUsername(friendUsername) { user ->
-                user?.let {
-                    databaseAPI.removeFriend(databaseAPI.currentUser.uid, it.uid)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                textView.text = "Removed ${it.username} as a friend"
-                            } else {
-                                textView.text = "Failed to remove friend"
-                            }
-                        }
-                }
-            }
-        }
+//        deleteButton.setOnClickListener {
+//            val friendUsername = searchView.query.toString()
+//            databaseAPI.searchForUserByUsername(friendUsername) { user ->
+//                user?.let {
+//                    databaseAPI.removeFriend(databaseAPI.currentUser.uid, it.uid)
+//                        .addOnCompleteListener { task ->
+//                            if (task.isSuccessful) {
+//                                textView.text = "Removed ${it.username} as a friend"
+//                            } else {
+//                                textView.text = "Failed to remove friend"
+//                            }
+//                        }
+//                }
+//            }
+//        }
     }
 }
