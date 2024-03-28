@@ -25,6 +25,7 @@
         <activity
             android:name=".FinishActivity"
             android:exported="false" />
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="false">
@@ -37,7 +38,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- SignUp Activity -->
+        </activity>
+        <activity
+            android:name=".HabitCategorie"
+            android:exported="false">
+        </activity>
+        <!-- SignUp Activity -->
         <activity
             android:name=".SignUpActivity"
             android:exported="false">
