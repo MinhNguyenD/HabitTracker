@@ -7,11 +7,13 @@ import android.util.Log
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatDelegate
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.Image
 import android.provider.ContactsContract.Data
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 
 class AccountActivity : BaseActivity() {
 
@@ -19,6 +21,8 @@ class AccountActivity : BaseActivity() {
     private lateinit var userName : TextView
     private lateinit var switchMode : Switch
     private lateinit var logOutButton : Button
+    private lateinit var modeSharedPreferences : SharedPreferences
+    private var isNightMode : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +38,15 @@ class AccountActivity : BaseActivity() {
             userName.text = user.username
         }
 
-        val sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
-        val nightMode = sharedPreferences.getBoolean("night",false)
+        modeSharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
+        isNightMode = modeSharedPreferences.getBoolean("night",false)
 
-        val changeThemeSwitch = findViewById<Switch>(R.id.modeSwitch)
-        changeThemeSwitch.isChecked = nightMode
-        Log.d("Current mode", nightMode.toString())
+        switchMode.isChecked = isNightMode
+        Log.d("Current mode", isNightMode.toString())
 
-        val editor = sharedPreferences.edit()
+        val editor = modeSharedPreferences.edit()
 
-        changeThemeSwitch.setOnCheckedChangeListener { switchButton, isChecked ->
+        switchMode.setOnCheckedChangeListener { switchButton, isChecked ->
             if (switchButton.isPressed) {
                 if (!isChecked) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -63,5 +66,11 @@ class AccountActivity : BaseActivity() {
             startActivity(Intent(this, loginActivity::class.java))
             finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isNightMode = modeSharedPreferences.getBoolean("night", false)
+        switchMode.isChecked = isNightMode
     }
 }

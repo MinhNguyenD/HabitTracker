@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-class HabitCategorie : AppCompatActivity() {
+class ManageActivity : BaseActivity() {
 
     // Reference to the "habits" node in the database
     private val habitsRef = FirebaseDatabase.getInstance().getReference("habits")
@@ -32,7 +31,7 @@ class HabitCategorie : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.habit_item)
+        setContentView(R.layout.activity_manage)
 
         val addCategoryBtn: ImageButton = findViewById(R.id.addCategoryButton)
         val categories = mutableListOf<String>()
@@ -79,7 +78,7 @@ class HabitCategorie : AppCompatActivity() {
                                             Log.e(TAG, "Selected habit ID: " + selectedId)
 
                                             Toast.makeText(
-                                                this@HabitCategorie, "You Selected: "+ selectedCategory,
+                                                this@ManageActivity, "You Selected: "+ selectedCategory,
                                                 Toast.LENGTH_LONG
                                             ).show()
 
@@ -100,7 +99,7 @@ class HabitCategorie : AppCompatActivity() {
                                         }
                                         else {
                                             Toast.makeText(
-                                                this@HabitCategorie,
+                                                this@ManageActivity,
                                                 "OH NO ITS NULL!",
                                                 Toast.LENGTH_LONG
                                             )
@@ -132,7 +131,7 @@ class HabitCategorie : AppCompatActivity() {
 
                             // Display a pop-up message to the user
                             Toast.makeText(
-                                this@HabitCategorie, "The new category ${newCategoryName} " +
+                                this@ManageActivity, "The new category ${newCategoryName} " +
                                         "has been added!", Toast.LENGTH_LONG
                             ).show()
                         }

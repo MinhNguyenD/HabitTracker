@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HabitCategorie"
+            android:name=".ManageActivity"
             android:exported="false">
         </activity>
         <!-- SignUp Activity -->

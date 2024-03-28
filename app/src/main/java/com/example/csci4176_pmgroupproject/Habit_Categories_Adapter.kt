@@ -1,7 +1,5 @@
 package com.example.csci4176_pmgroupproject
 
-import android.content.ContentValues
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +38,7 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.habit_item_recyclerview_item, viewGroup, false)
+            .inflate(R.layout.habit_item, viewGroup, false)
 
         return ViewHolder(view)
     }
