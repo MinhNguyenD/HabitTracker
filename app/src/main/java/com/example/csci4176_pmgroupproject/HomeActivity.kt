@@ -133,11 +133,14 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
      * Displays a message if there are no daily activities left.
      */
     private fun displayNoActivity(){
+        val noActivityView: TextView = findViewById(R.id.noActivity)
         if(dailyActivityList.isEmpty()) {
             progress = 100
             updateProgressView()
-            val noActivityView: TextView = findViewById(R.id.noActivity)
             noActivityView.text = "All activities are done!"
+        }
+        else{
+            noActivityView.text = ""
         }
     }
 }
