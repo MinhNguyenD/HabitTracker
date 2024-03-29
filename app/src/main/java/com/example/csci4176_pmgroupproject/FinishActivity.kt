@@ -25,6 +25,8 @@ import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -39,6 +41,8 @@ class FinishActivity : AppCompatActivity() {
     private lateinit var pictureIV:  ImageView
     private lateinit var pictureURI : Uri
     private lateinit var selectedActivity : ActivityModel
+    private lateinit var userId: String
+    private lateinit var storageRef: StorageReference
     private var buttonSelected = false
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private val contract = registerForActivityResult(ActivityResultContracts.TakePicture()){
@@ -55,6 +59,7 @@ class FinishActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         activityTitleTextView = findViewById(R.id.activityTitle)
         noteEditText = findViewById(R.id.noteEditText)
         saveButton = findViewById(R.id.saveButton)
@@ -63,6 +68,15 @@ class FinishActivity : AppCompatActivity() {
         // Retrieve selected activity ID from intent extras
         val bundle : Bundle? = intent.extras
         val selectedActivityId : String? = bundle?.getString("selectedActivityId")
+
+        DatabaseAPI.getCurrentUser {user ->
+            userId = user.uid
+
+            // Storage for the image for that specific activity
+            storageRef = selectedActivityId?.let {
+                FirebaseStorage.getInstance().getReference("Users").child(userId).child("Activities").child(it).child("images")
+            }!!
+        }
 
         // Fetch activity details from the database
         DatabaseAPI.getActivityById(selectedActivityId!!){retrievedActivity ->
@@ -121,6 +135,7 @@ class FinishActivity : AppCompatActivity() {
     fun submitForm(){
         // TODO: update emotion and energy
         selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
+        val pictureURL = uploadImagesToStorage(pictureURI)
         DatabaseAPI.updateActivity(selectedActivity)
     }
 
@@ -169,6 +184,19 @@ class FinishActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+    private fun uploadImagesToStorage(imageUri: Uri): String?{
+        var imgUrl: String? = null
+
+        imageUri.let{
+            storageRef.putFile(imageUri).addOnSuccessListener { task->
+                task.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url->
+                    imgUrl = url.toString()
+                }
+            }
+        }
+
+        return imgUrl
     }
 
 
