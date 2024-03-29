@@ -38,7 +38,7 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
         // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this)
+            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
             dailyActivityView.adapter = activityAdapter
             DailyProgress.currentNumActivities = DailyProgress.numActivities
             initToday()
@@ -63,7 +63,7 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
         // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this)
+            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
             dailyActivityView.adapter = activityAdapter
             // if new activities added
             if(DailyProgress.currentNumActivities < dailyActivityList.size){
