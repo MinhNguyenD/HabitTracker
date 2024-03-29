@@ -76,35 +76,41 @@ object DatabaseAPI {
     }
 
     // Add a friend connection
-    fun addFriend(userId: String, friendUserId: String): Task<Void> {
-        return users.child(userId).child("friends").child(friendUserId).setValue(true)
+    fun addFriend(friendUser: User): Task<Void> {
+        return users.child(currentUser.uid).child("friends").child(friendUser.uid).setValue(friendUser)
     }
 
     // Remove a friend connection
-    fun removeFriend(userId: String, friendUserId: String): Task<Void> {
-        return users.child(userId).child("friends").child(friendUserId).removeValue()
+    fun removeFriend(friendUserId: String): Task<Void> {
+        return users.child(currentUser.uid).child("friends").child(friendUserId).removeValue()
     }
 
-    // Search for a user by username
-    fun searchForUserByUsername(username: String, callback: (User?) -> Unit) {
-        users.orderByChild("username").equalTo(username)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+    /**
+     * Search for a user by username
+     * @param searchKeyword search key word
+     * @param callback: A callback function to handle the retrieved user.
+     */
+    fun searchForUserByUsername(searchKeyword: String, callback: (ArrayList<User>) -> Unit) {
+        val foundUsers = ArrayList<User>()
+        users.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    var foundUser: User? = null
+                    foundUsers.clear()
+                    var foundUser: User?
                     for (userSnapshot in snapshot.children) {
                         foundUser = userSnapshot.getValue(User::class.java)
-                        break // Assuming usernames are unique, we break after finding the first match
+                        if(foundUser != null && searchKeyword.isNotEmpty() && foundUser.username.contains(searchKeyword, ignoreCase = true)){
+                            foundUsers.add(foundUser)
+                        }
                     }
-                    callback(foundUser)
+                    callback(foundUsers)
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w(TAG, "searchForUserByUsername:onCancelled", databaseError.toException())
-                    callback(null)
+                    callback(arrayListOf())
                 }
             })
     }
-
 
 
     /**
