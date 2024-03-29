@@ -53,7 +53,6 @@ class NavigationBar: Fragment() {
                     if (this.activity !is FriendActivity) {
                         startActivity(Intent(this.activity, FriendActivity::class.java))//this is only for testing rn
                     }
-                    startActivity(Intent(this.activity, FriendActivity::class.java))//this is only for testing rn
                     true
                 }
 
