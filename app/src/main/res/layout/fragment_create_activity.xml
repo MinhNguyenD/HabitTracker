@@ -242,7 +242,7 @@
                     android:textColor="@color/black"
                     android:textOff="@string/daily"
                     android:textOn="@string/custom"
-                    android:textSize="8sp"
+                    android:textSize="10sp"
                     app:cornerRadius="8dp" />
 
                 <ToggleButton
