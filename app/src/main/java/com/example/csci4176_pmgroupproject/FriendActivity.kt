@@ -19,11 +19,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 class FriendActivity : AppCompatActivity() {
     // Views from the layout
-//    private lateinit var friendListView : RecyclerView
+    private lateinit var friendListView : RecyclerView
     private lateinit var searchListView : RecyclerView
     private lateinit var friendAdapter : FriendAdapter
     private lateinit var searchFriendAdapter : FriendAdapter
-//    private lateinit var friendList : ArrayList<User>
+    private lateinit var friendList : ArrayList<User>
     private lateinit var searchUserList : ArrayList<User>
     private lateinit var searchView: SearchView
 
@@ -33,12 +33,9 @@ class FriendActivity : AppCompatActivity() {
 
         // Initialize views
         searchView = findViewById(R.id.searchView)
-//        friendListView = findViewById(R.id.friendList)
         searchListView = findViewById(R.id.searchRecyclerList)
-//        friendListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        friendAdapter =  FriendAdapter(friendList, R.layout.friend_item)
-//        friendListView.adapter = friendAdapter
+
 
         // Set up the search view to listen for user queries
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -58,6 +55,15 @@ class FriendActivity : AppCompatActivity() {
                 return false
             }
         })
+
+
+        friendListView = findViewById(R.id.friendList)
+        friendListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        DatabaseAPI.getCurrentUserFriends {friends ->
+            friendList = friends
+            friendAdapter =  FriendAdapter(friendList, R.layout.friend_item)
+            friendListView.adapter = friendAdapter
+        }
 
         // Set up the add button
 //        addButton.setOnClickListener {

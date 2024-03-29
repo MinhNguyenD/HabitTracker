@@ -112,6 +112,27 @@ object DatabaseAPI {
             })
     }
 
+    fun getCurrentUserFriends(callback: (ArrayList<User>) -> Unit){
+        val friendList = ArrayList<User>()
+        users.child(currentUser.uid).child("friends").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                friendList.clear()
+                var friend: User?
+                for (userSnapshot in snapshot.children) {
+                    friend = userSnapshot.getValue(User::class.java)
+                    if(friend != null ){
+                        friendList.add(friend)
+                    }
+                }
+                callback(friendList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "getCurrentUserFriends:onCancelled", databaseError.toException())
+                callback(arrayListOf())
+            }
+        })
+    }
 
     /**
      * Updates the user information in the database.
