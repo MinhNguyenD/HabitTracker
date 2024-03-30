@@ -19,6 +19,11 @@ import com.example.csci4176_pmgroupproject.ActivityModel.CheckedTaskModel
 import com.example.csci4176_pmgroupproject.ActivityModel.CountableTaskModel
 import com.example.csci4176_pmgroupproject.ActivityModel.TaskModel
 import com.example.csci4176_pmgroupproject.ActivityModel.TimedTaskModel
+import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
+import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
+import com.example.csci4176_pmgroupproject.Model.TimedActivityModel
+import java.time.DayOfWeek
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,21 +39,22 @@ class CreateActivity : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var daysOfWeek = arrayOf(false, false, false, false, false, false, false)
-    private var REPEnums = arrayOf(
-        ActivityModelRepeat.DAILY,
-        ActivityModelRepeat.WEEKLY,
-        ActivityModelRepeat.BI_WEEKLY,
-        ActivityModelRepeat.TRI_WEEKLY,
-        ActivityModelRepeat.MONTHLY
+    private var daysOfWeek = arrayListOf(false, false, false, false, false, false, false)
+    private var REPEnums = arrayListOf(
+        ActivityModelFrequency.DAILY,
+        ActivityModelFrequency.WEEKLY,
+        ActivityModelFrequency.BIWEEKLY,
+        ActivityModelFrequency.TRI_WEEKLY,
+        ActivityModelFrequency.MONTHLY
         )
-    private lateinit var DOWtoggles: Array<ToggleButton>;
-    private lateinit var REPtoggles: Array<ToggleButton>;
+    private lateinit var DOWtoggles: ArrayList<ToggleButton>;
+    private lateinit var REPtoggles: ArrayList<ToggleButton>;
 
-    private lateinit var repeatFrequency: ActivityModelRepeat;
+    private lateinit var repeatFrequency: ActivityModelFrequency;
     private lateinit var activityType: ActivityModelEnums;
 
     private lateinit var countContainer: EditText;
+    private var count: Int = 1;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,14 +74,14 @@ class CreateActivity : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repeatFrequency = ActivityModelRepeat.WEEKLY
+        repeatFrequency = ActivityModelFrequency.WEEKLY
         val activityTitleView = view.findViewById<EditText>(R.id.new_activity_title)
         val activityNoteSection = view.findViewById<EditText>(R.id.new_activity_note)
         val activityCreateButton = view.findViewById<Button>(R.id.create_activity_button)
         countContainer = view.findViewById(R.id.new_activity_count)
 
         /* Selected Days get Toggles */
-        DOWtoggles = arrayOf(view.findViewById<ToggleButton>(R.id.dow_sunday),
+        DOWtoggles = arrayListOf(view.findViewById<ToggleButton>(R.id.dow_sunday),
             view.findViewById<ToggleButton>(R.id.dow_monday),
             view.findViewById<ToggleButton>(R.id.dow_tuesday),
             view.findViewById<ToggleButton>(R.id.dow_wednesday),
@@ -89,7 +95,7 @@ class CreateActivity : Fragment() {
         }
 
         /* Repeat Frequency Toggles */
-        REPtoggles = arrayOf(
+        REPtoggles = arrayListOf(
             view.findViewById<ToggleButton>(R.id.repeat_daily),
             view.findViewById<ToggleButton>(R.id.repeat_weekly),
             view.findViewById<ToggleButton>(R.id.repeat_biweekly),
@@ -107,24 +113,48 @@ class CreateActivity : Fragment() {
         radioGroup.check(R.id.checkable_radio)
 
         activityCreateButton.setOnClickListener {
+            activityCreateButton.isActivated = false
             val title = activityTitleView.text.toString()
             val note = activityNoteSection.text.toString()
 
             if (title.isNotEmpty()){
-                if (repeatFrequency == ActivityModelRepeat.DAILY){
+                if (repeatFrequency == ActivityModelFrequency.DAILY){
                     // No need to store days of the week.
-                    createActivity(title, note, emptyArray())
+                    if (activityType == ActivityModelEnums.COUNTABLE){
+                        val countText = countContainer.text.toString()
+                        if (countText.isNotEmpty() && countText.toInt() > 0){
+                            count = countText.toInt()
+                            createActivity(title, note, arrayListOf())
+                        }else {
+                            makeMsg("Please input a value greater than 0")
+                            activityCreateButton.isActivated = true
+                        }
+                    }else {
+                        createActivity(title, note, arrayListOf())
+                    }
                 }else {
-                    val days:Array<ActivityModelDays> = getDaysOfWeekArray()
+                    val days:ArrayList<DayOfWeek> = getDaysOfWeek()
                     if (days.isNotEmpty()){
-                        createActivity(title, note, days)
-                        // Complete activity creation
+                        if (activityType == ActivityModelEnums.COUNTABLE){
+                            val countText = countContainer.text.toString()
+                            if (countText.isNotEmpty() && countText.toInt() > 0){
+                                count = countText.toInt()
+                                createActivity(title, note, days)
+                            }else {
+                                makeMsg("Please input a value greater than 0")
+                                activityCreateButton.isActivated = true
+                            }
+                        }else {
+                            createActivity(title, note, days)
+                        }
                     } else{
                         makeMsg("Please select at least 1 day!")
+                        activityCreateButton.isActivated = true
                     }
                 }
             } else {
                 makeMsg("Please give the activity a title!")
+                activityCreateButton.isActivated = true
             }
 
         }
@@ -216,51 +246,46 @@ class CreateActivity : Fragment() {
         }
     }
 
-    private fun createActivity(title: String, note:String, days:Array<ActivityModelDays>){
+    private fun createActivity(title: String, note:String, days:ArrayList<DayOfWeek>){
         // TODO: Connect to database
-        var model: TaskModel
+        var model: ActivityModel
         when (activityType){
             ActivityModelEnums.CHECKED -> {
-                model = CheckedTaskModel(title, days, repeatFrequency)
+                model = CheckedActivityModel("",title, repeatFrequency, days)
             }
             ActivityModelEnums.TIMED -> {
-                model = TimedTaskModel(title, days, repeatFrequency)
+                model = TimedActivityModel("",title,repeatFrequency, days)
             }
-            // TODO: Figure out how to prevent object creation
+
             ActivityModelEnums.COUNTABLE -> {
-                model = CountableTaskModel(title, days, repeatFrequency)
-                val count = countContainer.text.toString()
-                if (count.isNotEmpty()) run {
-                    val cmodel: CountableTaskModel = model
-                    cmodel.setRemaining(count.toInt())
-                } else {
-                    makeMsg("Count was not set. Set a count later")
-                }
+                model = CountableActivityModel("", title, repeatFrequency, days, count)
             }
         }
         model.makeNote(note)
         makeMsg("Success!")
-        Log.w("Create Activity", "Model: ${model.title} | ${model.type}" +
-                "| ${model.days.contentToString()} | ${model.frequency} |")
+//        Log.w("Create Activity", "Model: ${model.title} | ${model.type}" +
+//                "| ${model.days.toString()} | ${model.frequency} |")
+        DatabaseAPI.createActivity(model)
+        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
     }
 
-    private fun getDaysOfWeekArray(): Array<ActivityModelDays>{
-        val days = arrayOf(
-            ActivityModelDays.SUNDAY,
-            ActivityModelDays.MONDAY,
-            ActivityModelDays.TUESDAY,
-            ActivityModelDays.WEDNESDAY,
-            ActivityModelDays.THURSDAY,
-            ActivityModelDays.FRIDAY,
-            ActivityModelDays.SATURDAY
+    private fun getDaysOfWeek(): ArrayList<DayOfWeek>{
+        val days = arrayListOf(
+            DayOfWeek.SUNDAY,
+            DayOfWeek.MONDAY,
+            DayOfWeek.TUESDAY,
+            DayOfWeek.WEDNESDAY,
+            DayOfWeek.THURSDAY,
+            DayOfWeek.FRIDAY,
+            DayOfWeek.SATURDAY
         )
-        var submit = ArrayList<ActivityModelDays>()
+        var submit = ArrayList<DayOfWeek>()
         for (i in daysOfWeek.indices){
             if (daysOfWeek[i]){
                 submit.add(days[i])
             }
         }
-        return submit.toTypedArray()
+        return submit
     }
 
     private fun makeMsg(msg: String){

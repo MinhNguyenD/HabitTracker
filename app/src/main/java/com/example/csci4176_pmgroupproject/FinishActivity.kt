@@ -42,9 +42,6 @@ class FinishActivity : AppCompatActivity() {
         DatabaseAPI.getActivityById(selectedActivityId!!){retrievedActivity ->
             selectedActivity = retrievedActivity
             activityTitleTextView.text = selectedActivity.title
-            selectedActivity.isFinished = true
-            selectedActivity.streak += 1
-            DatabaseAPI.updateActivity(selectedActivity)
         }
 
         // Set onClickListeners for save and delete buttons
@@ -64,7 +61,9 @@ class FinishActivity : AppCompatActivity() {
      */
     fun submitForm(){
         // TODO: update emotion and energy
-        selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
+        if(noteEditText.text.isNotEmpty()){
+            selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
+        }
         DatabaseAPI.updateActivity(selectedActivity)
     }
 

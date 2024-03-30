@@ -52,7 +52,7 @@ class OnDateActivity : AppCompatActivity(){
             DatabaseAPI.getDailyActivitiesOnDate(selectedDate.toString()) { dailyActivities ->
                 if (dailyActivities.size > 0) {
                     activitiesOnDate = dailyActivities
-                    activityAdapter = DailyActivityAdapter(activitiesOnDate, R.layout.acitivity_item_view_only)
+                    activityAdapter = DailyActivityAdapter(activitiesOnDate, true)
                     dailyActivityView.adapter = activityAdapter
 
                     // Calculate completion rate, average mood and energy for the activities on the selected date

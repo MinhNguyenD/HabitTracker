@@ -22,7 +22,7 @@
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
     <string name="biweekly">BiWeekly</string>
-    <string name="tri_weekly">Tri-Weekly</string>
+    <string name="tri_weekly">TriWeekly</string>
     <string name="monthly">Monthly</string>
     <string name="type">Type of Activity:</string>
     <string name="checkable">Checkable</string>
