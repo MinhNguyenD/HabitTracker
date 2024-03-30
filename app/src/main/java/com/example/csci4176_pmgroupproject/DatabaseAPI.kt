@@ -179,6 +179,7 @@ object DatabaseAPI {
      */
     fun getDailyActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
+        var allDailyActivities = ArrayList<ActivityModel>()
         val query: Query = activities.orderByChild("userId").equalTo(currentUser.uid)
         query.addListenerForSingleValueEvent (object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -191,10 +192,14 @@ object DatabaseAPI {
                         ActivityModelEnums.COUNTABLE.toString() -> activity = entry.getValue(CountableActivityModel::class.java)!!
                         ActivityModelEnums.TIMED.toString() ->activity = entry.getValue(TimedActivityModel::class.java)!!
                     }
-                    if(activity != null && isTodayActivity(activity) && !activity.isFinished){
-                        activityList.add(activity)
+                    if(activity != null && isTodayActivity(activity)){
+                        if(!activity.isFinished){
+                            activityList.add(activity)
+                        }
+                        allDailyActivities.add(activity)
                     }
                 }
+                saveDailyActivities(allDailyActivities)
                 callback(activityList)
             }
             override fun onCancelled(error: DatabaseError) {

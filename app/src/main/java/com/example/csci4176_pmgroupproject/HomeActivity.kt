@@ -54,7 +54,6 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
             updateProgress()
             displayNoActivity()
         }
-        DatabaseAPI.saveDailyActivities(dailyActivityList)
         AlarmScheduler.scheduleEndOfDayCheck(this)
     }
 

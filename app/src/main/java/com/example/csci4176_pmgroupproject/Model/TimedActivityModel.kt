@@ -19,12 +19,10 @@ class TimedActivityModel(habitId : String, title: String,
     0,
     ActivityMood.NEUTRAL,
     ActivityEnergy.NEUTRAL, ""){
-    private var startTime: Long = 0
-    private var endTime : Long = 0
-    private var duration : Long = 0
-    private var formattedStartTime : String = ""
-    private var formattedEndTime : String = ""
-    private var formattedDuration : String = ""
+
+    var startTime: Long = 0
+    var endTime : Long = 0
+    var duration : Long = 0
 
 
     // require by firebase
@@ -45,8 +43,7 @@ class TimedActivityModel(habitId : String, title: String,
     }
 
     fun getFormattedStartTime() : String {
-        formattedStartTime = formatTime(startTime)
-        return formattedStartTime
+        return formatTime(startTime)
     }
 
     fun formatTime(time : Long) : String{
@@ -59,16 +56,14 @@ class TimedActivityModel(habitId : String, title: String,
     }
 
     fun getFormattedEndTime() : String {
-        formattedEndTime = formatTime(endTime)
-        return formattedEndTime
+        return formatTime(endTime)
     }
 
     fun getFormattedDuration() : String {
         val hours = duration / (1000 * 60 * 60)
         val minutes = (duration % (1000 * 60 * 60)) / (1000 * 60)
         val seconds = ((duration % (1000 * 60 * 60)) % (1000 * 60)) / 1000
-        formattedDuration = String.format("%02d:%02d:%02d", hours, minutes, seconds)
-        return formattedDuration
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
     override fun complete() {
         TODO("Not yet implemented")

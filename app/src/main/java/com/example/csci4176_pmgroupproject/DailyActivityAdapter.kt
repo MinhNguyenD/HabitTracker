@@ -91,22 +91,22 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyActivityViewHolder {
         var itemLayout : Int = 0
         if(viewOnly){
-//            itemLayout = R.layout.acitivity_item_view_only
+            itemLayout = R.layout.acitivity_item_view_only
         }
-
-        when (viewType) {
-            TYPE_CHECK_ACTIVITY -> {
-                itemLayout = R.layout.acitivity_item_checkable
+        else{
+            when (viewType) {
+                TYPE_CHECK_ACTIVITY -> {
+                    itemLayout = R.layout.acitivity_item_checkable
+                }
+                TYPE_TIME_ACTIVITY -> {
+                    itemLayout = R.layout.activity_item_timed
+                }
+                TYPE_COUNT_ACTIVITY -> {
+                    itemLayout = R.layout.activity_item_countable
+                }
+                else -> throw IllegalArgumentException("Invalid view type")
             }
-            TYPE_TIME_ACTIVITY -> {
-                itemLayout = R.layout.activity_item_timed
-            }
-            TYPE_COUNT_ACTIVITY -> {
-                itemLayout = R.layout.activity_item_countable
-            }
-            else -> throw IllegalArgumentException("Invalid view type")
         }
-
         // Inflate the city item layout and create a new CityViewHolder
         val activityItemView = LayoutInflater.from(parent.context).inflate(itemLayout, parent, false)
         return DailyActivityViewHolder(activityItemView)
@@ -126,6 +126,16 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
         // Bind city data to the views in the ViewHolder
         holder.activityTitleView.text = activities[position].title
         holder.streak.text = activities[position].streak.toString()
+        if(holder.progress != null){
+            if (activities[position].isFinished){
+                holder.progress.text = "Finished"
+                holder.progress.setTextColor(holder.itemView.resources.getColor(R.color.submit))
+            }
+            else{
+                holder.progress.text = "Not Started"
+                holder.progress.setTextColor(holder.itemView.resources.getColor(R.color.red))
+            }
+        }
         if(holder.remaining != null){
             val countActivity : CountableActivityModel = activities[position] as CountableActivityModel
             holder.remaining.text = countActivity.getRemaining().toString()
