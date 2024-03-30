@@ -21,7 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView_habit_item_recyclerview_item"
+                android:id="@+id/textView_activity_item_recyclerview_item"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -31,7 +31,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/modifyBtn_habit_item_recyclerview_item"
+                android:id="@+id/modifyBtn_activity_item_recyclerview_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

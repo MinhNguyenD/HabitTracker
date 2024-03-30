@@ -1,7 +1,5 @@
 package com.example.csci4176_pmgroupproject
 
-import android.content.ContentValues
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
-    RecyclerView.Adapter<Habit_Categories_Adapter.ViewHolder>() {
+class HabitCategoriesAdapter(private var dataSet: MutableList<String>) :
+    RecyclerView.Adapter<HabitCategoriesAdapter.ViewHolder>() {
     private var itemOnClickListener: OnClickItemListener? = null
     private var addNewCategoryListener: OnClickSaveItemListener? = null
 
@@ -53,7 +51,6 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
 
         // In "Adding category" mode, the EditText is available for the user to enter text
         if(isAddingCategory && position == newItemPosition){
-            Log.d(ContentValues.TAG, "we're innn we are $dataSet")
             viewHolder.textView.visibility = View.GONE
             viewHolder.editText.visibility = View.VISIBLE
             viewHolder.saveBtn.visibility = View.VISIBLE
@@ -86,10 +83,6 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-
-    fun getIsAddingCategory(): Boolean {
-        return this.isAddingCategory
-    }
 
     // Set the "Adding category" mode to true or false
     fun setIsAddingCategory(value: Boolean){

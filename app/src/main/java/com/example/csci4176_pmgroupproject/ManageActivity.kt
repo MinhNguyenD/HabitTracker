@@ -18,11 +18,16 @@ class ManageActivity : BaseActivity() {
                 habitNameList.add(habit.habitName)
             }
 
-            val habitFragment: Fragment = CreateHabit.newInstance(habitNameList)
-            val fragmentTrans: FragmentTransaction = supportFragmentManager.beginTransaction()
-
-            fragmentTrans.replace(R.id.root_container, habitFragment).commit()
+            // Display the habit fragment at first
+            val habitFragment: Fragment = ManageHabits.newInstance(habitNameList)
+            replaceFragment(habitFragment)
         }
+    }
 
+    fun replaceFragment(fragment: Fragment){
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.root_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

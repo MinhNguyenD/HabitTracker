@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.csci4176_pmgroupproject.CreateHabit"
+        android:name="com.example.csci4176_pmgroupproject.ManageHabits"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

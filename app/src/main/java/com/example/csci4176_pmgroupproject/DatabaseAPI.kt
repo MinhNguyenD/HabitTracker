@@ -220,6 +220,10 @@ object DatabaseAPI {
         })
     }
 
+    /**
+     * Retrieves the habit Id of the habit name that is passed as a parameter.
+     * @param callback: A callback function to handle the habit Id.
+     */
     fun getHabitIdByName(habitName : String, callback: (String) -> Unit){
         var habitId = ""
 
