@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity(){
                             /**Temporary**/
                             Toast.makeText(baseContext, "Login Successful!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
+                            finish()
                             startActivity(Intent(this, HomeActivity::class.java))
                         } else
                         {

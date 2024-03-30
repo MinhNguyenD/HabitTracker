@@ -1,10 +1,7 @@
 package com.example.csci4176_pmgroupproject
 
-import android.content.Intent
-import android.content.IntentFilter
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import java.text.SimpleDateFormat
 import java.util.Date
-import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 /**
  * HomeActivity: Displays the home screen with a list of daily activities and progress bar.
  */
 class HomeActivity : BaseActivity(), TodoItemClickListener {
-    private var progress = 0
-    private var numActivities = 0
-    private var percentageIncrease = 0
+//    private var progress = 0
+//    private var numActivities = 0
+//    private var currentNumActivities = 0
+//    private var numFinishedActivity = 0.0
     private lateinit var progressBarView : ProgressBar
     private lateinit var progressTextView : TextView
     private lateinit var todayTextView : TextView
@@ -40,28 +38,54 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
         // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
             dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, R.layout.acitivity_item)
+            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
             dailyActivityView.adapter = activityAdapter
-            numActivities = activityAdapter.itemCount
-            DatabaseAPI.saveDailyActivities(dailyActivityList)
+            DailyProgress.currentNumActivities = DailyProgress.numActivities
             initToday()
-            initProgress()
+            if(DailyProgress.progress == 0){
+                DailyProgress.numActivities = activityAdapter.itemCount
+                initProgress()
+            }
+            else{
+                if(DailyProgress.currentNumActivities < dailyActivityList.size){
+                    DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
+                }
+            }
+            updateProgress()
             displayNoActivity()
         }
-        DatabaseAPI.saveDailyActivities(dailyActivityList)
         AlarmScheduler.scheduleEndOfDayCheck(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // populate daily activities list and display on recycler view
+        DatabaseAPI.getDailyActivity { dailyList ->
+            dailyActivityList = dailyList
+            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
+            dailyActivityView.adapter = activityAdapter
+            // if new activities added
+            if(DailyProgress.currentNumActivities < dailyActivityList.size){
+                DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
+            }
+            updateProgress()
+            displayNoActivity()
+        }
     }
 
     /**
      * Updates the progress bar.
      */
     private fun updateProgress(){
-        if(progress < 100){
-            progress += percentageIncrease
+        if(DailyProgress.numActivities > 0){
+            DailyProgress.progress = (DailyProgress.numFinishedActivity/DailyProgress.numActivities * 100).roundToInt()
+        }
+        else{
+            DailyProgress.progress = 100
         }
         // since we rounding up percentage, the sum will be more than 100
-        if(progress > 100){
-            progress = 100
+        if(DailyProgress.progress > 100){
+            DailyProgress.progress = 100
         }
         updateProgressView()
     }
@@ -70,15 +94,16 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
      * Updates the progress bar view.
      */
     private fun updateProgressView(){
-        progressBarView.progress = progress
-        progressTextView.text = "$progress%"
+        progressBarView.progress = DailyProgress.progress
+        progressTextView.text = "${DailyProgress.progress}%"
     }
 
     /**
      * Initializes the progress bar.
      */
     private fun initProgress(){
-        percentageIncrease = ceil(1.0/numActivities * 100).toInt()
+        DailyProgress.progress = 0
+        DailyProgress.numFinishedActivity = 0.0
         updateProgressView()
     }
 
@@ -95,6 +120,8 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
      * @param position: The position of the clicked item in the RecyclerView.
      */
     override fun onItemFinishClick(position: Int) {
+        DailyProgress.currentNumActivities--
+        DailyProgress.numFinishedActivity++
         dailyActivityList.removeAt(position)
         // Update the RecyclerView
         dailyActivityView.adapter?.notifyItemRemoved(position)
@@ -106,11 +133,23 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
      * Displays a message if there are no daily activities left.
      */
     private fun displayNoActivity(){
+        val noActivityView: TextView = findViewById(R.id.noActivity)
         if(dailyActivityList.isEmpty()) {
-            progress = 100
+            DailyProgress.progress = 100
             updateProgressView()
-            val noActivityView: TextView = findViewById(R.id.noActivity)
             noActivityView.text = "All activities are done!"
         }
+        else{
+            noActivityView.text = ""
+        }
+    }
+}
+
+class DailyProgress {
+    companion object {
+        var progress : Int = 0
+        var numActivities : Int = 0
+        var currentNumActivities : Int = 0
+        var numFinishedActivity : Double = 0.0
     }
 }

@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import java.time.DayOfWeek
@@ -213,7 +214,8 @@ object DatabaseAPI {
      */
     fun getAllActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
-        activities.addListenerForSingleValueEvent(object : ValueEventListener{
+        val query: Query = activities.orderByChild("userId").equalTo(currentUser.uid.toString())
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
@@ -237,7 +239,9 @@ object DatabaseAPI {
      */
     fun getDailyActivity(callback: (ArrayList<ActivityModel>) -> Unit){
         activityList = ArrayList()
-        activities.addListenerForSingleValueEvent (object : ValueEventListener{
+        var allDailyActivities = ArrayList<ActivityModel>()
+        val query: Query = activities.orderByChild("userId").equalTo(currentUser.uid)
+        query.addListenerForSingleValueEvent (object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
@@ -248,10 +252,14 @@ object DatabaseAPI {
                         ActivityModelEnums.COUNTABLE.toString() -> activity = entry.getValue(CountableActivityModel::class.java)!!
                         ActivityModelEnums.TIMED.toString() ->activity = entry.getValue(TimedActivityModel::class.java)!!
                     }
-                    if(activity != null && isTodayActivity(activity) && !activity.isFinished){
-                        activityList.add(activity)
+                    if(activity != null && isTodayActivity(activity)){
+                        if(!activity.isFinished){
+                            activityList.add(activity)
+                        }
+                        allDailyActivities.add(activity)
                     }
                 }
+                saveDailyActivities(allDailyActivities)
                 callback(activityList)
             }
             override fun onCancelled(error: DatabaseError) {
@@ -295,11 +303,19 @@ object DatabaseAPI {
      * @return True if the activity is scheduled for today, false otherwise.
      */
     private fun isTodayActivity(activity: ActivityModel) : Boolean{
+        var matchDayOfWeek : Boolean = false
         val today = LocalDate.now()
         val startDate = LocalDate.parse(activity.startDate)
 
-        // not matching day of the week and is not daily frequency
-        if(activity.dayOfWeek != convertDayOfWeek(today.dayOfWeek) && !(activity.frequency == ActivityModelFrequency.DAILY || activity.frequency == ActivityModelFrequency.MONTHLY)){
+        for(selectDay in activity.days){
+            if(selectDay == today.dayOfWeek){
+                matchDayOfWeek = true
+                break
+            }
+        }
+
+        // not matching day of the week and is not daily frequency or monthly
+        if(!matchDayOfWeek && !(activity.frequency == ActivityModelFrequency.DAILY || activity.frequency == ActivityModelFrequency.MONTHLY)){
             return false
         }
 
@@ -309,6 +325,13 @@ object DatabaseAPI {
             ActivityModelFrequency.BIWEEKLY -> {
                 val weeksPassed = startDate.until(today, java.time.temporal.ChronoUnit.WEEKS)
                 if(weeksPassed % 2 == 0L && weeksPassed >= 0L){
+                    return true
+                }
+                return false
+            }
+            ActivityModelFrequency.TRI_WEEKLY -> {
+                val weeksPassed = startDate.until(today, java.time.temporal.ChronoUnit.WEEKS)
+                if(weeksPassed % 3 == 0L && weeksPassed >= 0L){
                     return true
                 }
                 return false

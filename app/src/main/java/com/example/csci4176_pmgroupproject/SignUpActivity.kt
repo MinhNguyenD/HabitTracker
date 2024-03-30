@@ -40,6 +40,7 @@ class SignUpActivity : AppCompatActivity() {
                             DatabaseAPI.updateUser(DatabaseAPI.currentUser.uid, username).addOnCompleteListener {comp ->
                                 if(comp.isSuccessful){
                                     Toast.makeText(baseContext, "User Created!", Toast.LENGTH_LONG).show()
+                                    finish()
                                 }else {
                                     Toast.makeText(baseContext, "Error occurred when creating user!", Toast.LENGTH_LONG).show()
                                 }

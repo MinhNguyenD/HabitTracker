@@ -5,22 +5,24 @@ import com.example.csci4176_pmgroupproject.ActivityModelDayOfWeek
 import com.example.csci4176_pmgroupproject.ActivityModelEnums
 import com.example.csci4176_pmgroupproject.ActivityModelFrequency
 import com.example.csci4176_pmgroupproject.ActivityMood
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 
-class CountableActivityModel(taskId: String, userId: String,
-                             habitId : String, title: String,
-                             frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, var remaining:Int = 0)
-    : ActivityModel(taskId, userId, habitId,title,
-    ActivityModelEnums.COUNTABLE, false, LocalDate.now().toString(), frequency, dayOfWeek,
+class CountableActivityModel(habitId : String, title: String,
+                             frequency: ActivityModelFrequency, days: ArrayList<DayOfWeek>, private var remaining:Int = 0)
+    : ActivityModel(habitId,title,
+    ActivityModelEnums.COUNTABLE, false, LocalDate.now().toString(), frequency, days,
     0,
     ActivityMood.NEUTRAL,
     ActivityEnergy.NEUTRAL, ""){
     // require by firebase
-    constructor() : this("","","","", ActivityModelFrequency.NEVER, ActivityModelDayOfWeek.MONDAY,0)
-    constructor(userId: String, habitId : String, title: String, frequency: ActivityModelFrequency, dayOfWeek: ActivityModelDayOfWeek, remaining: Int) : this("",userId,habitId, title, frequency, dayOfWeek, remaining)
-    //    fun setRemaining(remaining: Int){ this.remaining = remaining }
+    constructor() : this("","", ActivityModelFrequency.NEVER, arrayListOf(),0)
+
+    fun setRemaining(value: Int){ this.remaining = value }
     fun decrementRemaining(){ this.remaining-- }
+
+    fun getRemaining(): Int{ return this.remaining }
     override fun complete() {
         TODO("Not yet implemented")
     }
