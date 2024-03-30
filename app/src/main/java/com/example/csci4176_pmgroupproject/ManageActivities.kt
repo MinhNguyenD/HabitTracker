@@ -48,19 +48,26 @@ class ManageActivities : Fragment() {
 
         // Display all the activities in a RecycleView
         DatabaseAPI.getAllActivity { activityList ->
-            val customAdapter = ActivityAdapter(activityList)
-            connectAdapter(recyclerView, customAdapter)
+            // If the activity list for this habit is empty, display a message
+            if(activityList.size <= 0) {
+                displayNoActivity(view)
+            }
+            else {
+                val customAdapter = ActivityAdapter(activityList)
+                connectAdapter(recyclerView, customAdapter)
 
-            // Set up a listener to listen for clicks on the Modify button
-            customAdapter.setOnClickModifyItemListener(object: ActivityAdapter.OnClickModifyItemListener{
-                override fun onClickModifyItem(isClicked: Boolean) {
-                    if(isClicked) {
-                        // TODO: The ModifyActivity fragment is shown
+                // Set up a listener to listen for clicks on the Modify button
+                customAdapter.setOnClickModifyItemListener(object :
+                    ActivityAdapter.OnClickModifyItemListener {
+                    override fun onClickModifyItem(isClicked: Boolean) {
+                        if (isClicked) {
+                            // TODO: The ModifyActivity fragment is shown
 
+                        }
                     }
-                }
 
-            })
+                })
+            }
         }
 
         // Set up a listener to listen for clicks on the 'plus' button
@@ -94,5 +101,14 @@ class ManageActivities : Fragment() {
         llm.setOrientation(LinearLayoutManager.VERTICAL)
         recyclerView.layoutManager = llm
         recyclerView.adapter = customAdapter
+    }
+
+    private fun displayNoActivity(view: View){
+        val noActivityView: TextView = view.findViewById(R.id.noActivity)
+        val recyclerView: RecyclerView = view.findViewById(R.id.activityRecyclerView)
+
+        recyclerView.visibility = View.GONE
+        noActivityView.visibility = View.VISIBLE
+        noActivityView.text = "You have no activities at the moment"
     }
 }

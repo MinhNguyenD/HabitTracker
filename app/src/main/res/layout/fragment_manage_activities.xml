@@ -53,6 +53,13 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/noActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
 <!--     RecyclerView for categories-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activityRecyclerView"
@@ -60,7 +67,7 @@
         android:layout_height="550dp"
         android:layout_marginTop="90dp"
         android:background="@android:color/background_light"
-        android:padding="8dp" />
+        android:padding="8dp"/>
 
 
 </FrameLayout>
