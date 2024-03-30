@@ -207,8 +207,10 @@ object DatabaseAPI {
      * @param arrayList: The list of activities to save.
      */
     fun saveDailyActivities(arrayList: ArrayList<ActivityModel>){
-        dailyActivity.child(LocalDate.now().toString())
-            .setValue(arrayList)
+        val dateRef = dailyActivity.child(LocalDate.now().toString())
+        for(activity in arrayList){
+            dateRef.child(activity.taskId).setValue(activity)
+        }
     }
 
     /**
@@ -307,5 +309,37 @@ object DatabaseAPI {
      */
     fun deleteActivity(activityId: String): Task<Void> {
         return activities.child(activityId).removeValue()
+    }
+
+    /**
+     * Get all of the daily activities on a given date
+     *
+     */
+    fun getDailyActivitiesOnDate(selectedDate : String, callback: (ArrayList<ActivityModel>) -> Unit){
+        activityList = ArrayList()
+        return dailyActivity.child(selectedDate).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                activityList.clear()
+                // Retrieve the activity object from the dataSnapshot
+                for (entry in dataSnapshot.children){
+                    activityList.add(convertActivity(entry))
+                }
+                callback(activityList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
+    }
+
+    private fun convertActivity(entry : DataSnapshot): ActivityModel {
+        val taskType = entry.child("type").value.toString()
+        when(taskType){
+            ActivityModelEnums.CHECKED.toString() -> return entry.getValue(CheckedActivityModel::class.java)!!
+            ActivityModelEnums.COUNTABLE.toString() -> return entry.getValue(CountableActivityModel::class.java)!!
+            ActivityModelEnums.TIMED.toString() -> return entry.getValue(TimedActivityModel::class.java)!!
+            else -> throw IllegalArgumentException("Invalid task type: $taskType")
+        }
     }
 }

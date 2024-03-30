@@ -37,9 +37,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
                     progress?.text = "Finish"
                     progress?.setTextColor(itemView.resources.getColor(R.color.submit))
                     itemView.context.startActivity(finishIntent)
-                    if(clickListener != null){
-                        clickListener?.onItemFinishClick(position)
-                    }
+                    clickListener?.onItemFinishClick(position)
                 }
                 else if(activities[position] is CountableActivityModel){
                     val countActivity : CountableActivityModel = activities[position] as CountableActivityModel
