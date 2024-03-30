@@ -8,4 +8,5 @@
     <color name="submit">#4CAF50</color>
     <color name="toggle_unselected">#5474BBD2</color>
     <color name="toggle_selected">#03A9F4</color>
+    <color name="yellow">#FFE135</color>
 </resources>

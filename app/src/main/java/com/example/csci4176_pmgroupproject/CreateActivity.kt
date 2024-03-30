@@ -254,7 +254,7 @@ class CreateActivity : Fragment() {
                 model = CheckedActivityModel("",title, repeatFrequency, days)
             }
             ActivityModelEnums.TIMED -> {
-                model = TimedActivityModel("",title,repeatFrequency, days, 0)
+                model = TimedActivityModel("",title,repeatFrequency, days)
             }
 
             ActivityModelEnums.COUNTABLE -> {
