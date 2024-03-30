@@ -20,7 +20,9 @@ class ManageActivity : BaseActivity() {
 
             // Display the habit fragment at first
             val habitFragment: Fragment = ManageHabits.newInstance(habitNameList)
-            replaceFragment(habitFragment)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.root_container, habitFragment)
+                .commit()
         }
     }
 
