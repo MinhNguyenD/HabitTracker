@@ -160,11 +160,28 @@ object DatabaseAPI {
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
-                    val taskType = entry.child("type").value.toString()
-                    when(taskType){
-                        ActivityModelEnums.CHECKED.toString() -> activityList.add(entry.getValue(CheckedActivityModel::class.java)!!)
-                        ActivityModelEnums.COUNTABLE.toString() -> activityList.add(entry.getValue(CountableActivityModel::class.java)!!)
-                        ActivityModelEnums.TIMED.toString() -> activityList.add(entry.getValue(TimedActivityModel::class.java)!!)
+                    val user = entry.child("userId").value.toString()
+                    if (user == currentUser.uid.toString()) {
+                        val taskType = entry.child("type").value.toString()
+                        when (taskType) {
+                            ActivityModelEnums.CHECKED.toString() -> activityList.add(
+                                entry.getValue(
+                                    CheckedActivityModel::class.java
+                                )!!
+                            )
+
+                            ActivityModelEnums.COUNTABLE.toString() -> activityList.add(
+                                entry.getValue(
+                                    CountableActivityModel::class.java
+                                )!!
+                            )
+
+                            ActivityModelEnums.TIMED.toString() -> activityList.add(
+                                entry.getValue(
+                                    TimedActivityModel::class.java
+                                )!!
+                            )
+                        }
                     }
                 }
                 callback(activityList)
