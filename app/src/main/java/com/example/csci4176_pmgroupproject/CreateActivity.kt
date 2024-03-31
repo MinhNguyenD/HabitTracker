@@ -28,7 +28,6 @@ import java.time.DayOfWeek
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -36,9 +35,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CreateActivity : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    // Habit Id passed from ManageActivities fragment
+    private var habitId: String? = null
     private var daysOfWeek = arrayListOf(false, false, false, false, false, false, false)
     private var REPEnums = arrayListOf(
         ActivityModelFrequency.DAILY,
@@ -59,8 +57,7 @@ class CreateActivity : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            habitId = it.getString(ARG_PARAM1)
         }
     }
 
@@ -167,16 +164,13 @@ class CreateActivity : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment create_activity.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             CreateActivity().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
@@ -251,14 +245,14 @@ class CreateActivity : Fragment() {
         var model: ActivityModel
         when (activityType){
             ActivityModelEnums.CHECKED -> {
-                model = CheckedActivityModel("",title, repeatFrequency, days)
+                model = CheckedActivityModel(habitId!!, title, repeatFrequency, days)
             }
             ActivityModelEnums.TIMED -> {
-                model = TimedActivityModel("",title,repeatFrequency, days)
+                model = TimedActivityModel(habitId!!,title,repeatFrequency, days)
             }
 
             ActivityModelEnums.COUNTABLE -> {
-                model = CountableActivityModel("", title, repeatFrequency, days, count)
+                model = CountableActivityModel(habitId!!, title, repeatFrequency, days, count)
             }
         }
         model.makeNote(note)
@@ -266,7 +260,9 @@ class CreateActivity : Fragment() {
 //        Log.w("Create Activity", "Model: ${model.title} | ${model.type}" +
 //                "| ${model.days.toString()} | ${model.frequency} |")
         DatabaseAPI.createActivity(model)
-        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+
+        // Move back to the previous fragment
+        parentFragmentManager.popBackStack()
     }
 
     private fun getDaysOfWeek(): ArrayList<DayOfWeek>{

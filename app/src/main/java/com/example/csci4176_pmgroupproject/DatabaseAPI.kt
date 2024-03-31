@@ -287,6 +287,30 @@ object DatabaseAPI {
     }
 
     /**
+     * Retrieves the habit by passing in the habit Id as the parameter.
+     * @param callback: A callback function to handle the habit.
+     */
+    fun getHabitById(habitId : String, callback: (HabitModel) -> Unit){
+        val query: Query = habits.child(habitId)
+
+        return query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currHabitId = dataSnapshot.child("habitId").getValue(String::class.java)
+                val currUserId = dataSnapshot.child("userId").getValue(String::class.java)
+                val currHabitName = dataSnapshot.child("habitName").getValue(String::class.java)
+
+                if (currHabitId != null && currHabitName != null) {
+                    val habit = HabitModel(currHabitId, currUserId, currHabitName)
+                    callback(habit)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Error getting habit by ID from database", error.toException())}
+        })
+    }
+
+    /**
      * Retrieves today's activities from the database.
      * @param callback: A callback function to handle today's activities.
      */

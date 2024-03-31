@@ -58,14 +58,20 @@ class ManageHabits : Fragment() {
                 override fun onClickItem(position: Int) {
                     val selectedCategory = categories[position]
 
-                    Toast.makeText(requireContext(), "You Selected: $selectedCategory", Toast.LENGTH_LONG).show()
+                    DatabaseAPI.getHabitIdByName(selectedCategory) { habitId ->
+                        Toast.makeText(
+                            requireContext(),
+                            "You Selected: $selectedCategory",
+                            Toast.LENGTH_LONG
+                        ).show()
 
-                    // Create a new instance of ManageActivities fragment
-                    val modifyActivityFrag = ManageActivities.newInstance(selectedCategory)
+                        // Create a new instance of ManageActivities fragment
+                        val modifyActivityFrag = ManageActivities.newInstance(habitId)
 
-                    // Replace with the ModifyActivity fragment
-                    val manageActivity = activity as ManageActivity
-                    manageActivity.replaceFragment(modifyActivityFrag)
+                        // Replace with the ModifyActivity fragment
+                        val manageActivity = activity as ManageActivity
+                        manageActivity.replaceFragment(modifyActivityFrag)
+                    }
 
                 }
             })
