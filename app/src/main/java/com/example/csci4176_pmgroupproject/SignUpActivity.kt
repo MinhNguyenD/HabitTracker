@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
 
 class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +36,7 @@ class SignUpActivity : AppCompatActivity() {
                             /**Temporary**/
                             //Toast.makeText(baseContext, "Account Created!", Toast.LENGTH_LONG).show()
                             /**Temporary**/
-                            DatabaseAPI.updateUser(DatabaseAPI.currentUser.uid, username).addOnCompleteListener {comp ->
+                            DatabaseAPI.createUser(DatabaseAPI.currentUser.uid, username).addOnCompleteListener { comp ->
                                 if(comp.isSuccessful){
                                     Toast.makeText(baseContext, "User Created!", Toast.LENGTH_LONG).show()
                                     finish()

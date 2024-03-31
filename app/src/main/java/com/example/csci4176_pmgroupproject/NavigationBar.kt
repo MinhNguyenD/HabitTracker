@@ -24,6 +24,7 @@ class NavigationBar: Fragment() {
             is AccountActivity -> bottomNavigationBar.selectedItemId = R.id.account
             is ManageActivity -> bottomNavigationBar.selectedItemId = R.id.manage
             is CalendarActivity -> bottomNavigationBar.selectedItemId = R.id.calendar
+            is FriendActivity -> bottomNavigationBar.selectedItemId = R.id.friends
         }
         bottomNavigationBar.setOnItemSelectedListener {item ->
             when (item.itemId) {
@@ -49,10 +50,9 @@ class NavigationBar: Fragment() {
                 }
 
                 R.id.friends -> {
-//                    if (this.activity !is ManagementActivity) {
-//                        startActivity(Intent(this.activity, ManagementActivity::class.java))//this is only for testing rn
-//                    }
-                    //startActivity(Intent(this.activity, FriendsActivity::class.java))//this is only for testing rn
+                    if (this.activity !is FriendActivity) {
+                        startActivity(Intent(this.activity, FriendActivity::class.java))//this is only for testing rn
+                    }
                     true
                 }
 
@@ -76,6 +76,7 @@ class NavigationBar: Fragment() {
             is AccountActivity -> bottomNavigationBar.selectedItemId = R.id.account
             is ManageActivity -> bottomNavigationBar.selectedItemId = R.id.manage
             is CalendarActivity -> bottomNavigationBar.selectedItemId = R.id.calendar
+            is FriendActivity -> bottomNavigationBar.selectedItemId = R.id.friends
         }
     }
 }

@@ -28,40 +28,48 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
         init {
             finishButton?.setOnClickListener{
                 val position = adapterPosition
-                if(activities[position] is CheckedActivityModel){
-                    activities[position].isFinished = true
-                    activities[position].streak += 1
-                    DatabaseAPI.updateActivity(activities[position])
+                val activity = activities[position]
+                if(activity is CheckedActivityModel){
+                    activity.isFinished = true
+                    activity.streak += 1
+                    DatabaseAPI.updateActivity(activity)
                     val finishIntent = Intent(itemView.context, FinishActivity::class.java)
-                    finishIntent.putExtra("selectedActivityId", activities[position].taskId)
+                    finishIntent.putExtra("selectedActivityId", activity.taskId)
                     progress?.text = "Finish"
                     progress?.setTextColor(itemView.resources.getColor(R.color.submit))
                     itemView.context.startActivity(finishIntent)
+                    DatabaseAPI.getCurrentUser {currentUser ->
+                        currentUser.notifyFriends("${currentUser.username} has finished an Activity named ${activity.title}")
+                    }
                     clickListener?.onItemFinishClick(position)
                 }
-                else if(activities[position] is CountableActivityModel){
-                    val countActivity : CountableActivityModel = activities[position] as CountableActivityModel
+                else if(activity is CountableActivityModel){
+                    val countActivity : CountableActivityModel = activity as CountableActivityModel
                     countActivity.decrementRemaining()
                     val currentCount = countActivity.getRemaining()
                     remaining?.text = "${currentCount}"
                     progress?.text = "In Progress"
                     progress?.setTextColor(itemView.resources.getColor(R.color.yellow))
                     if (currentCount == 0) {
-                        activities[position].isFinished = true
-                        activities[position].streak += 1
-                        DatabaseAPI.updateActivity(activities[position])
+                        countActivity.isFinished = true
+                        countActivity.streak += 1
+                        DatabaseAPI.updateActivity(countActivity)
                         val finishIntent = Intent(itemView.context, FinishActivity::class.java)
-                        finishIntent.putExtra("selectedActivityId", activities[position].taskId)
+                        finishIntent.putExtra("selectedActivityId", countActivity.taskId)
                         progress?.text = "Finish"
                         progress?.setTextColor(itemView.resources.getColor(R.color.submit))
                         itemView.context.startActivity(finishIntent)
+                        DatabaseAPI.getCurrentUser {currentUser ->
+                            currentUser.notifyFriends("${currentUser.username} has finished an Activity named ${activity.title}")
+                        }
                         clickListener?.onItemFinishClick(position)
                     }
                 }
             }
             startToggle?.setOnCheckedChangeListener { button, checked ->
                 val position = adapterPosition
-                val timedActivity : TimedActivityModel = activities[position] as TimedActivityModel
+                val activity = activities[position]
+                val timedActivity : TimedActivityModel = activity as TimedActivityModel
                 if (checked) {
                     button.backgroundTintList =
                         ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.toggle_selected))
@@ -72,12 +80,15 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
                     button.backgroundTintList =
                         ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.toggle_unselected))
                     timedActivity.endActivity()
-                    activities[position].isFinished = true
-                    activities[position].streak += 1
-                    DatabaseAPI.updateActivity(activities[position])
+                    timedActivity.isFinished = true
+                    timedActivity.streak += 1
+                    DatabaseAPI.updateActivity(timedActivity)
                     val finishIntent = Intent(itemView.context, FinishActivity::class.java)
-                    finishIntent.putExtra("selectedActivityId", activities[position].taskId)
+                    finishIntent.putExtra("selectedActivityId", timedActivity.taskId)
                     itemView.context.startActivity(finishIntent)
+                    DatabaseAPI.getCurrentUser {currentUser ->
+                        currentUser.notifyFriends("${currentUser.username} has finished an Activity named ${activity.title}")
+                    }
                     clickListener?.onItemFinishClick(position)
                 }
             }

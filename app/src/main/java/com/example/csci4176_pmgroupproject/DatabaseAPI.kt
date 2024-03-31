@@ -1,10 +1,10 @@
 package com.example.csci4176_pmgroupproject
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
 import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
 import com.example.csci4176_pmgroupproject.Model.HabitModel
@@ -55,10 +55,9 @@ object DatabaseAPI {
         task.addOnCompleteListener {
             if (task.isSuccessful){
                 currentUser = auth.currentUser!!
-                /*
-                * TODO: create basic User object
-                * TODO: pull basic User object from [users]
-                */
+                getCurrentUser {user ->
+                    this.user = user
+                }
             }
         }
         return task
@@ -82,13 +81,74 @@ object DatabaseAPI {
         return task
     }
 
+    // Add a friend connection
+    fun addFriend(friendUser: User): Task<Void> {
+        users.child(friendUser.uid).child("friends").child(currentUser.uid).setValue(user)
+        return users.child(currentUser.uid).child("friends").child(friendUser.uid).setValue(friendUser)
+    }
+
+    // Remove a friend connection
+    fun removeFriend(friendUserId: String): Task<Void> {
+        users.child(friendUserId).child("friends").child(currentUser.uid).removeValue()
+        return users.child(currentUser.uid).child("friends").child(friendUserId).removeValue()
+    }
+
     /**
-     * Updates the user information in the database.
+     * Search for a user by username
+     * @param searchKeyword search key word
+     * @param callback: A callback function to handle the retrieved user.
+     */
+    fun searchForUserByUsername(searchKeyword: String, callback: (ArrayList<User>) -> Unit) {
+        val foundUsers = ArrayList<User>()
+        users.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    foundUsers.clear()
+                    var foundUser: User?
+                    for (userSnapshot in snapshot.children) {
+                        foundUser = userSnapshot.getValue(User::class.java)
+                        if(foundUser != null && searchKeyword.isNotEmpty() && foundUser.username.contains(searchKeyword, ignoreCase = true)){
+                            foundUsers.add(foundUser)
+                        }
+                    }
+                    callback(foundUsers)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "searchForUserByUsername:onCancelled", databaseError.toException())
+                    callback(arrayListOf())
+                }
+            })
+    }
+
+    fun getCurrentUserFriends(callback: (Map<String, User>) -> Unit){
+        val friendMap = HashMap<String, User>()
+        users.child(currentUser.uid).child("friends").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                friendMap.clear()
+                var friend: User?
+                for (userSnapshot in snapshot.children) {
+                    friend = userSnapshot.getValue(User::class.java)
+                    if(friend != null ){
+                        friendMap.put(friend.uid, friend)
+                    }
+                }
+                callback(friendMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "getCurrentUserFriends:onCancelled", databaseError.toException())
+                callback(mapOf())
+            }
+        })
+    }
+
+    /**
+     * Create the User object in Firebase Realtime database.
      * @param uid: The user ID.
      * @param username: The username to update.
      * @return Task<Void>: The result of the database operation.
      */
-    fun updateUser(uid: String, username:String): Task<Void> {
+    fun createUser(uid: String, username:String): Task<Void> {
         user = User(currentUser.uid)
         user.username = username
         return users.child(uid).setValue(user).addOnCompleteListener { task ->
@@ -96,6 +156,22 @@ object DatabaseAPI {
                 Log.w("Sign-up", "Successfully created user")
             }else{
                 Log.w("Sign-up: Error","An Error occurred!")
+            }
+        }
+    }
+
+    /**
+     * Create the User object in Firebase Realtime database.
+     * @param uid: The user ID.
+     * @param username: The username to update.
+     * @return Task<Void>: The result of the database operation.
+     */
+    fun updateUser(user : User): Task<Void> {
+        return users.child(user.uid).setValue(user).addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                Log.w("Update: Success", "Successfully updated user")
+            }else{
+                Log.w("Update: Error","An Error occurred!")
             }
         }
     }
@@ -124,6 +200,20 @@ object DatabaseAPI {
             }
         })
     }
+
+    fun getUserById(uid: String, callback: (User) -> Unit){
+        return users.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Retrieve the activity object from the dataSnapshot
+                val user = dataSnapshot.getValue(User::class.java)!!
+                callback(user)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
+    }
+
     /**
      * Retrieves an activity from the database by its ID.
      * @param id: The ID of the activity to retrieve.
@@ -485,5 +575,44 @@ object DatabaseAPI {
             ActivityModelEnums.TIMED.toString() -> return entry.getValue(TimedActivityModel::class.java)!!
             else -> throw IllegalArgumentException("Invalid task type: $taskType")
         }
+    }
+
+    /**
+     * save message from Friend
+     * @param friend friend of user
+     * @param message message that are sent from Friend
+     */
+    fun receiveMessage(friend : User, message : Message){
+        val messageRef = users.child(friend.uid).child("inbox").push()
+        message.messageId = messageRef.key!!
+        users.child(friend.uid).child("inbox").child(message.messageId).setValue(message)
+    }
+
+    /**
+     * Get all inbox of current User
+     */
+    fun getCurrentUserInbox(callback: (ArrayList<Message>) -> Unit) {
+        val messageList = ArrayList<Message>()
+        if(currentUser==null){
+            return
+        }
+        users.child(currentUser.uid).child("inbox").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                messageList.clear()
+                var message: Message?
+                for (userSnapshot in snapshot.children) {
+                    message = userSnapshot.getValue(Message::class.java)
+                    if(message != null ){
+                        messageList.add(message)
+                    }
+                }
+                callback(messageList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "getCurrentUserInbox:onCancelled", databaseError.toException())
+                callback(arrayListOf())
+            }
+        })
     }
 }

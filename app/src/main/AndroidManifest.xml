@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CSCI4176_PMGroupProject"
         tools:targetApi="31">
+        <activity
+            android:name=".InboxActivity"
+            android:exported="false" />
+
         <activity
             android:name=".OnDateActivity"
             android:exported="false" />
@@ -35,6 +40,9 @@
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".FriendActivity"
             android:exported="false">
         </activity> 
         <!-- Login Activity -->
@@ -57,6 +65,7 @@
             android:name=".SignUpActivity"
             android:exported="false">
         </activity>
+
         <receiver
             android:name=".EndOfDayReceiver"
             android:enabled="true"
