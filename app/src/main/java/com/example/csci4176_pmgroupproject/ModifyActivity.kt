@@ -216,13 +216,13 @@ class ModifyActivity : Fragment(){
                     }
                 }
                 repeatFrequency = REPEnums[index]
-            } else if (index == 0){
+            }  else if (index == 0){
                 button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
-                REPtoggles[1].isChecked = true
-                REPtoggles[1].backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
-                repeatFrequency = REPEnums[1]
-                for (dayToggle in DOWtoggles){
-                    dayToggle.isChecked = false;
+                if (!REPtoggles[1].isChecked) {
+                    REPtoggles[1].isChecked = true
+                    for (dayToggle in DOWtoggles) {
+                        dayToggle.isChecked = false;
+                    }
                 }
             }
         }
@@ -234,6 +234,9 @@ class ModifyActivity : Fragment(){
                 button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
             }else {
                 button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
+                if (repeatFrequency == ActivityModelFrequency.DAILY){
+                    REPtoggles[1].isChecked = true
+                }
             }
         }
     }
