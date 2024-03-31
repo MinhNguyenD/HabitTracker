@@ -133,6 +133,8 @@ class ModifyActivity : Fragment(){
                             updateActivityModel(model)
                         }else{
                             makeMsg("Must have at least 1 day selected!")
+                            activityDeleteButton.isClickable = true;
+                            activitySaveButton.isClickable = true
                         }
                     }
                 }

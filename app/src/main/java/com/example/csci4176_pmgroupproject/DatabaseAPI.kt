@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -464,6 +465,7 @@ object DatabaseAPI {
                 activityList.clear()
                 // Retrieve the activity object from the dataSnapshot
                 for (entry in dataSnapshot.children){
+                    if (entry.child("userId").value == currentUser.uid)
                     activityList.add(convertActivity(entry))
                 }
                 callback(activityList)
