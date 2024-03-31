@@ -16,10 +16,6 @@ import kotlin.math.roundToInt
  * HomeActivity: Displays the home screen with a list of daily activities and progress bar.
  */
 class HomeActivity : BaseActivity(), TodoItemClickListener {
-//    private var progress = 0
-//    private var numActivities = 0
-//    private var currentNumActivities = 0
-//    private var numFinishedActivity = 0.0
     private lateinit var progressBarView : ProgressBar
     private lateinit var progressTextView : TextView
     private lateinit var todayTextView : TextView
@@ -53,9 +49,7 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
                     initProgress()
                 }
                 else{
-                    if(DailyProgress.currentNumActivities < dailyActivityList.size){
-                        DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
-                    }
+                    DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
                 }
                 updateProgress()
             }
@@ -63,28 +57,12 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
         AlarmScheduler.scheduleEndOfDayCheck(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        // populate daily activities list and display on recycler view
-        DatabaseAPI.getDailyActivity { dailyList ->
-            dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
-            dailyActivityView.adapter = activityAdapter
-            // if new activities added
-            if(DailyProgress.currentNumActivities < dailyActivityList.size){
-                DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
-            }
-            updateProgress()
-            displayNoActivity()
-        }
-    }
-
     /**
      * Updates the progress bar.
      */
     private fun updateProgress(){
         if(DailyProgress.numActivities > 0){
-            DailyProgress.progress = (DailyProgress.numFinishedActivity/DailyProgress.numActivities * 100).roundToInt()
+            DailyProgress.progress = (DailyProgress.numFinishedActivity/DailyProgress.numActivities.toDouble() * 100).roundToInt()
         }
         else{
             DailyProgress.progress = 100
@@ -109,7 +87,7 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
      */
     private fun initProgress(){
         DailyProgress.progress = 0
-        DailyProgress.numFinishedActivity = 0.0
+        DailyProgress.numFinishedActivity = 0
         updateProgressView()
     }
 
@@ -156,6 +134,6 @@ class DailyProgress {
         var progress : Int = 0
         var numActivities : Int = 0
         var currentNumActivities : Int = 0
-        var numFinishedActivity : Double = 0.0
+        var numFinishedActivity : Int = 0
     }
 }

@@ -67,7 +67,6 @@ class FriendActivity : BaseActivity() {
 
         friendListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         DatabaseAPI.getCurrentUserFriends {friends ->
-            DatabaseAPI.user.friends = friends
             friendList = ArrayList()
             friendList.clear()
             for(friend in friends){
