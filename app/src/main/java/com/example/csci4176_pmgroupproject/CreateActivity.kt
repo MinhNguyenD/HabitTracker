@@ -2,7 +2,6 @@ package com.example.csci4176_pmgroupproject
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,7 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import android.widget.ToggleButton
-import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelDays
 import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelEnums
-import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelRepeat
-import com.example.csci4176_pmgroupproject.ActivityModel.CheckedTaskModel
-import com.example.csci4176_pmgroupproject.ActivityModel.CountableTaskModel
-import com.example.csci4176_pmgroupproject.ActivityModel.TaskModel
-import com.example.csci4176_pmgroupproject.ActivityModel.TimedTaskModel
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
 import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
