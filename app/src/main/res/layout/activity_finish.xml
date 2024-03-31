@@ -32,25 +32,66 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/moodSeekBar">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/noteEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="79dp"
             android:gravity="top"
             android:hint="Jot down your thought"
             android:inputType="textMultiLine"
             android:lines="10" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/addPhotoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="32dp"
+        android:text="Add Photo (optional)"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout" />
+
+    <ImageView
+        android:id="@+id/capturedImage"
+        android:layout_width="172dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginRight="110dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.368"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <ImageButton
+        android:id="@+id/pictureButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/circle_button"
+        android:src="@drawable/baseline_photo_camera_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.431"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.594" />
+
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="34dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="264dp"
+        android:backgroundTint="@color/blue"
         android:text="Save"
         android:textColor="@android:color/white"
-        android:backgroundTint="@color/blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout"
         tools:ignore="DuplicateSpeakableTextCheck" />
@@ -59,11 +100,12 @@
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"
-        android:layout_marginTop="34dp"
-        android:textColor="@android:color/white"
+        android:layout_marginTop="264dp"
         android:backgroundTint="@color/red"
+        android:text="Delete"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toEndOf="@+id/saveButton"
         app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout"
         tools:ignore="DuplicateSpeakableTextCheck" />
