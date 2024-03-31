@@ -49,7 +49,8 @@ object DatabaseAPI {
         task.addOnCompleteListener {
             if (task.isSuccessful){
                 currentUser = auth.currentUser!!
-                getCurrentUser {
+                getCurrentUser {user ->
+                    this.user = user
                 }
             }
         }
@@ -113,35 +114,35 @@ object DatabaseAPI {
             })
     }
 
-    fun getCurrentUserFriends(callback: (ArrayList<User>) -> Unit){
-        val friendList = ArrayList<User>()
+    fun getCurrentUserFriends(callback: (Map<String, User>) -> Unit){
+        val friendMap = HashMap<String, User>()
         users.child(currentUser.uid).child("friends").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                friendList.clear()
+                friendMap.clear()
                 var friend: User?
                 for (userSnapshot in snapshot.children) {
                     friend = userSnapshot.getValue(User::class.java)
                     if(friend != null ){
-                        friendList.add(friend)
+                        friendMap.put(friend.uid, friend)
                     }
                 }
-                callback(friendList)
+                callback(friendMap)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(TAG, "getCurrentUserFriends:onCancelled", databaseError.toException())
-                callback(arrayListOf())
+                callback(mapOf())
             }
         })
     }
 
     /**
-     * Updates the user information in the database.
+     * Create the User object in Firebase Realtime database.
      * @param uid: The user ID.
      * @param username: The username to update.
      * @return Task<Void>: The result of the database operation.
      */
-    fun updateUser(uid: String, username:String): Task<Void> {
+    fun createUser(uid: String, username:String): Task<Void> {
         user = User(currentUser.uid)
         user.username = username
         return users.child(uid).setValue(user).addOnCompleteListener { task ->
@@ -149,6 +150,22 @@ object DatabaseAPI {
                 Log.w("Sign-up", "Successfully created user")
             }else{
                 Log.w("Sign-up: Error","An Error occurred!")
+            }
+        }
+    }
+
+    /**
+     * Create the User object in Firebase Realtime database.
+     * @param uid: The user ID.
+     * @param username: The username to update.
+     * @return Task<Void>: The result of the database operation.
+     */
+    fun updateUser(user : User): Task<Void> {
+        return users.child(user.uid).setValue(user).addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                Log.w("Update: Success", "Successfully updated user")
+            }else{
+                Log.w("Update: Error","An Error occurred!")
             }
         }
     }
@@ -170,10 +187,7 @@ object DatabaseAPI {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Retrieve the activity object from the dataSnapshot
                 user = dataSnapshot.getValue(User::class.java)!!
-                getCurrentUserFriends { friendList ->
-                    user.setFriendList(friendList)
-                    callback(user)
-                }
+                callback(user)
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Handle any errors that occurred while retrieving the data

@@ -9,3 +9,5 @@ enum class ActivityModelDayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY
 enum class ActivityMood { DISAPPOINTED, NEUTRAL, ACCOMPLISHED }
 
 enum class ActivityEnergy { TIRED, NEUTRAL, ENERGIZED }
+
+enum class Badge { NONE, BRONZE, SILVER, GOLD }

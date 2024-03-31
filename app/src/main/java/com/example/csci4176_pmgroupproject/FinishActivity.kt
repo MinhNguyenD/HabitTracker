@@ -1,22 +1,25 @@
 package com.example.csci4176_pmgroupproject
 
+import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.Menu
+import android.util.Log
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioButton
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import com.google.firebase.auth.FirebaseAuth
 import java.time.LocalDate
 
 class FinishActivity : AppCompatActivity() {
@@ -27,10 +30,17 @@ class FinishActivity : AppCompatActivity() {
     private lateinit var selectedActivity : ActivityModel
     private lateinit var energySeekBar: SeekBar
     private lateinit var moodSeekBar: SeekBar
-    private lateinit var energy : ActivityEnergy
-    private lateinit var mood : ActivityMood
+    private lateinit var awardPopUp : Dialog
+    private lateinit var awardMessage : TextView
+    private lateinit var awardBadge : ImageView
+    private lateinit var badge : String
+    private lateinit var shareButton : Button
+    private lateinit var exitButton: Button
+    private var energy : ActivityEnergy = ActivityEnergy.NEUTRAL
+    private var mood : ActivityMood = ActivityMood.NEUTRAL
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        DatabaseAPI.currentUser = FirebaseAuth.getInstance().currentUser!!
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_finish)
@@ -45,6 +55,16 @@ class FinishActivity : AppCompatActivity() {
         deleteButton = findViewById(R.id.deleteButton)
         energySeekBar = findViewById(R.id.energySeekBar)
         moodSeekBar = findViewById(R.id.moodSeekBar)
+        awardPopUp = Dialog(this)
+        awardPopUp.setContentView(R.layout.reward_popup)
+        awardPopUp.window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        awardPopUp.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        awardPopUp.setCancelable(true)
+        awardMessage = awardPopUp.findViewById(R.id.awardMessage)
+        awardBadge = awardPopUp.findViewById(R.id.awardBadge)
+        shareButton = awardPopUp.findViewById(R.id.shareButton)
+        exitButton = awardPopUp.findViewById(R.id.exitButton)
+
 
         // Retrieve selected activity ID from intent extras
         val bundle : Bundle? = intent.extras
@@ -54,6 +74,69 @@ class FinishActivity : AppCompatActivity() {
         DatabaseAPI.getActivityById(selectedActivityId!!){retrievedActivity ->
             selectedActivity = retrievedActivity
             activityTitleTextView.text = selectedActivity.title
+        }
+        DatabaseAPI.getUserById(DatabaseAPI.user.uid){user ->
+
+        }
+        DatabaseAPI.getAllActivity { allActivities ->
+            var totalStreak = 0
+            for (activity in allActivities) {
+                totalStreak += activity.streak
+            }
+            if(totalStreak > 10 && totalStreak < 30 && DatabaseAPI.user.badge != Badge.BRONZE){
+                DatabaseAPI.user.badge = Badge.BRONZE
+                DatabaseAPI.updateUser(DatabaseAPI.user).addOnCompleteListener{task ->
+                    if(task.isSuccessful){
+                        awardMessage.text = "You have earned a Bronze Badge for maintaining more than 70 streaks for all activities"
+                        awardBadge.setImageResource(R.drawable.bronze_badge)
+                        badge = "Bronze Badge"
+                        awardPopUp.show()
+                    }
+                    else{
+                        Log.e("Finish Activity:", "Error updating user badge")
+                    }
+
+                }
+            }
+            else if(totalStreak > 30 && totalStreak < 70 && DatabaseAPI.user.badge != Badge.SILVER){
+                DatabaseAPI.user.badge = Badge.SILVER
+                DatabaseAPI.updateUser(DatabaseAPI.user).addOnCompleteListener{task ->
+                    if(task.isSuccessful){
+                        awardMessage.text = "You have earned a Sliver Badge for maintaining more than 70 streaks for all activities"
+                        awardBadge.setImageResource(R.drawable.sliver_badge)
+                        badge = "Silver Badge"
+                        awardPopUp.show()
+                    }
+                    else{
+                        Log.e("Finish Activity:", "Error updating user badge")
+                    }
+
+                }
+            }
+            else if(totalStreak > 70 && DatabaseAPI.user.badge != Badge.GOLD){
+                DatabaseAPI.user.badge = Badge.GOLD
+                DatabaseAPI.updateUser(DatabaseAPI.user).addOnCompleteListener{task ->
+                    if(task.isSuccessful){
+                        awardMessage.text = "You have earned a Gold Badge for maintaining more than 70 streaks for all activities"
+                        awardBadge.setImageResource(R.drawable.gold_badge)
+                        badge = "Gold Badge"
+                        awardPopUp.show()
+                    }
+                    else{
+                        Log.e("Finish Activity:", "Error updating user badge")
+                    }
+
+                }
+            }
+        }
+
+        shareButton.setOnClickListener {
+            DatabaseAPI.user.notifyFriends("${DatabaseAPI.user.username} has earned a new $badge")
+            awardPopUp.dismiss()
+        }
+
+        exitButton.setOnClickListener {
+            awardPopUp.dismiss()
         }
 
         // Set change listener for seekbars

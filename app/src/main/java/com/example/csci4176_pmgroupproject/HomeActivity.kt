@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.math.roundToInt
@@ -26,6 +27,7 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
     private lateinit var activityAdapter : DailyActivityAdapter
     private lateinit var dailyActivityList : ArrayList<ActivityModel>
     override fun onCreate(savedInstanceState: Bundle?) {
+        DatabaseAPI.currentUser = FirebaseAuth.getInstance().currentUser!!
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         dailyActivityList = ArrayList()
