@@ -12,14 +12,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.SeekBar
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import com.google.firebase.auth.FirebaseAuth
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
 import java.time.LocalDate
 
 class FinishActivity : AppCompatActivity() {
@@ -27,6 +37,9 @@ class FinishActivity : AppCompatActivity() {
     private lateinit var noteEditText : EditText
     private lateinit var saveButton : Button
     private lateinit var deleteButton : Button
+    private lateinit var pictureButton : ImageButton
+    private lateinit var pictureIV:  ImageView
+    private lateinit var pictureURI : Uri
     private lateinit var selectedActivity : ActivityModel
     private lateinit var energySeekBar: SeekBar
     private lateinit var moodSeekBar: SeekBar
@@ -39,6 +52,16 @@ class FinishActivity : AppCompatActivity() {
     private var energy : ActivityEnergy = ActivityEnergy.NEUTRAL
     private var mood : ActivityMood = ActivityMood.NEUTRAL
 
+    private lateinit var userId: String
+    private lateinit var storageRef: StorageReference
+    private var buttonSelected = false
+    private val CAMERA_PERMISSION_REQUEST_CODE = 100
+    private val contract = registerForActivityResult(ActivityResultContracts.TakePicture()){
+        pictureIV.setImageURI(null)
+        pictureIV.setImageURI(pictureURI)
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         DatabaseAPI.currentUser = FirebaseAuth.getInstance().currentUser!!
         super.onCreate(savedInstanceState)
@@ -49,6 +72,7 @@ class FinishActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         activityTitleTextView = findViewById(R.id.activityTitle)
         noteEditText = findViewById(R.id.noteEditText)
         saveButton = findViewById(R.id.saveButton)
@@ -69,6 +93,15 @@ class FinishActivity : AppCompatActivity() {
         // Retrieve selected activity ID from intent extras
         val bundle : Bundle? = intent.extras
         val selectedActivityId : String? = bundle?.getString("selectedActivityId")
+
+        DatabaseAPI.getCurrentUser {user ->
+            userId = user.uid
+
+            // Storage for the image for that specific activity
+            storageRef = selectedActivityId?.let {
+                FirebaseStorage.getInstance().getReference("Users").child(userId).child("Activities").child(it).child("images")
+            }!!
+        }
 
         // Fetch activity details from the database
         DatabaseAPI.getActivityById(selectedActivityId!!){retrievedActivity ->
@@ -204,6 +237,36 @@ class FinishActivity : AppCompatActivity() {
         })
 
 
+        // Picture related UI components
+        pictureButton = findViewById(R.id.pictureButton)
+        pictureIV = findViewById(R.id.capturedImage)
+        pictureURI = generatePictureURI()
+
+        // OnClickListener for the camera/remove image button
+        pictureButton.setOnClickListener {
+            // If the button hasn't been selected then the camera is being displayed
+            if (!buttonSelected)
+            {
+                // Check the camera permissions of the user and proceeds accordingly
+                checkCameraPermission()
+
+                // Once the image has been captured display the remove icon and flip the buttonSelected boolean
+                pictureButton.setImageResource(R.drawable.baseline_remove_circle_24)
+                buttonSelected = true
+            }
+
+            // If the button has been selected already
+            else
+            {
+                // The user wants to remove the picture so set the bitmap to null
+                pictureIV.setImageBitmap(null)
+
+                // Swap back to displaying the camera icon and flip the buttonSelected boolean
+                pictureButton.setImageResource(R.drawable.baseline_photo_camera_24)
+                buttonSelected = false
+            }
+        }
+
         // Set onClickListeners for save and delete buttons
         saveButton.setOnClickListener {
             submitForm()
@@ -225,6 +288,11 @@ class FinishActivity : AppCompatActivity() {
         if(noteEditText.text.isNotEmpty()){
             selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
         }
+
+        // TODO: update emotion and energy
+        selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
+        val pictureURL = uploadImagesToStorage(pictureURI)
+
         DatabaseAPI.updateActivity(selectedActivity)
     }
 
@@ -234,4 +302,59 @@ class FinishActivity : AppCompatActivity() {
     private fun reward(){
         // TODO: add reward details
     }
+
+    // Create the URI for when the picture is captured
+    private fun generatePictureURI(): Uri
+    {
+        var img = File(filesDir, "camera_photos.png")
+        return FileProvider.getUriForFile(this, "com.example.csci4176_pmgroupproject.FileProvider", img)
+    }
+
+    // Method to check whether or not a user has given camera permissions
+    private fun checkCameraPermission()
+    {
+        // If permission is not yet granted request the permission
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        { ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION_REQUEST_CODE) }
+
+        // If permission has already been granted proceed to open the camera
+        else
+        { contract.launch(pictureURI) }
+    }
+
+    // Handles the result of a user being prompted with camera permissions
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode)
+        {
+            // If it matches the permission request code
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                // If result is not empty and permission has been granted notify the user
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
+                { Toast.makeText(this, "Camera Permission Accepted", Toast.LENGTH_LONG).show() }
+
+                // If the user hasn't given permission for this function notify them
+                else
+                { Toast.makeText(this, "Camera Permission Denied", Toast.LENGTH_LONG).show() }
+
+                return
+            }
+        }
+    }
+    private fun uploadImagesToStorage(imageUri: Uri): String?{
+        var imgUrl: String? = null
+
+        imageUri.let{
+            storageRef.putFile(imageUri).addOnSuccessListener { task->
+                task.metadata!!.reference!!.downloadUrl.addOnSuccessListener { url->
+                    imgUrl = url.toString()
+                }
+            }
+        }
+
+        return imgUrl
+    }
+
+
 }
