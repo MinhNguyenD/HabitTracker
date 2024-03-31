@@ -180,14 +180,14 @@ class CreateActivity : Fragment() {
             if (checked){
                 button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
                 if (index == 0){
-                    for (toggle in DOWtoggles){
-                        toggle.isChecked = true;
+                    for (dayToggle in DOWtoggles){
+                        dayToggle.isChecked = true;
                     }
                 }
-                for (toggle in REPtoggles){
-                    if (toggle != button){
-                        toggle.isChecked = false;
-                        toggle.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
+                for (dayToggle in REPtoggles){
+                    if (dayToggle != button){
+                        dayToggle.isChecked = false;
+                        dayToggle.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
                     }
                 }
                 repeatFrequency = REPEnums[index]
@@ -196,8 +196,8 @@ class CreateActivity : Fragment() {
                 REPtoggles[1].isChecked = true
                 REPtoggles[1].backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
                 repeatFrequency = REPEnums[1]
-                for (toggle in DOWtoggles){
-                    toggle.isChecked = false;
+                for (dayToggle in DOWtoggles){
+                    dayToggle.isChecked = false;
                 }
             }
         }
