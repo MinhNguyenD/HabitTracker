@@ -1,6 +1,8 @@
 package com.example.csci4176_pmgroupproject
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +19,7 @@ class CalendarActivity : BaseActivity(), CalendarAdapter.OnItemListener
     lateinit var monthYearText: TextView
     lateinit var calendarRecyclerView: RecyclerView
     var referenceDate = LocalDate.now() as LocalDate
+    lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -26,6 +29,7 @@ class CalendarActivity : BaseActivity(), CalendarAdapter.OnItemListener
         // Get the recycler view and the title to display month and year
         calendarRecyclerView = findViewById(R.id.calendarRecyclerView)
         monthYearText = findViewById(R.id.monthYearTV)
+        sharedPref = getSharedPreferences("Mode", Context.MODE_PRIVATE)
 
         // Set the calendar with values
         setMonthView()
@@ -37,9 +41,10 @@ class CalendarActivity : BaseActivity(), CalendarAdapter.OnItemListener
         // Gets the amount of days in the current month
         monthYearText.text = monthYearFromDate(referenceDate)
         val daysInMonth = daysInMonthArray(referenceDate)
+        val isNightMode = sharedPref.getBoolean("night",false)
 
         // Set adapter with those days to display on the calendar with a grid layout
-        val calendarAdapter = CalendarAdapter(daysInMonth, this, referenceDate.toString())
+        val calendarAdapter = CalendarAdapter(daysInMonth, this, referenceDate.toString(), isNightMode)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(applicationContext, 7)
         calendarRecyclerView.layoutManager = layoutManager
         calendarRecyclerView.adapter = calendarAdapter
