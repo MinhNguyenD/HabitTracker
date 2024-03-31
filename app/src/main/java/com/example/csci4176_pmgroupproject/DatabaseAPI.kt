@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -153,6 +154,44 @@ object DatabaseAPI {
         })
     }
 
+    fun getAllActivityByHabitId(habitId:String, callback: (ArrayList<ActivityModel>) -> Unit){
+        activityList = ArrayList()
+        val query: Query = activities.orderByChild("habitId").equalTo(habitId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                activityList.clear()
+                for (entry in snapshot.children){
+                    val user = entry.child("userId").value.toString()
+                    if (user == currentUser.uid.toString()) {
+                        val taskType = entry.child("type").value.toString()
+                        when (taskType) {
+                            ActivityModelEnums.CHECKED.toString() -> activityList.add(
+                                entry.getValue(
+                                    CheckedActivityModel::class.java
+                                )!!
+                            )
+
+                            ActivityModelEnums.COUNTABLE.toString() -> activityList.add(
+                                entry.getValue(
+                                    CountableActivityModel::class.java
+                                )!!
+                            )
+
+                            ActivityModelEnums.TIMED.toString() -> activityList.add(
+                                entry.getValue(
+                                    TimedActivityModel::class.java
+                                )!!
+                            )
+                        }
+                    }
+                }
+                callback(activityList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {Log.e("Database Error", error.details)}
+        })
+    }
+
     /**
      * Retrieves all activities from the database.
      * @param callback: A callback function to handle the retrieved activities.
@@ -245,6 +284,30 @@ object DatabaseAPI {
                 // Handle error
                 Log.e(TAG,"Error getting habit ID from database", databaseError.toException())
             }
+        })
+    }
+
+    /**
+     * Retrieves the habit by passing in the habit Id as the parameter.
+     * @param callback: A callback function to handle the habit.
+     */
+    fun getHabitById(habitId : String, callback: (HabitModel) -> Unit){
+        val query: Query = habits.child(habitId)
+
+        return query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currHabitId = dataSnapshot.child("habitId").getValue(String::class.java)
+                val currUserId = dataSnapshot.child("userId").getValue(String::class.java)
+                val currHabitName = dataSnapshot.child("habitName").getValue(String::class.java)
+
+                if (currHabitId != null && currHabitName != null) {
+                    val habit = HabitModel(currHabitId, currUserId, currHabitName)
+                    callback(habit)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Error getting habit by ID from database", error.toException())}
         })
     }
 
@@ -402,6 +465,7 @@ object DatabaseAPI {
                 activityList.clear()
                 // Retrieve the activity object from the dataSnapshot
                 for (entry in dataSnapshot.children){
+                    if (entry.child("userId").value == currentUser.uid)
                     activityList.add(convertActivity(entry))
                 }
                 callback(activityList)

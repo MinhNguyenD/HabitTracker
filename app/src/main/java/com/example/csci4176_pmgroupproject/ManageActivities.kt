@@ -7,24 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.csci4176_pmgroupproject.Model.ActivityModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ModifyActivity.newInstance] factory method to
+ * Use the [Modify.newInstance] factory method to
  * create an instance of this fragment.
  */
 class ManageActivities : Fragment() {
-    private var selectedCategory: String? = null
+    private var selectedHabitId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            selectedCategory = it.getString(ARG_PARAM1)
+            selectedHabitId = it.getString(ARG_PARAM1)
         }
     }
 
@@ -43,37 +45,48 @@ class ManageActivities : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.activityRecyclerView)
         val addBtn: ImageButton = view.findViewById(R.id.addActivityButton)
 
-        // The title of this page is the name of the selected category
-        textView.text = selectedCategory
+        selectedHabitId?.let {
+            DatabaseAPI.getHabitById(it) { habit ->
+                // The title of this page is the name of the selected category
+                textView.text = habit.habitName
 
-        // Display all the activities in a RecycleView
-        DatabaseAPI.getAllActivity { activityList ->
-            // If the activity list for this habit is empty, display a message
-            if(activityList.size <= 0) {
-                displayNoActivity(view)
-            }
-            else {
-                val customAdapter = ActivityAdapter(activityList)
-                connectAdapter(recyclerView, customAdapter)
+                // Display all the activities in a RecycleView
+                DatabaseAPI.getAllActivityByHabitId(it) { activityList: ArrayList<ActivityModel> ->
+                    // If the activity list for this habit is empty, display a message
+                    // Assure that the it matches habitId, so the correct activities are displayed
+                    if (activityList.size <= 0) {
+                        displayNoActivity(view)
+                    } else {
+                        val customAdapter = ActivityAdapter(activityList)
+                        connectAdapter(recyclerView, customAdapter)
 
-                // Set up a listener to listen for clicks on the Modify button
-                customAdapter.setOnClickModifyItemListener(object :
-                    ActivityAdapter.OnClickModifyItemListener {
-                    override fun onClickModifyItem(isClicked: Boolean) {
-                        if (isClicked) {
-                            // TODO: The ModifyActivity fragment is shown
+                        // Set up a listener to listen for clicks on the Modify button
+                        customAdapter.setOnClickModifyItemListener(object :
+                            ActivityAdapter.OnClickModifyItemListener {
+                            override fun onClickModifyItem(
+                                isClicked: Boolean,
+                                activityModel: ActivityModel
+                            ) {
+                                if (isClicked) {
+                                    // The ModifyActivity fragment is shown
+                                    val modifyActivityFrag: Fragment = ModifyActivity.newInstance(activityModel.taskId)
+                                    val manageActivity = activity as ManageActivity
+                                    manageActivity.replaceFragment(modifyActivityFrag)
+                                    Toast.makeText(requireContext(), "You selected: ${activityModel.title}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
 
-                        }
+                        })
                     }
+                }
 
-                })
             }
         }
 
         // Set up a listener to listen for clicks on the 'plus' button
         addBtn.setOnClickListener{
             // The CreateActivity fragment is shown
-            val createActivityFrag: Fragment = CreateActivity.newInstance("", "")
+            val createActivityFrag: Fragment = CreateActivity.newInstance(selectedHabitId!!)
             val manageActivity = activity as ManageActivity
             manageActivity.replaceFragment(createActivityFrag)
         }

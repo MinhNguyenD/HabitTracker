@@ -42,7 +42,7 @@ RecyclerView.Adapter<ActivityAdapter.ViewHolder>() {
             // Set a listener on the Modify button to modify the activity
             viewHolder.modifyBtn.setOnClickListener{
                 if(modifyItemListener != null){
-                    modifyItemListener!!.onClickModifyItem(true)
+                    modifyItemListener!!.onClickModifyItem(true, dataSet[position])
                 }
             }
         }
@@ -51,7 +51,7 @@ RecyclerView.Adapter<ActivityAdapter.ViewHolder>() {
         override fun getItemCount() = dataSet.size
 
         interface OnClickModifyItemListener {
-            fun onClickModifyItem(isClicked: Boolean)
+            fun onClickModifyItem(isClicked: Boolean, activityModel:ActivityModel)
         }
 
         fun setOnClickModifyItemListener(listener: OnClickModifyItemListener){
