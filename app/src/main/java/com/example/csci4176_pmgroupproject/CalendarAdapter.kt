@@ -1,5 +1,7 @@
 package com.example.csci4176_pmgroupproject
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,8 @@ import kotlin.math.roundToInt
 class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val onItemListener: OnItemListener,
-    private val date: String
+    private val date: String,
+    private val isNightMode: Boolean
 ): RecyclerView.Adapter<CalendarViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder
@@ -32,6 +35,9 @@ class CalendarAdapter(
     {
         var day = daysOfMonth[position]
         holder.dayOfMonth.text = day
+        if (isNightMode) {
+            holder.dayOfMonth.setTextColor(Color.WHITE)
+        }
 
         var queryDate: String
 
