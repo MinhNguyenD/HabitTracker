@@ -153,6 +153,27 @@ object DatabaseAPI {
         })
     }
 
+    fun getAllActivityByHabitId(habitId:String, callback: (ArrayList<ActivityModel>) -> Unit){
+        activityList = ArrayList()
+        val query: Query = activities.orderByChild("habitId").equalTo(habitId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                activityList.clear()
+                for (entry in snapshot.children){
+                    val taskType = entry.child("type").value.toString()
+                    when(taskType){
+                        ActivityModelEnums.CHECKED.toString() -> activityList.add(entry.getValue(CheckedActivityModel::class.java)!!)
+                        ActivityModelEnums.COUNTABLE.toString() -> activityList.add(entry.getValue(CountableActivityModel::class.java)!!)
+                        ActivityModelEnums.TIMED.toString() -> activityList.add(entry.getValue(TimedActivityModel::class.java)!!)
+                    }
+                }
+                callback(activityList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {Log.e("Database Error", error.details)}
+        })
+    }
+
     /**
      * Retrieves all activities from the database.
      * @param callback: A callback function to handle the retrieved activities.

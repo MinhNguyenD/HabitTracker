@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.csci4176_pmgroupproject.Model.ActivityModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -47,12 +48,12 @@ class ManageActivities : Fragment() {
         textView.text = selectedCategory
 
         // Display all the activities in a RecycleView
-        DatabaseAPI.getAllActivity { activityList ->
+        DatabaseAPI.getAllActivityByHabitId("") { activityList: ArrayList<ActivityModel> ->
             // If the activity list for this habit is empty, display a message
-            if(activityList.size <= 0) {
+            // Assure that the it matches habitId, so the correct activities are displayed
+            if (activityList.size <= 0) {
                 displayNoActivity(view)
-            }
-            else {
+            } else {
                 val customAdapter = ActivityAdapter(activityList)
                 connectAdapter(recyclerView, customAdapter)
 
