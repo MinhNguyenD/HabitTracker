@@ -120,7 +120,7 @@ class FinishActivity : AppCompatActivity() {
                 DatabaseAPI.user.badge = Badge.BRONZE
                 DatabaseAPI.updateUser(DatabaseAPI.user).addOnCompleteListener{task ->
                     if(task.isSuccessful){
-                        awardMessage.text = "You have earned a Bronze Badge for maintaining more than 70 streaks for all activities"
+                        awardMessage.text = "You have earned a Bronze Badge for maintaining more than 10 streaks for all activities"
                         awardBadge.setImageResource(R.drawable.bronze_badge)
                         badge = "Bronze Badge"
                         awardPopUp.show()
@@ -135,7 +135,7 @@ class FinishActivity : AppCompatActivity() {
                 DatabaseAPI.user.badge = Badge.SILVER
                 DatabaseAPI.updateUser(DatabaseAPI.user).addOnCompleteListener{task ->
                     if(task.isSuccessful){
-                        awardMessage.text = "You have earned a Sliver Badge for maintaining more than 70 streaks for all activities"
+                        awardMessage.text = "You have earned a Sliver Badge for maintaining more than 30 streaks for all activities"
                         awardBadge.setImageResource(R.drawable.sliver_badge)
                         badge = "Silver Badge"
                         awardPopUp.show()

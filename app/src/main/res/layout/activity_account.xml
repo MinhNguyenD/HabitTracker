@@ -7,29 +7,29 @@
     tools:context=".AccountActivity">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="235dp"
-        android:layout_height="55dp"
+        android:id="@+id/darkModeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Dark Mode"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.255"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.415" />
+        app:layout_constraintTop_toBottomOf="@+id/userName"
+        app:layout_constraintVertical_bias="0.122" />
 
     <Switch
         android:id="@+id/modeSwitch"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="22dp"
-        android:layout_marginBottom="468dp"
+        android:layout_marginTop="48dp"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView" />
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/darkModeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     <ImageView
         android:id="@+id/avatar"
@@ -54,18 +54,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/avatar" />
 
+
     <Button
         android:id="@+id/logOutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="132dp"
         android:backgroundTint="@color/red"
         android:text="Log Out"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userName"
-        app:layout_constraintVertical_bias="0.824" />
+        app:layout_constraintTop_toBottomOf="@+id/BadgeTitle" />
+
+    <TextView
+        android:id="@+id/BadgeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Badge"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.225"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/darkModeTitle"
+        app:layout_constraintVertical_bias="0.241" />
+
+    <ImageView
+        android:id="@+id/badgeImage"
+        android:layout_width="115dp"
+        android:layout_height="106dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.742"
+        app:layout_constraintStart_toEndOf="@+id/BadgeTitle"
+        app:layout_constraintTop_toBottomOf="@+id/modeSwitch" />
 
     <FrameLayout
         android:id="@+id/navbarFrame"

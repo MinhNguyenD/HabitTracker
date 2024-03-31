@@ -18,6 +18,7 @@ class AccountActivity : BaseActivity() {
     private lateinit var switchMode : Switch
     private lateinit var logOutButton : Button
     private lateinit var modeSharedPreferences : SharedPreferences
+    private lateinit var badgeImageView: ImageView
     private var isNightMode : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,11 +28,18 @@ class AccountActivity : BaseActivity() {
         userName = findViewById(R.id.userName)
         switchMode = findViewById(R.id.modeSwitch)
         logOutButton = findViewById(R.id.logOutButton)
+        badgeImageView = findViewById(R.id.badgeImage)
         avatar = findViewById(R.id.avatar)
         avatar.setImageResource(R.drawable.avatar)
 
         DatabaseAPI.getCurrentUser {user ->
             userName.text = user.username
+            when (user.badge){
+                Badge.BRONZE -> badgeImageView.setImageResource(R.drawable.bronze_badge)
+                Badge.SILVER -> badgeImageView.setImageResource(R.drawable.sliver_badge)
+                Badge.GOLD -> badgeImageView.setImageResource(R.drawable.gold_badge)
+                else -> badgeImageView.setImageResource(R.drawable.no_badge)
+            }
         }
 
         modeSharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE)
