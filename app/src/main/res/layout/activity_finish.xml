@@ -14,7 +14,7 @@
         android:layout_marginTop="40dp"
         android:text="Activity Title"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,13 +25,13 @@
         android:id="@+id/descriptionInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="34dp"
         android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityTitle">
-
+        app:layout_constraintTop_toBottomOf="@+id/moodSeekBar">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/noteEditText"
             android:layout_width="match_parent"
@@ -42,13 +42,12 @@
             android:lines="10" />
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="34dp"
         android:text="Save"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/blue"
@@ -61,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="34dp"
         android:textColor="@android:color/white"
         android:backgroundTint="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,4 +68,50 @@
         app:layout_constraintTop_toBottomOf="@+id/descriptionInputLayout"
         tools:ignore="DuplicateSpeakableTextCheck" />
 
+    <TextView
+        android:id="@+id/energyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="Energy"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activityTitle" />
+
+    <SeekBar
+        android:id="@+id/energySeekBar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:thumb="@drawable/energy_icon_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/energyTitle"
+        />
+
+
+    <TextView
+        android:id="@+id/moodTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="Mood"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/energySeekBar" />
+
+    <SeekBar
+        android:id="@+id/moodSeekBar"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:thumb="@drawable/mood_icon_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moodTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
