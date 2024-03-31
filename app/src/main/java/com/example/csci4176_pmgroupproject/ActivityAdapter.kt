@@ -37,10 +37,7 @@ RecyclerView.Adapter<ActivityAdapter.ViewHolder>() {
 
         // Replace the contents of a view (invoked by the layout manager)
         override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-            for(activity in dataSet){
-                // TODO: Extract the titles of activities and display them here in textView.text
-                viewHolder.textView.text = "Blending smoothie"
-            }
+            viewHolder.textView.text = dataSet[position].title
 
             // Set a listener on the Modify button to modify the activity
             viewHolder.modifyBtn.setOnClickListener{
