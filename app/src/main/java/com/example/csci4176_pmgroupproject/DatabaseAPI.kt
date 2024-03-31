@@ -7,6 +7,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
 import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
+import com.example.csci4176_pmgroupproject.Model.DefaultHabits
 import com.example.csci4176_pmgroupproject.Model.HabitModel
 import com.example.csci4176_pmgroupproject.Model.TimedActivityModel
 import com.google.android.gms.tasks.Task
@@ -398,6 +399,62 @@ object DatabaseAPI {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e(TAG, "Error getting habit by ID from database", error.toException())}
+        })
+    }
+
+    /**
+     * This function adds the default categories to the database ONLY if the database has no
+     * content under the "habit" node for whatever reason
+     * @param callback: A callback function to handle a boolean of whether it was successful or not.
+     */
+    fun checkForDefaultCategories(callback:(Boolean) -> Unit) {
+        val defaultHabits = arrayListOf(
+            DefaultHabits.HABIT1.habitName,
+            DefaultHabits.HABIT2.habitName,
+            DefaultHabits.HABIT3.habitName,
+            DefaultHabits.HABIT4.habitName,
+            DefaultHabits.HABIT5.habitName,
+            DefaultHabits.HABIT6.habitName,
+            DefaultHabits.HABIT7.habitName
+        )
+
+        return habits.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // If there are no children in the "habit" node, add the default categories in
+                // (this is made just in case the habit node is deleted from the database for whatever reason)
+                if (dataSnapshot.exists() && dataSnapshot.childrenCount > 0) {
+                    // Habits exist in the database, do nothing
+                    Log.d(TAG, "Habits already exist in the database")
+                    callback(true)
+                } else {
+                    // Iterate through the list of default habits and add them to the database
+                    for (habitName in defaultHabits) {
+                        // Generate a unique key for the new habit
+                        val habitId = habits.push().key
+
+                        val habit = habitId?.let { HabitModel(it, null, habitName) }
+
+                        // Add the habit to the generated habitId
+                        habitId?.let {
+                            habits.child(it).setValue(habit)
+                                .addOnSuccessListener {
+                                    // Print to log debug messages
+                                    Log.d(TAG, "Default habit $habitName added successfully")
+                                    callback(true)
+                                }
+                                .addOnFailureListener { e ->
+                                    // Print to log debug messages
+                                    Log.e(TAG, "Error adding default habit $habitName", e)
+                                    callback(false)
+                                }
+                        }
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Error checking default habits from database", error.toException())
+                callback(false)
+            }
         })
     }
 

@@ -40,6 +40,14 @@ class ManageHabits : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Check if default categories exist
+        DatabaseAPI.checkForDefaultCategories { check ->
+            if(!check){
+                Toast.makeText(requireContext(), "Something is wrong, default habits cannot be " +
+                        "added to database.", Toast.LENGTH_LONG).show()
+            }
+        }
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_manage_habits, container, false)
     }
