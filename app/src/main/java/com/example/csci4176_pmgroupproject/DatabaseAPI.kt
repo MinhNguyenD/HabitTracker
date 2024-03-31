@@ -1,10 +1,13 @@
 package com.example.csci4176_pmgroupproject
 
+import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
 import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
+import com.example.csci4176_pmgroupproject.Model.HabitModel
 import com.example.csci4176_pmgroupproject.Model.TimedActivityModel
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Firebase
@@ -17,10 +20,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 val database:FirebaseDatabase = Firebase.database
+val habits: DatabaseReference = database.getReference("habits")
 val activities : DatabaseReference = database.getReference("activities")
 val dailyActivity : DatabaseReference = database.getReference("dailyActivities")
 val users:DatabaseReference = database.getReference("users")
@@ -34,6 +39,7 @@ object DatabaseAPI {
     lateinit var user: User // The user Object associated with the current user
     private lateinit var someUser: User
     private lateinit var activityList : ArrayList<ActivityModel>
+    private lateinit var habitList : ArrayList<HabitModel>
 
     /**
      * This function will do the Firebase work for [login in]
@@ -238,6 +244,44 @@ object DatabaseAPI {
         })
     }
 
+    fun getAllActivityByHabitId(habitId:String, callback: (ArrayList<ActivityModel>) -> Unit){
+        activityList = ArrayList()
+        val query: Query = activities.orderByChild("habitId").equalTo(habitId)
+        query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                activityList.clear()
+                for (entry in snapshot.children){
+                    val user = entry.child("userId").value.toString()
+                    if (user == currentUser.uid.toString()) {
+                        val taskType = entry.child("type").value.toString()
+                        when (taskType) {
+                            ActivityModelEnums.CHECKED.toString() -> activityList.add(
+                                entry.getValue(
+                                    CheckedActivityModel::class.java
+                                )!!
+                            )
+
+                            ActivityModelEnums.COUNTABLE.toString() -> activityList.add(
+                                entry.getValue(
+                                    CountableActivityModel::class.java
+                                )!!
+                            )
+
+                            ActivityModelEnums.TIMED.toString() -> activityList.add(
+                                entry.getValue(
+                                    TimedActivityModel::class.java
+                                )!!
+                            )
+                        }
+                    }
+                }
+                callback(activityList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {Log.e("Database Error", error.details)}
+        })
+    }
+
     /**
      * Retrieves all activities from the database.
      * @param callback: A callback function to handle the retrieved activities.
@@ -260,6 +304,100 @@ object DatabaseAPI {
             }
             override fun onCancelled(error: DatabaseError) {
             }
+        })
+    }
+
+    /**
+     * Retrieves all  habits from the database.
+     * @param callback: A callback function to handle a list of all the habits.
+     */
+    fun getAllHabits(callback: (ArrayList<HabitModel>) -> Unit) {
+        habitList = ArrayList()
+
+        return habits.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // If there are no children in the "habit" node, add the default categories in
+                // (this is made just in case the habit node is deleted from the database for whatever reason)
+                if (dataSnapshot.exists() && dataSnapshot.childrenCount > 0) {
+                    Log.d(TAG, "Habits already exist in the database")
+
+                    // Iterate through all children under "habit" node
+                    for (habitSnapshot in dataSnapshot.children) {
+
+                        val currHabitId =
+                            habitSnapshot.child("habitId").getValue(String::class.java)
+                        val currUserId = habitSnapshot.child("userId").getValue(String::class.java)
+                        val currHabitName =
+                            habitSnapshot.child("habitName").getValue(String::class.java)
+
+                        // Retrieve all the default categories as well as the custom ones this logged in user has created
+                        if (currUserId == null || currUserId == currentUser.uid) {
+                            if (currHabitId != null && currHabitName != null) {
+                                val habit = HabitModel(currHabitId, null, currHabitName)
+
+                                habitList.add(habit)
+                            }
+                        }
+                    }
+                    callback(ArrayList(habitList))
+                }
+                else{
+                    // Habits do not exist in the database, add default habits
+                    Log.d(TAG, "No habits found in the database")
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+    /**
+     * Retrieves the habit Id of the habit name that is passed as a parameter.
+     * @param callback: A callback function to handle the habit Id.
+     */
+    fun getHabitIdByName(habitName : String, callback: (String) -> Unit){
+        var habitId = ""
+
+        return habits.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (habitSnapshot in dataSnapshot.children) {
+                    val currHabitName = habitSnapshot.child("habitName")
+                        .getValue(String::class.java)
+                    if (currHabitName == habitName) {
+                        habitId = habitSnapshot.key.toString()
+                    }
+                }
+                callback(habitId)
+            }
+            // Log database errors that may occur during this
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+                Log.e(TAG,"Error getting habit ID from database", databaseError.toException())
+            }
+        })
+    }
+
+    /**
+     * Retrieves the habit by passing in the habit Id as the parameter.
+     * @param callback: A callback function to handle the habit.
+     */
+    fun getHabitById(habitId : String, callback: (HabitModel) -> Unit){
+        val query: Query = habits.child(habitId)
+
+        return query.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currHabitId = dataSnapshot.child("habitId").getValue(String::class.java)
+                val currUserId = dataSnapshot.child("userId").getValue(String::class.java)
+                val currHabitName = dataSnapshot.child("habitName").getValue(String::class.java)
+
+                if (currHabitId != null && currHabitName != null) {
+                    val habit = HabitModel(currHabitId, currUserId, currHabitName)
+                    callback(habit)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Error getting habit by ID from database", error.toException())}
         })
     }
 
@@ -417,6 +555,7 @@ object DatabaseAPI {
                 activityList.clear()
                 // Retrieve the activity object from the dataSnapshot
                 for (entry in dataSnapshot.children){
+                    if (entry.child("userId").value == currentUser.uid)
                     activityList.add(convertActivity(entry))
                 }
                 callback(activityList)

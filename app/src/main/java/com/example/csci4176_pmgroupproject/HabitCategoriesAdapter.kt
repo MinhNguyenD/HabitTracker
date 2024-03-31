@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
-    RecyclerView.Adapter<Habit_Categories_Adapter.ViewHolder>() {
+class HabitCategoriesAdapter(private var dataSet: MutableList<String>) :
+    RecyclerView.Adapter<HabitCategoriesAdapter.ViewHolder>() {
     private var itemOnClickListener: OnClickItemListener? = null
     private var addNewCategoryListener: OnClickSaveItemListener? = null
 
@@ -25,12 +26,14 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
         val textView: TextView
         val editText: EditText
         val saveBtn: Button
+        val linearLayout: LinearLayout
 
         init {
             // Define click listener for the ViewHolder's View
             textView = view.findViewById(R.id.textView_habit_item_recyclerview_item)
             editText = view.findViewById(R.id.editText_habit_item_recyclerview_item)
             saveBtn = view.findViewById(R.id.saveBtn_habit_item_recyclerview_item)
+            linearLayout = view.findViewById(R.id.add_category_mode)
         }
     }
 
@@ -52,13 +55,11 @@ class Habit_Categories_Adapter(private var dataSet: MutableList<String>) :
         // In "Adding category" mode, the EditText is available for the user to enter text
         if(isAddingCategory && position == newItemPosition){
             viewHolder.textView.visibility = View.GONE
-            viewHolder.editText.visibility = View.VISIBLE
-            viewHolder.saveBtn.visibility = View.VISIBLE
+            viewHolder.linearLayout.visibility = View.VISIBLE
         }
         // Outside of the "Adding category" mode, just display all items
         else{
-            viewHolder.editText.visibility = View.GONE
-            viewHolder.saveBtn.visibility = View.GONE
+            viewHolder.linearLayout.visibility = View.GONE
             viewHolder.textView.visibility = View.VISIBLE
         }
 

@@ -2,7 +2,6 @@ package com.example.csci4176_pmgroupproject
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,7 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import android.widget.ToggleButton
-import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelDays
 import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelEnums
-import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelRepeat
-import com.example.csci4176_pmgroupproject.ActivityModel.CheckedTaskModel
-import com.example.csci4176_pmgroupproject.ActivityModel.CountableTaskModel
-import com.example.csci4176_pmgroupproject.ActivityModel.TaskModel
-import com.example.csci4176_pmgroupproject.ActivityModel.TimedTaskModel
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 import com.example.csci4176_pmgroupproject.Model.CheckedActivityModel
 import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
@@ -28,7 +21,6 @@ import java.time.DayOfWeek
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -36,9 +28,8 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class CreateActivity : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    // Habit Id passed from ManageActivities fragment
+    private var habitId: String? = null
     private var daysOfWeek = arrayListOf(false, false, false, false, false, false, false)
     private var REPEnums = arrayListOf(
         ActivityModelFrequency.DAILY,
@@ -59,8 +50,7 @@ class CreateActivity : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            habitId = it.getString(ARG_PARAM1)
         }
     }
 
@@ -113,7 +103,7 @@ class CreateActivity : Fragment() {
         radioGroup.check(R.id.checkable_radio)
 
         activityCreateButton.setOnClickListener {
-            activityCreateButton.isActivated = false
+            activityCreateButton.isClickable = false
             val title = activityTitleView.text.toString()
             val note = activityNoteSection.text.toString()
 
@@ -127,7 +117,7 @@ class CreateActivity : Fragment() {
                             createActivity(title, note, arrayListOf())
                         }else {
                             makeMsg("Please input a value greater than 0")
-                            activityCreateButton.isActivated = true
+                            activityCreateButton.isClickable = true
                         }
                     }else {
                         createActivity(title, note, arrayListOf())
@@ -142,19 +132,19 @@ class CreateActivity : Fragment() {
                                 createActivity(title, note, days)
                             }else {
                                 makeMsg("Please input a value greater than 0")
-                                activityCreateButton.isActivated = true
+                                activityCreateButton.isClickable = true
                             }
                         }else {
                             createActivity(title, note, days)
                         }
                     } else{
                         makeMsg("Please select at least 1 day!")
-                        activityCreateButton.isActivated = true
+                        activityCreateButton.isClickable = true
                     }
                 }
             } else {
                 makeMsg("Please give the activity a title!")
-                activityCreateButton.isActivated = true
+                activityCreateButton.isClickable = true
             }
 
         }
@@ -167,16 +157,13 @@ class CreateActivity : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment create_activity.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             CreateActivity().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
@@ -193,14 +180,14 @@ class CreateActivity : Fragment() {
             if (checked){
                 button.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
                 if (index == 0){
-                    for (toggle in DOWtoggles){
-                        toggle.isChecked = true;
+                    for (dayToggle in DOWtoggles){
+                        dayToggle.isChecked = true;
                     }
                 }
-                for (toggle in REPtoggles){
-                    if (toggle != button){
-                        toggle.isChecked = false;
-                        toggle.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
+                for (dayToggle in REPtoggles){
+                    if (dayToggle != button){
+                        dayToggle.isChecked = false;
+                        dayToggle.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_unselected))
                     }
                 }
                 repeatFrequency = REPEnums[index]
@@ -209,8 +196,8 @@ class CreateActivity : Fragment() {
                 REPtoggles[1].isChecked = true
                 REPtoggles[1].backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.toggle_selected))
                 repeatFrequency = REPEnums[1]
-                for (toggle in DOWtoggles){
-                    toggle.isChecked = false;
+                for (dayToggle in DOWtoggles){
+                    dayToggle.isChecked = false;
                 }
             }
         }
@@ -251,14 +238,14 @@ class CreateActivity : Fragment() {
         var model: ActivityModel
         when (activityType){
             ActivityModelEnums.CHECKED -> {
-                model = CheckedActivityModel("",title, repeatFrequency, days)
+                model = CheckedActivityModel(habitId!!, title, repeatFrequency, days)
             }
             ActivityModelEnums.TIMED -> {
-                model = TimedActivityModel("",title,repeatFrequency, days)
+                model = TimedActivityModel(habitId!!,title,repeatFrequency, days)
             }
 
             ActivityModelEnums.COUNTABLE -> {
-                model = CountableActivityModel("", title, repeatFrequency, days, count)
+                model = CountableActivityModel(habitId!!, title, repeatFrequency, days, count)
             }
         }
         model.makeNote(note)
@@ -266,7 +253,9 @@ class CreateActivity : Fragment() {
 //        Log.w("Create Activity", "Model: ${model.title} | ${model.type}" +
 //                "| ${model.days.toString()} | ${model.frequency} |")
         DatabaseAPI.createActivity(model)
-        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+
+        // Move back to the previous fragment
+        parentFragmentManager.popBackStack()
     }
 
     private fun getDaysOfWeek(): ArrayList<DayOfWeek>{

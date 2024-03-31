@@ -1,8 +1,10 @@
 package com.example.csci4176_pmgroupproject.Model
 
+import android.os.Build
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.annotation.RequiresApi
 import com.example.csci4176_pmgroupproject.ActivityEnergy
-import com.example.csci4176_pmgroupproject.ActivityModel.ActivityModelDays
-import com.example.csci4176_pmgroupproject.ActivityModelDayOfWeek
 import com.example.csci4176_pmgroupproject.ActivityModelEnums
 import com.example.csci4176_pmgroupproject.ActivityModelFrequency
 import com.example.csci4176_pmgroupproject.ActivityMood
@@ -39,4 +41,5 @@ abstract class ActivityModel (var taskId : String, val userId : String, val habi
     abstract fun complete()
 
     abstract fun reset()
+
 }
