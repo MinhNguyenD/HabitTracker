@@ -181,6 +181,19 @@ object DatabaseAPI {
         })
     }
 
+    fun getUserById(uid: String, callback: (User) -> Unit){
+        return users.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Retrieve the activity object from the dataSnapshot
+                val user = dataSnapshot.getValue(User::class.java)!!
+                callback(user)
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
+    }
+
     /**
      * Retrieves an activity from the database by its ID.
      * @param id: The ID of the activity to retrieve.
@@ -281,24 +294,24 @@ object DatabaseAPI {
         }
     }
 
-//    /**
-//     * Converts the Java DayOfWeek enum to the custom ActivityModelDayOfWeek enum.
-//     * @param calendarDay: The Java DayOfWeek enum representing the day of the week.
-//     * @return The corresponding ActivityModelDayOfWeek enum.
-//     * @throws IllegalArgumentException if the day of the week is invalid.
-//     */
-//    private fun convertDayOfWeek(calendarDay: DayOfWeek): ActivityModelDayOfWeek {
-//        return when (calendarDay) {
-//            DayOfWeek.MONDAY -> ActivityModelDayOfWeek.MONDAY
-//            DayOfWeek.TUESDAY -> ActivityModelDayOfWeek.TUESDAY
-//            DayOfWeek.WEDNESDAY -> ActivityModelDayOfWeek.WEDNESDAY
-//            DayOfWeek.THURSDAY -> ActivityModelDayOfWeek.THURSDAY
-//            DayOfWeek.FRIDAY -> ActivityModelDayOfWeek.FRIDAY
-//            DayOfWeek.SATURDAY -> ActivityModelDayOfWeek.SATURDAY
-//            DayOfWeek.SUNDAY -> ActivityModelDayOfWeek.SUNDAY
-//            else -> throw IllegalArgumentException("Invalid day of the week: $calendarDay")
-//        }
-//    }
+    /**
+     * Converts the Java DayOfWeek enum to the custom ActivityModelDayOfWeek enum.
+     * @param calendarDay: The Java DayOfWeek enum representing the day of the week.
+     * @return The corresponding ActivityModelDayOfWeek enum.
+     * @throws IllegalArgumentException if the day of the week is invalid.
+     */
+    private fun convertDayOfWeek(calendarDay: DayOfWeek): ActivityModelDayOfWeek {
+        return when (calendarDay) {
+            DayOfWeek.MONDAY -> ActivityModelDayOfWeek.MONDAY
+            DayOfWeek.TUESDAY -> ActivityModelDayOfWeek.TUESDAY
+            DayOfWeek.WEDNESDAY -> ActivityModelDayOfWeek.WEDNESDAY
+            DayOfWeek.THURSDAY -> ActivityModelDayOfWeek.THURSDAY
+            DayOfWeek.FRIDAY -> ActivityModelDayOfWeek.FRIDAY
+            DayOfWeek.SATURDAY -> ActivityModelDayOfWeek.SATURDAY
+            DayOfWeek.SUNDAY -> ActivityModelDayOfWeek.SUNDAY
+            else -> throw IllegalArgumentException("Invalid day of the week: $calendarDay")
+        }
+    }
 
     /**
      * Checks if an activity is scheduled for today.

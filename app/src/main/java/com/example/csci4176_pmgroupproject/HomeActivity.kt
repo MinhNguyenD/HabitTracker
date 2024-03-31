@@ -37,22 +37,26 @@ class HomeActivity : BaseActivity(), TodoItemClickListener {
 
         // populate daily activities list and display on recycler view
         DatabaseAPI.getDailyActivity { dailyList ->
-            dailyActivityList = dailyList
-            activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
-            dailyActivityView.adapter = activityAdapter
-            DailyProgress.currentNumActivities = DailyProgress.numActivities
-            initToday()
-            if(DailyProgress.progress == 0){
-                DailyProgress.numActivities = activityAdapter.itemCount
-                initProgress()
+            if(dailyList.size <= 0){
+                displayNoActivity()
             }
             else{
-                if(DailyProgress.currentNumActivities < dailyActivityList.size){
-                    DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
+                dailyActivityList = dailyList
+                activityAdapter =  DailyActivityAdapter(dailyActivityList, this, false)
+                dailyActivityView.adapter = activityAdapter
+                DailyProgress.currentNumActivities = DailyProgress.numActivities
+                initToday()
+                if(DailyProgress.progress == 0){
+                    DailyProgress.numActivities = activityAdapter.itemCount
+                    initProgress()
                 }
+                else{
+                    if(DailyProgress.currentNumActivities < dailyActivityList.size){
+                        DailyProgress.numActivities = dailyActivityList.size + DailyProgress.numFinishedActivity.toInt()
+                    }
+                }
+                updateProgress()
             }
-            updateProgress()
-            displayNoActivity()
         }
         AlarmScheduler.scheduleEndOfDayCheck(this)
     }
