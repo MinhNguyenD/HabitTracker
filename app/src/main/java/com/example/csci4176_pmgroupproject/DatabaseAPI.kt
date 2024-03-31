@@ -51,10 +51,6 @@ object DatabaseAPI {
                 currentUser = auth.currentUser!!
                 getCurrentUser {
                 }
-                /*
-                * TODO: create basic User object
-                * TODO: pull basic User object from [users]
-                */
             }
         }
         return task
@@ -80,11 +76,13 @@ object DatabaseAPI {
 
     // Add a friend connection
     fun addFriend(friendUser: User): Task<Void> {
+        users.child(friendUser.uid).child("friends").child(currentUser.uid).setValue(user)
         return users.child(currentUser.uid).child("friends").child(friendUser.uid).setValue(friendUser)
     }
 
     // Remove a friend connection
     fun removeFriend(friendUserId: String): Task<Void> {
+        users.child(friendUserId).child("friends").child(currentUser.uid).removeValue()
         return users.child(currentUser.uid).child("friends").child(friendUserId).removeValue()
     }
 
@@ -419,8 +417,36 @@ object DatabaseAPI {
      * @param message message that are sent from Friend
      */
     fun receiveMessage(friend : User, message : Message){
-        val messageRef = users.child(friend.uid).child("notifications").push()
+        val messageRef = users.child(friend.uid).child("inbox").push()
         message.messageId = messageRef.key!!
-        users.child(friend.uid).child("notifications").child(message.messageId).setValue(message)
+        users.child(friend.uid).child("inbox").child(message.messageId).setValue(message)
+    }
+
+    /**
+     * Get all inbox of current User
+     */
+    fun getCurrentUserInbox(callback: (ArrayList<Message>) -> Unit) {
+        val messageList = ArrayList<Message>()
+        if(currentUser==null){
+            return
+        }
+        users.child(currentUser.uid).child("inbox").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                messageList.clear()
+                var message: Message?
+                for (userSnapshot in snapshot.children) {
+                    message = userSnapshot.getValue(Message::class.java)
+                    if(message != null ){
+                        messageList.add(message)
+                    }
+                }
+                callback(messageList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "getCurrentUserInbox:onCancelled", databaseError.toException())
+                callback(arrayListOf())
+            }
+        })
     }
 }

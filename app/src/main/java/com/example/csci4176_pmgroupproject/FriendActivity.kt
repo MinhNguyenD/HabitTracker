@@ -1,12 +1,15 @@
 package com.example.csci4176_pmgroupproject
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
@@ -26,16 +29,31 @@ class FriendActivity : BaseActivity() {
     private lateinit var friendList : ArrayList<User>
     private lateinit var searchUserList : ArrayList<User>
     private lateinit var searchView: SearchView
+    private lateinit var inboxButton: ImageButton
+    private lateinit var inboxNumber : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_friends)
-
         // Initialize views
         searchView = findViewById(R.id.searchView)
         searchListView = findViewById(R.id.searchRecyclerList)
+        friendListView = findViewById(R.id.friendList)
+        inboxButton = findViewById(R.id.inboxButton)
+        inboxNumber = findViewById(R.id.inboxNumber)
+
         searchListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        DatabaseAPI.getCurrentUserInbox { messages ->
+            if(messages.size > 0){
+                inboxNumber.text = messages.size.toString()
+                inboxButton.setColorFilter(ContextCompat.getColor(this, R.color.red))
+            }
+        }
+
+        inboxButton.setOnClickListener{
+            startActivity(Intent(this, InboxActivity::class.java))
+        }
 
         // Set up the search view to listen for user queries
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -57,7 +75,6 @@ class FriendActivity : BaseActivity() {
         })
 
 
-        friendListView = findViewById(R.id.friendList)
         friendListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         DatabaseAPI.getCurrentUserFriends {friends ->
             friendList = friends
