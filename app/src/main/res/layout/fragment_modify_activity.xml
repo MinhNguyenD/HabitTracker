@@ -35,7 +35,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/new_activity_title"
+                android:id="@+id/activity_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
@@ -346,7 +346,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:clickable="false"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -355,6 +354,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginEnd="15dp"
+                    android:clickable="false"
                     android:text="@string/checkable" />
 
                 <RadioButton
@@ -362,6 +362,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:clickable="false"
                     android:text="@string/timed" />
 
                 <RadioButton
@@ -370,6 +371,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginStart="15dp"
+                    android:clickable="false"
                     android:text="@string/countable" />
 
             </RadioGroup>
@@ -388,7 +390,7 @@
                 android:visibility="gone" />
 
             <EditText
-                android:id="@+id/new_activity_note"
+                android:id="@+id/activity_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

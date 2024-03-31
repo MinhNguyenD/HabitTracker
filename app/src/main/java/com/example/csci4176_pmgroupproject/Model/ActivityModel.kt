@@ -16,7 +16,7 @@ abstract class ActivityModel (var taskId : String, val userId : String, val habi
                               var isFinished : Boolean, val startDate : String,
                               var frequency : ActivityModelFrequency, var days: ArrayList<DayOfWeek>,
                               var streak: Int, var mood: ActivityMood,
-                              var energy: ActivityEnergy, var note: String) : Parcelable {
+                              var energy: ActivityEnergy, var note: String){
 
     constructor(habitId : String, title: String, type: ActivityModelEnums,
                 isFinished : Boolean, startDate : String,
@@ -41,26 +41,5 @@ abstract class ActivityModel (var taskId : String, val userId : String, val habi
     abstract fun complete()
 
     abstract fun reset()
-    override fun describeContents(): Int { return 0 }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    override fun writeToParcel(p0: Parcel, p1: Int) {
-        p0.writeString(taskId)
-        p0.writeString(userId)
-        p0.writeString(habitId)
-        p0.writeString(title)
-        p0.writeInt(type.ordinal)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            p0.writeBoolean(isFinished)
-        }else {
-            p0.writeByte(if (isFinished) 1 else 0)
-        }
-        p0.writeString(startDate)
-        p0.writeInt(frequency.ordinal)
-        p0.writeList(days)
-        p0.writeInt(streak)
-        p0.writeInt(mood.ordinal)
-        p0.writeInt(energy.ordinal)
-        p0.writeString(note)
-    }
 }

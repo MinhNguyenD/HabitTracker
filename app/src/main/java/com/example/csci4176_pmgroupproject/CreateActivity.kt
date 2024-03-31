@@ -103,7 +103,7 @@ class CreateActivity : Fragment() {
         radioGroup.check(R.id.checkable_radio)
 
         activityCreateButton.setOnClickListener {
-            activityCreateButton.isActivated = false
+            activityCreateButton.isClickable = false
             val title = activityTitleView.text.toString()
             val note = activityNoteSection.text.toString()
 
@@ -117,7 +117,7 @@ class CreateActivity : Fragment() {
                             createActivity(title, note, arrayListOf())
                         }else {
                             makeMsg("Please input a value greater than 0")
-                            activityCreateButton.isActivated = true
+                            activityCreateButton.isClickable = true
                         }
                     }else {
                         createActivity(title, note, arrayListOf())
@@ -132,19 +132,19 @@ class CreateActivity : Fragment() {
                                 createActivity(title, note, days)
                             }else {
                                 makeMsg("Please input a value greater than 0")
-                                activityCreateButton.isActivated = true
+                                activityCreateButton.isClickable = true
                             }
                         }else {
                             createActivity(title, note, days)
                         }
                     } else{
                         makeMsg("Please select at least 1 day!")
-                        activityCreateButton.isActivated = true
+                        activityCreateButton.isClickable = true
                     }
                 }
             } else {
                 makeMsg("Please give the activity a title!")
-                activityCreateButton.isActivated = true
+                activityCreateButton.isClickable = true
             }
 
         }

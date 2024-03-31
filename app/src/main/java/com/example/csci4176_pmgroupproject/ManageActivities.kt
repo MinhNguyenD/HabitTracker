@@ -1,13 +1,13 @@
 package com.example.csci4176_pmgroupproject
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
@@ -17,7 +17,7 @@ private const val ARG_PARAM1 = "param1"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ModifyActivity.newInstance] factory method to
+ * Use the [Modify.newInstance] factory method to
  * create an instance of this fragment.
  */
 class ManageActivities : Fragment() {
@@ -63,10 +63,16 @@ class ManageActivities : Fragment() {
                         // Set up a listener to listen for clicks on the Modify button
                         customAdapter.setOnClickModifyItemListener(object :
                             ActivityAdapter.OnClickModifyItemListener {
-                            override fun onClickModifyItem(isClicked: Boolean) {
+                            override fun onClickModifyItem(
+                                isClicked: Boolean,
+                                activityModel: ActivityModel
+                            ) {
                                 if (isClicked) {
-                                    // TODO: The ModifyActivity fragment is shown
-
+                                    // The ModifyActivity fragment is shown
+                                    val modifyActivityFrag: Fragment = ModifyActivity.newInstance(activityModel.taskId)
+                                    val manageActivity = activity as ManageActivity
+                                    manageActivity.replaceFragment(modifyActivityFrag)
+                                    Toast.makeText(requireContext(), "You selected: ${activityModel.title}", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
