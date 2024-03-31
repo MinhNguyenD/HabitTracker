@@ -1,6 +1,7 @@
 package com.example.csci4176_pmgroupproject
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,12 +21,12 @@ private const val ARG_PARAM1 = "param1"
  * create an instance of this fragment.
  */
 class ManageActivities : Fragment() {
-    private var selectedCategory: String? = null
+    private var selectedHabitId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            selectedCategory = it.getString(ARG_PARAM1)
+            selectedHabitId = it.getString(ARG_PARAM1)
         }
     }
 
@@ -44,37 +45,42 @@ class ManageActivities : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.activityRecyclerView)
         val addBtn: ImageButton = view.findViewById(R.id.addActivityButton)
 
-        // The title of this page is the name of the selected category
-        textView.text = selectedCategory
+        selectedHabitId?.let {
+            DatabaseAPI.getHabitById(it) { habit ->
+                // The title of this page is the name of the selected category
+                textView.text = habit.habitName
 
-        // Display all the activities in a RecycleView
-        DatabaseAPI.getAllActivityByHabitId("") { activityList: ArrayList<ActivityModel> ->
-            // If the activity list for this habit is empty, display a message
-            // Assure that the it matches habitId, so the correct activities are displayed
-            if (activityList.size <= 0) {
-                displayNoActivity(view)
-            } else {
-                val customAdapter = ActivityAdapter(activityList)
-                connectAdapter(recyclerView, customAdapter)
+                // Display all the activities in a RecycleView
+                DatabaseAPI.getAllActivityByHabitId(it) { activityList: ArrayList<ActivityModel> ->
+                    // If the activity list for this habit is empty, display a message
+                    // Assure that the it matches habitId, so the correct activities are displayed
+                    if (activityList.size <= 0) {
+                        displayNoActivity(view)
+                    } else {
+                        val customAdapter = ActivityAdapter(activityList)
+                        connectAdapter(recyclerView, customAdapter)
 
-                // Set up a listener to listen for clicks on the Modify button
-                customAdapter.setOnClickModifyItemListener(object :
-                    ActivityAdapter.OnClickModifyItemListener {
-                    override fun onClickModifyItem(isClicked: Boolean) {
-                        if (isClicked) {
-                            // TODO: The ModifyActivity fragment is shown
+                        // Set up a listener to listen for clicks on the Modify button
+                        customAdapter.setOnClickModifyItemListener(object :
+                            ActivityAdapter.OnClickModifyItemListener {
+                            override fun onClickModifyItem(isClicked: Boolean) {
+                                if (isClicked) {
+                                    // TODO: The ModifyActivity fragment is shown
 
-                        }
+                                }
+                            }
+
+                        })
                     }
+                }
 
-                })
             }
         }
 
         // Set up a listener to listen for clicks on the 'plus' button
         addBtn.setOnClickListener{
             // The CreateActivity fragment is shown
-            val createActivityFrag: Fragment = CreateActivity.newInstance("", "")
+            val createActivityFrag: Fragment = CreateActivity.newInstance(selectedHabitId!!)
             val manageActivity = activity as ManageActivity
             manageActivity.replaceFragment(createActivityFrag)
         }

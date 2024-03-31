@@ -24,7 +24,6 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Activities"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
