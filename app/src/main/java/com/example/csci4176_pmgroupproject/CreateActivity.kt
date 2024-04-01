@@ -18,7 +18,6 @@ import com.example.csci4176_pmgroupproject.Model.CountableActivityModel
 import com.example.csci4176_pmgroupproject.Model.TimedActivityModel
 import java.time.DayOfWeek
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 
@@ -58,6 +57,9 @@ class CreateActivity : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Hide the navigation bar
+        (activity as ManageActivity).hideNavigationBar()
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_activity, container, false)
     }
@@ -237,7 +239,6 @@ class CreateActivity : Fragment() {
     }
 
     private fun createActivity(title: String, note:String, days:ArrayList<DayOfWeek>){
-        // TODO: Connect to database
         var model: ActivityModel
         when (activityType){
             ActivityModelEnums.CHECKED -> {

@@ -34,6 +34,8 @@ class ManageActivities : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Make sure the navigation bar is visible here because other fragments may hide it
+        (activity as ManageActivity).showNavigationBar()
 
         return inflater.inflate(R.layout.fragment_manage_activities, container, false)
     }
@@ -72,7 +74,6 @@ class ManageActivities : Fragment() {
                                     val modifyActivityFrag: Fragment = ModifyActivity.newInstance(activityModel.taskId)
                                     val manageActivity = activity as ManageActivity
                                     manageActivity.replaceFragment(modifyActivityFrag)
-                                    Toast.makeText(requireContext(), "You selected: ${activityModel.title}", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
