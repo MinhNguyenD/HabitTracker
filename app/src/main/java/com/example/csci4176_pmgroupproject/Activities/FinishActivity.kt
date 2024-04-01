@@ -286,7 +286,6 @@ class FinishActivity : AppCompatActivity() {
         // Set onClickListeners for save and delete buttons
         saveButton.setOnClickListener {
             submitForm()
-            reward()
             finish()
         }
         deleteButton.setOnClickListener {
@@ -305,19 +304,11 @@ class FinishActivity : AppCompatActivity() {
             selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
         }
 
-        // TODO: update emotion and energy
-        selectedActivity.note += "\n[${LocalDate.now()}] ${noteEditText.text}"
         val pictureURL = uploadImagesToStorage(pictureURI)
 
         DatabaseAPI.updateActivity(selectedActivity)
     }
 
-    /**
-     * When user finish a activity, give a reward
-     */
-    private fun reward(){
-        // TODO: add reward details
-    }
 
     // Create the URI for when the picture is captured
     private fun generatePictureURI(): Uri
