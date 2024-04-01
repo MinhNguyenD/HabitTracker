@@ -57,6 +57,9 @@ class ModifyActivity : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Hide the navigation bar
+        (activity as ManageActivity).hideNavigationBar()
+
         return inflater.inflate(R.layout.fragment_modify_activity, container, false)
     }
 
