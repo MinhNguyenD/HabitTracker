@@ -20,7 +20,11 @@ class CountableActivityModel(habitId : String, title: String,
     constructor() : this("","", ActivityModelFrequency.NEVER, arrayListOf(),0)
 
     fun setRemaining(value: Int){ this.remaining = value }
-    fun decrementRemaining(){ this.remaining-- }
+    fun decrementRemaining(){
+        if(remaining > 0){
+            this.remaining--
+        }
+    }
 
     fun getRemaining(): Int{ return this.remaining }
     override fun complete() {

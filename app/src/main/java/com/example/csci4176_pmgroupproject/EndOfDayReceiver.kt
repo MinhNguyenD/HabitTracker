@@ -4,11 +4,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.example.csci4176_pmgroupproject.Model.ActivityModel
+import java.time.LocalDate
 
 /**
  * BroadcastReceiver responsible for receiving the end-of-day alarm signal and performing actions accordingly.
  */
 class EndOfDayReceiver : BroadcastReceiver() {
+    private lateinit var dailyList : ArrayList<ActivityModel>
 
     /**
      * Called when the broadcast is received.
@@ -18,9 +21,11 @@ class EndOfDayReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         // Check the activities at the end of the day
         // Reset streak for any undone activities
-        // You can implement your logic here
-        if (context != null) {
-            resetStreak(context)
+        DatabaseAPI.getDailyActivitiesOnDateSingleEvent(LocalDate.now().toString()) { dailyList ->
+            this.dailyList = dailyList
+            if (context != null) {
+                resetStreak(context)
+            }
         }
     }
 
@@ -29,16 +34,14 @@ class EndOfDayReceiver : BroadcastReceiver() {
      * @param context: The context in which the receiver is running.
      */
     private fun resetStreak(context: Context?){
-        DatabaseAPI.getDailyActivity { dailyList ->
-            for(activity in dailyList){
-                if(!activity.isFinished){
-                    activity.breakStreak()
-                }
-                else{
-                    activity.isFinished = false
-                }
-                DatabaseAPI.updateActivity(activity)
+        for(activity in dailyList){
+            if(!activity.isFinished){
+                activity.breakStreak()
             }
+            else{
+                activity.isFinished = false
+            }
+            DatabaseAPI.updateActivity(activity)
         }
     }
 }

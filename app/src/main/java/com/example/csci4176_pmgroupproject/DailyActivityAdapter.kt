@@ -29,6 +29,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
             finishButton?.setOnClickListener{
                 val position = adapterPosition
                 val activity = activities[position]
+                // if activity is a check type
                 if(activity is CheckedActivityModel){
                     activity.isFinished = true
                     activity.streak += 1
@@ -43,6 +44,7 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
                     }
                     clickListener?.onItemFinishClick(position)
                 }
+                // if activity is a countable type
                 else if(activity is CountableActivityModel){
                     val countActivity : CountableActivityModel = activity as CountableActivityModel
                     countActivity.decrementRemaining()
@@ -64,8 +66,12 @@ class DailyActivityAdapter (private var activities : ArrayList<ActivityModel>, p
                         }
                         clickListener?.onItemFinishClick(position)
                     }
+                    else{
+                        DatabaseAPI.updateActivity(countActivity)
+                    }
                 }
             }
+            // if activity is a timed type
             startToggle?.setOnCheckedChangeListener { button, checked ->
                 val position = adapterPosition
                 val activity = activities[position]

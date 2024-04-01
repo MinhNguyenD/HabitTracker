@@ -39,7 +39,6 @@ object DatabaseAPI {
     lateinit var currentUser: FirebaseUser
     lateinit var user: User // The user Object associated with the current user
     private lateinit var someUser: User
-    private lateinit var activityList : ArrayList<ActivityModel>
     private lateinit var habitList : ArrayList<HabitModel>
 
     /**
@@ -246,7 +245,7 @@ object DatabaseAPI {
     }
 
     fun getAllActivityByHabitId(habitId:String, callback: (ArrayList<ActivityModel>) -> Unit){
-        activityList = ArrayList()
+        val activityList = ArrayList<ActivityModel>()
         val query: Query = activities.orderByChild("habitId").equalTo(habitId)
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -288,7 +287,7 @@ object DatabaseAPI {
      * @param callback: A callback function to handle the retrieved activities.
      */
     fun getAllActivity(callback: (ArrayList<ActivityModel>) -> Unit){
-        activityList = ArrayList()
+        val activityList = ArrayList<ActivityModel>()
         val query: Query = activities.orderByChild("userId").equalTo(currentUser.uid.toString())
         query.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -463,10 +462,10 @@ object DatabaseAPI {
      * @param callback: A callback function to handle today's activities.
      */
     fun getDailyActivity(callback: (ArrayList<ActivityModel>) -> Unit){
-        activityList = ArrayList()
+        val activityList = ArrayList<ActivityModel>()
         var allDailyActivities = ArrayList<ActivityModel>()
         val query: Query = activities.orderByChild("userId").equalTo(currentUser.uid)
-        query.addListenerForSingleValueEvent (object : ValueEventListener{
+        query.addValueEventListener (object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 activityList.clear()
                 for (entry in snapshot.children){
@@ -606,8 +605,31 @@ object DatabaseAPI {
      *
      */
     fun getDailyActivitiesOnDate(selectedDate : String, callback: (ArrayList<ActivityModel>) -> Unit){
-        activityList = ArrayList()
-        return dailyActivity.child(selectedDate).addListenerForSingleValueEvent(object : ValueEventListener {
+         val activityList = ArrayList<ActivityModel>()
+         dailyActivity.child(selectedDate).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                activityList.clear()
+                // Retrieve the activity object from the dataSnapshot
+                for (entry in dataSnapshot.children){
+                    if (entry.child("userId").value == currentUser.uid){
+                        activityList.add(convertActivity(entry))
+                    }
+                }
+                callback(activityList)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occurred while retrieving the data
+            }
+        })
+    }
+
+    /**
+     * Get all of the daily activities on a given date single listener
+     */
+    fun getDailyActivitiesOnDateSingleEvent(selectedDate : String, callback: (ArrayList<ActivityModel>) -> Unit){
+        val activityList = ArrayList<ActivityModel>()
+        dailyActivity.child(selectedDate).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 activityList.clear()
                 // Retrieve the activity object from the dataSnapshot
