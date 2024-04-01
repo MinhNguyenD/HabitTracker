@@ -8,7 +8,7 @@
     android:background="@android:color/background_light"
     android:id="@+id/root_container">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"
         android:name="com.example.csci4176_pmgroupproject.ManageHabits"
         android:layout_width="match_parent"
