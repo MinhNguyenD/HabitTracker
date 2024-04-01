@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.csci4176_pmgroupproject.Database.DatabaseAPI
+import com.example.csci4176_pmgroupproject.Model.ActivityEnergy
+import com.example.csci4176_pmgroupproject.Model.ActivityMood
 import com.example.csci4176_pmgroupproject.R
 import kotlin.math.roundToInt
 
@@ -66,7 +68,9 @@ class CalendarAdapter(
     {
         // If the day is a empty cell make the circle transparent
         if (day == "")
-        { holder.circle.drawable.setTint(Color.TRANSPARENT) }
+        {
+            return
+        }
 
         // If the day is an actual number
         else
@@ -76,32 +80,27 @@ class CalendarAdapter(
                 // If there were activities for the day
                 if (dayActivity.size > 0) {
                     // Get the total mood based on enum ordinals and calculate the average
-                    var mood = 0.0
+                    var sumMood = 0.0
+                    var sumEnergy = 0.0
                     for (activity in dayActivity) {
-                        mood += activity.mood.ordinal + 1
+                        sumMood += activity.mood.ordinal + 1
+                        sumEnergy += activity.energy.ordinal + 1
                     }
 
-                    val avgMood: Int = (mood / dayActivity.size - 1).roundToInt()
-                    System.out.println(avgMood)
-                    // Based on the average mood set either red
-                    if (avgMood < 1) {
-                        holder.circle.drawable.setTint(Color.RED)
+                    val avgMood: Int = (sumMood / dayActivity.size - 1).roundToInt()
+                    val avgEnergy = (sumEnergy /  dayActivity.size - 1).roundToInt()
+
+                    when(ActivityMood.entries[avgMood]){
+                        ActivityMood.DISAPPOINTED -> holder.mood.setImageResource(R.drawable.disappoint_icon_24)
+                        ActivityMood.NEUTRAL -> holder.mood.setImageResource(R.drawable.neutral_icon_24)
+                        ActivityMood.ACCOMPLISHED -> holder.mood.setImageResource(R.drawable.accomplish_icon_24)
                     }
 
-                    // Orange (color.xml didn't work here so I used the string directly)
-                    else if (avgMood < 3) {
-                        holder.circle.drawable.setTint(Color.parseColor("#FFA500"))
+                    when(ActivityEnergy.entries[avgEnergy]){
+                        ActivityEnergy.TIRED -> holder.energy.setImageResource(R.drawable.tired_icon_24)
+                        ActivityEnergy.NEUTRAL -> holder.energy.setImageResource(R.drawable.neutral_energy_icon_24)
+                        ActivityEnergy.ENERGIZED -> holder.energy.setImageResource(R.drawable.energized_icon_24)
                     }
-
-                    // Or green if the mood for everyday was "accomplished"
-                    else {
-                        holder.circle.drawable.setTint(Color.GREEN)
-                    }
-                }
-
-                // If there were no activities for the day set the circle to be transparent
-                else {
-                    holder.circle.drawable.setTint(Color.TRANSPARENT)
                 }
             }
         }
@@ -115,7 +114,8 @@ class CalendarViewHolder(
     : RecyclerView.ViewHolder(itemView), View.OnClickListener
 {
     val dayOfMonth = itemView.findViewById(R.id.cellDayText) as TextView
-    val circle = itemView.findViewById(R.id.moodCircle) as ImageView
+    val mood = itemView.findViewById(R.id.moodCircle) as ImageView
+    val energy = itemView.findViewById(R.id.energyCircle) as ImageView
 
     init
     { itemView.setOnClickListener(this) }
