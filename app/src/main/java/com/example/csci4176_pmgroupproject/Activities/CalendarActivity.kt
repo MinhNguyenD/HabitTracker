@@ -114,7 +114,11 @@ class CalendarActivity : BaseActivity(), CalendarAdapter.OnItemListener
     // Activates the onclick when a day is selected from the calendar
     override fun onItemClick(position: Int, dayText: String) {
         if (dayText != "") {
-            val selectedDate = "${referenceDate.toString().substringBeforeLast('-')}-$dayText"
+            var day = dayText
+            if(dayText.length == 1){
+                day = "0" + dayText
+            }
+            val selectedDate = "${referenceDate.toString().substringBeforeLast('-')}-$day"
             val dailyActivityIntent = Intent(this, OnDateActivity::class.java)
             dailyActivityIntent.putExtra("selectedDate",selectedDate)
             startActivity(dailyActivityIntent)
