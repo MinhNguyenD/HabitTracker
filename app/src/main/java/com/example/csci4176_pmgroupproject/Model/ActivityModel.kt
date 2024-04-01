@@ -1,14 +1,6 @@
 package com.example.csci4176_pmgroupproject.Model
 
-import android.os.Build
-import android.os.Parcel
-import android.os.Parcelable
-import androidx.annotation.RequiresApi
-import com.example.csci4176_pmgroupproject.ActivityEnergy
-import com.example.csci4176_pmgroupproject.ActivityModelEnums
-import com.example.csci4176_pmgroupproject.ActivityModelFrequency
-import com.example.csci4176_pmgroupproject.ActivityMood
-import com.example.csci4176_pmgroupproject.DatabaseAPI
+import com.example.csci4176_pmgroupproject.Database.DatabaseAPI
 import java.time.DayOfWeek
 
 abstract class ActivityModel (var taskId : String, val userId : String, val habitId : String,
@@ -24,7 +16,8 @@ abstract class ActivityModel (var taskId : String, val userId : String, val habi
                 streak: Int, mood: ActivityMood,
                 energy: ActivityEnergy, note: String) : this("", DatabaseAPI.currentUser.uid,habitId, title, type, isFinished, startDate, frequency, days, streak,  mood, energy,  note)
 
-    constructor() : this("","",ActivityModelEnums.CHECKED,false, "", ActivityModelFrequency.NEVER, arrayListOf(), 0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, "")
+    constructor() : this("","",
+        ActivityModelEnums.CHECKED,false, "", ActivityModelFrequency.NEVER, arrayListOf(), 0, ActivityMood.NEUTRAL, ActivityEnergy.NEUTRAL, "")
 
     fun updateStreak(){ streak++; }
 

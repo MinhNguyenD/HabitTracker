@@ -1,15 +1,19 @@
 package com.example.csci4176_pmgroupproject
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.csci4176_pmgroupproject.Activities.CreateActivity
+import com.example.csci4176_pmgroupproject.Activities.ManageActivity
+import com.example.csci4176_pmgroupproject.Activities.ModifyActivity
+import com.example.csci4176_pmgroupproject.Adapters.ActivityAdapter
+import com.example.csci4176_pmgroupproject.Database.DatabaseAPI
 import com.example.csci4176_pmgroupproject.Model.ActivityModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +30,7 @@ class ManageActivities : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            selectedHabitId = it.getString(ARG_PARAM1)
+            selectedHabitId = it.getString(com.example.csci4176_pmgroupproject.ARG_PARAM1)
         }
     }
 
@@ -71,7 +75,8 @@ class ManageActivities : Fragment() {
                             ) {
                                 if (isClicked) {
                                     // The ModifyActivity fragment is shown
-                                    val modifyActivityFrag: Fragment = ModifyActivity.newInstance(activityModel.taskId)
+                                    val modifyActivityFrag: Fragment =
+                                        ModifyActivity.newInstance(activityModel.taskId)
                                     val manageActivity = activity as ManageActivity
                                     manageActivity.replaceFragment(modifyActivityFrag)
                                 }
@@ -105,7 +110,7 @@ class ManageActivities : Fragment() {
         fun newInstance(param1: String) =
             ManageActivities().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putString(com.example.csci4176_pmgroupproject.ARG_PARAM1, param1)
                 }
             }
     }

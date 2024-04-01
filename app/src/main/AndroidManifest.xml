@@ -17,40 +17,48 @@
         android:theme="@style/Theme.CSCI4176_PMGroupProject"
         tools:targetApi="31">
         <activity
-            android:name=".InboxActivity"
+            android:name=".Activities.InboxActivity"
             android:exported="false" />
 
+        <!-- On Date Activity -->
         <activity
-            android:name=".OnDateActivity"
+            android:name=".Activities.OnDateActivity"
             android:exported="false" />
+
+        <!-- Base Activity -->
         <activity
-            android:name=".BaseActivity"
+            android:name=".Activities.BaseActivity"
             android:exported="false" />
+
+        <!-- Account Activity -->
         <activity
-            android:name=".AccountActivity"
-            android:exported="false" /> <!-- Main Activity -->
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" >
-        </activity>
-        <activity
-            android:name=".FinishActivity"
+            android:name=".Activities.AccountActivity"
             android:exported="false" />
-        <!-- Main Activity -->
+
+        <!-- Home Activity -->
         <activity
-            android:name=".CalendarActivity"
-            android:exported="false" />
-        <!-- Main Activity -->
-        <activity
-            android:name=".MainActivity"
+            android:name=".Activities.HomeActivity"
             android:exported="false"/>
+
+        <!-- Finish Activity -->
         <activity
-            android:name=".FriendActivity"
+            android:name=".Activities.FinishActivity"
+            android:exported="false" />
+
+        <!-- Calendar Activity -->
+        <activity
+            android:name=".Activities.CalendarActivity"
+            android:exported="false" />
+
+        <!-- Friend Activity -->
+        <activity
+            android:name=".Activities.FriendActivity"
             android:exported="false">
-        </activity> 
+        </activity>
+
         <!-- Login Activity -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,19 +66,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Login Activity -->
+
+        <!-- Manage Activity -->
         <activity
-            android:name=".ManageActivity"
+            android:name=".Activities.ManageActivity"
             android:exported="false">
         </activity>
+
         <!-- SignUp Activity -->
         <activity
-            android:name=".SignUpActivity"
+            android:name=".Activities.SignUpActivity"
             android:exported="false">
         </activity>
 
         <receiver
-            android:name=".EndOfDayReceiver"
+            android:name=".Scheduler.EndOfDayReceiver"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">

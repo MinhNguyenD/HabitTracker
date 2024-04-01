@@ -11,6 +11,9 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.csci4176_pmgroupproject.Activities.ManageActivity
+import com.example.csci4176_pmgroupproject.Adapters.HabitCategoriesAdapter
+import com.example.csci4176_pmgroupproject.Database.DatabaseAPI
 import com.example.csci4176_pmgroupproject.Model.HabitModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
